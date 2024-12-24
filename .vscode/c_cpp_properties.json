@@ -3,7 +3,7 @@
     "configurations": [
         {
             "name": "Arduino",
-            "compilerPath": "/home/jm/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
+            "compilerPath": "C:\\Users\\joe\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7\\bin\\avr-g++",
             "compilerArgs": [
                 "-w",
                 "-std=gnu++11",
@@ -16,18 +16,18 @@
             ],
             "intelliSenseMode": "gcc-x64",
             "includePath": [
-                "/home/jm/.arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino",
-                "/home/jm/.arduino15/packages/arduino/hardware/avr/1.8.6/variants/mega",
-                "/home/jm/Arduino/libraries/ArduinoLog",
-                "/home/jm/Arduino/libraries/MT-arduino-momentary-button/src",
-                "/home/jm/Arduino/libraries/MT-arduino-pin-debouncer/src",
-                "/home/jm/Arduino/libraries/MT-arduino-stepper-driver/src",
-                "/home/jm/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/lib/gcc/avr/7.3.0/include",
-                "/home/jm/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/lib/gcc/avr/7.3.0/include-fixed",
-                "/home/jm/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include"
+                "C:\\Users\\joe\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
+                "C:\\Users\\joe\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\mega",
+                "C:\\Users\\joe\\Documents\\Arduino\\libraries\\ArduinoLog",
+                "C:\\Users\\joe\\Documents\\Arduino\\libraries\\MT-arduino-momentary-button\\src",
+                "C:\\Users\\joe\\Documents\\Arduino\\libraries\\MT-arduino-pin-debouncer\\src",
+                "C:\\Users\\joe\\Documents\\Arduino\\libraries\\MT-arduino-stepper-driver\\src",
+                "c:\\users\\joe\\appdata\\local\\arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7\\lib\\gcc\\avr\\7.3.0\\include",
+                "c:\\users\\joe\\appdata\\local\\arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7\\lib\\gcc\\avr\\7.3.0\\include-fixed",
+                "c:\\users\\joe\\appdata\\local\\arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7\\avr\\include"
             ],
             "forcedInclude": [
-                "/home/jm/.arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino/Arduino.h"
+                "C:\\Users\\joe\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\Arduino.h"
             ],
             "cStandard": "c11",
             "cppStandard": "c++11",
