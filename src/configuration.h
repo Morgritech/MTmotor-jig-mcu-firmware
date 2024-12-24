@@ -4,7 +4,7 @@
 // See the LICENSE file in the project root for full license details.
 
 /// @file configuration.h
-/// @brief Class to setup common configuration settings, including serial port and pin definitions, etc.
+/// @brief Class that sets up common configuration settings, including serial port and pin definitions, etc.
 
 #ifndef CONFIGURATION_H_
 #define CONFIGURATION_H_
@@ -17,8 +17,8 @@
 #include "version.h"
 
 /// @brief Macro to define Serial port.
-#ifndef MTSPIN_SERIAL
-#define MTSPIN_SERIAL Serial // "Serial" for programming port, "SerialUSB" for native port (Due and Zero only).
+#ifndef MTMOTOR_JIG_SERIAL
+#define MTMOTOR_JIG_SERIAL Serial // "Serial" for programming port, "SerialUSB" for native port (Due and Zero only).
 #endif
 
 namespace mtmotor_jig {
@@ -69,21 +69,21 @@ class Configuration {
   const uint8_t kEncoderContactAPin_ = 23; ///< Input pin for the encoder contact A to control mode selection.
   const uint8_t kEncoderContactBPin_ = 24; ///< Input pin for the encoder contact B to control mode selection.
   const uint8_t kControllerButtonPin_ = 26; ///< Input pin for the controller button to control motor speed.
-  const uint8_t kControllerBuzzerPin = 49; ///< Input pin for the controller buzzer.
-  const uint8_t kControllerSdMosi = 22;
-  const uint8_t kControllerSdMiso = 25;
-  const uint8_t kControllerSdCs = 28;
-  const uint8_t kControllerSdCk = 29;   
-  const uint8_t kLcdRsPin = 52;
-  const uint8_t kLcdEnaPin = 48;
-  const uint8_t kLcdD4Pin = 47;
-  const uint8_t kLcdD5Pin = 51;
-  const uint8_t kLcdD6Pin = 46;
-  const uint8_t kLcdD7Pin = 50;
+  const uint8_t kControllerBuzzerPin_ = 49; ///< Input pin for the controller buzzer.
+  const uint8_t kControllerSdMosiPin_ = 22; ///< Input pin for the controller SD card MOSI (master out slave in) interface.
+  const uint8_t kControllerSdMisoPin_ = 25; ///< Input pin for the controller SD card MISO (master in slave out) interface.
+  const uint8_t kControllerSdCsPin_ = 28; ///< Input pin for the controller SD card CS (chip select) interface.
+  const uint8_t kControllerSdCkPin_ = 29; ///< Input pin for the controller SD card CK (clock) interface.
+  const uint8_t kLcdRsPin_ = 52; ///< Output pin for the LCD RS (register select) interface.
+  const uint8_t kLcdEnaPin_ = 48; ///< Output pin for the LCD ENA (enable) interface.
+  const uint8_t kLcdD4Pin_ = 47; ///< Output pin for the LCD D4 interface.
+  const uint8_t kLcdD5Pin_ = 51; ///< Output pin for the LCD D5 interface.
+  const uint8_t kLcdD6Pin_ = 46; ///< Output pin for the LCD D6 interface.
+  const uint8_t kLcdD7Pin_ = 50; ///< Output pin for the LCD D7 interface.
   const uint8_t kMotorDriverPulPin_ = 11; ///< Output pin for the stepper driver PUL/STP/CLK (pulse/step) interface.
   const uint8_t kMotorDriverDirPin_ = 12; ///< Output pin for the stepper driver DIR/CW (direction) interface.
   const uint8_t kMotorDriverEnaPin_ = 13; ///< Output pin for the stepper driver ENA/EN (enable) interface.
-  const uint8_t kLimitSwitchPin = 32;
+  const uint8_t kLimitSwitchPin_ = 32; ///< Input pin for the the limit switch to reset the motor's soft home position.
 
   // Control system properties.
   const ControlMode kDefaultControlMode_ = ControlMode::kContinuous; ///< The default/initial control mode. 
@@ -104,7 +104,7 @@ class Configuration {
 
   // Stepper driver properties.
   const uint16_t kMicrostepMode_ = 32; ///< Stepper driver microstep mode.
-  const float kPulDelay_us_ = 1.0; ///< Minimum delay (us) for the stepper driver PUL pin.
+  const float kPulDelay_us_ = 1.0F; ///< Minimum delay (us) for the stepper driver PUL pin.
   const float kDirDelay_us_ = 5.0F; ///< Minimum delay (us) for the stepper driver Dir pin.
   const float kEnaDelay_us_ = 5.0F; ///< Minimum delay (us) for the stepper driver Ena pin.
   const mt::StepperDriver::MotionDirection kDefaultMotionDirection_ = mt::StepperDriver::MotionDirection::kPositive; ///< Initial/default motion direction (Clockwise (CW)).
@@ -121,7 +121,7 @@ class Configuration {
   const uint16_t kStartupTime_ms_ = 1000; ///< Minimum startup/boot time in milliseconds (ms); based on the motor driver.
 
   // Debug helpers and logger properties (for debugging and system reporting).
-  int log_level_ =  LOG_LEVEL_SILENT; ///< The log level.
+  int log_level_ =  LOG_LEVEL_VERBOSE; ///< The log level.
 
  private:
 

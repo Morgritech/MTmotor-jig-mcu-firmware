@@ -9,21 +9,21 @@
 #include <ArduinoLog.h>
 
 #include "configuration.h"
-//#include "control_system.h"
+#include "control_system.h"
 
 /// @brief The Control System instance.
-//mtmotor_jig::ControlSystem control_system;
+mtmotor_jig::ControlSystem control_system;
 
 /// @brief The main application entry point for initialisation tasks.
 void setup() {
   // Setup the control system.
-  //control_system.Begin();
+  control_system.Begin();
   
-  //Log.noticeln(F("...Setup complete...\n"));
+  Log.noticeln(F("...Setup complete...\n"));
 }
 
 /// @brief The continuously running function for repetitive tasks.
 void loop() {
   // Run the control system.
-  //control_system.CheckAndProcess();
+  control_system.CheckAndProcess();
 }
