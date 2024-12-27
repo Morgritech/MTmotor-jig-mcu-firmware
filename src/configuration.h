@@ -29,8 +29,11 @@ class Configuration {
 
   /// @brief Enum of control system modes.
   enum class ControlMode {
-    kContinuous = 1,
-    kOscillate,
+    kSplashScreen,
+    kHomeScreen,
+    kContinuousMenu,
+    kOscillateMenu,
+    kStatusBar,
   };
 
   /// @brief Enum of control actions.
@@ -86,7 +89,7 @@ class Configuration {
   const uint8_t kLimitSwitchPin_ = 32; ///< Input pin for the the limit switch to reset the motor's soft home position.
 
   // Control system properties.
-  const ControlMode kDefaultControlMode_ = ControlMode::kContinuous; ///< The default/initial control mode. 
+  const ControlMode kDefaultControlMode_ = ControlMode::kSplashScreen; ///< The default/initial control mode. 
 
   // Serial properties.
   const int kBaudRate_ = 9600; ///< The serial communication speed.
@@ -120,9 +123,6 @@ class Configuration {
   // Other properties.
   const uint16_t kStartupTime_ms_ = 1000; ///< Minimum startup/boot time in milliseconds (ms); based on the motor driver.
 
-  // Debug helpers and logger properties (for debugging and system reporting).
-  int log_level_ =  LOG_LEVEL_VERBOSE; ///< The log level.
-
  private:
 
   /// @brief Private constructor so objects cannot be manually instantiated. 
@@ -130,6 +130,10 @@ class Configuration {
 
   /// @brief Private destructor so objects cannot be manually instantiated. 
   ~Configuration();
+
+  // Debug helpers and logger properties (for debugging and system reporting).
+  int log_level_ =  LOG_LEVEL_VERBOSE; ///< The log level.
+
 };
 
 } // namespace mtmotor_jig

@@ -14,7 +14,7 @@
 #include <stepper_driver.h>
 
 #include "configuration.h"
-#include "display.h"
+#include "display_manager.h"
 
 namespace mtmotor_jig {
 
@@ -22,11 +22,15 @@ ControlSystem::ControlSystem() {}
 
 ControlSystem::~ControlSystem() {}
 
-void ControlSystem::Begin() const {
+void ControlSystem::Begin() {
   configuration_.BeginHardware();
+  display_.Begin();
 }
 
-void ControlSystem::CheckAndProcess() {}
+void ControlSystem::CheckAndProcess() {
+  display_.Draw(configuration_.kDefaultControlMode_);
+  while (true);
+}
 
 void ControlSystem::LogGeneralStatus() const {}
 
