@@ -14,6 +14,7 @@
 #include <stepper_driver.h>
 
 #include "configuration.h"
+#include "input_manager.h"
 #include "display_manager.h"
 
 namespace mtmotor_jig {
@@ -24,11 +25,20 @@ ControlSystem::~ControlSystem() {}
 
 void ControlSystem::Begin() {
   configuration_.BeginHardware();
+  inputs_.Begin();
   display_.Begin();
+  LogGeneralStatus(); // Log initial status of control system.
 }
 
 void ControlSystem::CheckAndProcess() {
-  display_.Draw(configuration_.kDefaultControlMode_);
+
+  // Check for user input.
+  control_action_ = inputs_.Check(control_mode_);
+
+  // Process control actions.
+  // TODO: Implement the control actions.
+
+  display_.Draw(control_mode_);
   while (true);
 }
 
