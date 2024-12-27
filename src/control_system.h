@@ -14,6 +14,7 @@
 #include <stepper_driver.h>
 
 #include "configuration.h"
+#include "input_manager.h"
 #include "display_manager.h"
 
 namespace mtmotor_jig {
@@ -42,9 +43,13 @@ class ControlSystem {
   /// @brief Configuration settings.
   Configuration& configuration_ = Configuration::GetInstance();
 
-  /// @brief The Display.
-  DisplayManager display_;
+  // Sensors and actuators.
+  InputManager inputs_; ///< The User inputs (encoder, buttons, serial, etc.).
+  DisplayManager display_; ///< The display (LCD).
 
+  // Control flags and indicator variables.
+  Configuration::ControlMode control_mode_ = configuration_.kDefaultControlMode_; ///< Variable to keep track of the control system mode.
+  Configuration::ControlAction control_action_ = Configuration::ControlAction::kIdle; ///< Variable to keep track of the control actions from user inputs.
 };
 
 } // namespace mtmotor_jig

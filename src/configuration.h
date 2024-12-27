@@ -38,6 +38,8 @@ class Configuration {
 
   /// @brief Enum of control actions.
   enum class ControlAction {
+    kSelectNext = 'n',
+    kSelectPrevious = 'p',
     kToggleDirection = 'd',
     kCycleAngle = 'a',
     kCycleSpeed = 's',
@@ -94,7 +96,9 @@ class Configuration {
   // Serial properties.
   const int kBaudRate_ = 9600; ///< The serial communication speed.
 
-  // Button properties.
+  // Encoder dial and button properties.
+  const uint8_t kEncoderDetents_ = 20; ///< Encoder detents.
+  const uint16_t kEncoderMaxRotationAngle_degrees_ = 360.0F; ///< Encoder maximum rotation angle (degrees).
   const mt::MomentaryButton::PinState kUnpressedPinState_ = mt::MomentaryButton::PinState::kLow; ///< Button unpressed pin states.
   const uint16_t kDebouncePeriod_ms_ = 20; ///< Button debounce periods (ms).
   const uint16_t kShortPressPeriod_ms_ = 500; ///< Button short press periods (ms).
