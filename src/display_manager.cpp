@@ -18,31 +18,31 @@ DisplayManager::DisplayManager() {}
 DisplayManager::~DisplayManager() {}
 
 void DisplayManager::Begin() {
-  lcd_.begin(configure_display_.kDisplayWidth_, configure_display_.kDisplayHeight_);
+  lcd_.begin(configuration_.kDisplayWidth_, configuration_.kDisplayHeight_);
   lcd_.blink(); // Blink the display cursor.
 }
 
 void DisplayManager::Draw(Configuration::ControlMode control_mode, const String& status) {
   switch (control_mode) {
     case Configuration::ControlMode::kSplashScreen: {
-      DrawScreenItems(configure_display_.kSplashScreenMenuItems_, configure_display_.kSizeOfSplashScreenMenuItems_);
-      delay(configure_display_.kSplashScreenDelay_ms_);
+      DrawScreenItems(configuration_.kSplashScreenMenuItems_, configuration_.kSizeOfSplashScreenMenuItems_);
+      delay(configuration_.kSplashScreenDelay_ms_);
       break;
     }
     case Configuration::ControlMode::kHomeScreen: {
-      DrawScreenItems(configure_display_.kHomeScreenMenuItems_, configure_display_.kSizeOfHomeScreenMenuItems_);
+      DrawScreenItems(configuration_.kHomeScreenMenuItems_, configuration_.kSizeOfHomeScreenMenuItems_);
       break;
     }
     case Configuration::ControlMode::kContinuousMenu: {
-      cursor_position_y_ = configure_display_.kContinuousMenuCursorPositionY_;
+      cursor_position_y_ = configuration_.kContinuousMenuCursorPositionY_;
       break;
     }
     case Configuration::ControlMode::kOscillateMenu: {
-      cursor_position_y_ = configure_display_.kOscillateMenuCursorPositionY_;
+      cursor_position_y_ = configuration_.kOscillateMenuCursorPositionY_;
       break;
     }
     case Configuration::ControlMode::kStatusBar: {
-      lcd_.setCursor(0, configure_display_.kStatusBarCursorPositionY_);
+      lcd_.setCursor(0, configuration_.kStatusBarCursorPositionY_);
       lcd_.print(status);
       break;
     }

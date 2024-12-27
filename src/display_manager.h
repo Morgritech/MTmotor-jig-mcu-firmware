@@ -13,7 +13,6 @@
 #include <LiquidCrystal.h>
 
 #include "configuration.h"
-#include "configure_display.h"
 
 namespace mtmotor_jig {
 
@@ -44,14 +43,13 @@ class DisplayManager {
 
   /// @brief Configuration settings.
   Configuration& configuration_ = Configuration::GetInstance();
-  ConfigureDisplay& configure_display_ = ConfigureDisplay::GetInstance();
 
   /// @brief The LCD display.
   LiquidCrystal lcd_{configuration_.kLcdRsPin_, configuration_.kLcdEnaPin_, configuration_.kLcdD4Pin_,
                      configuration_.kLcdD5Pin_, configuration_.kLcdD6Pin_, configuration_.kLcdD7Pin_};
 
   /// @brief The current cursor position along the y-axis.
-  uint8_t cursor_position_y_ = configure_display_.kDefaultCursorPositionY_;
+  uint8_t cursor_position_y_ = configuration_.kDefaultCursorPositionY_;
 };
 
 } // namespace mtmotor_jig
