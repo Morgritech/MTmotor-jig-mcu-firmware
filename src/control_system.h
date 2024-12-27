@@ -14,7 +14,7 @@
 #include <stepper_driver.h>
 
 #include "configuration.h"
-#include "display.h"
+#include "display_manager.h"
 
 namespace mtmotor_jig {
 
@@ -29,7 +29,7 @@ class ControlSystem {
   ~ControlSystem();
 
   /// @brief Initialise the hardware (Serial port, logging, pins, etc.).
-  void Begin() const;
+  void Begin();
 
   /// @brief Check inputs and trigger outputs/actions.
   void CheckAndProcess(); ///< This must be called periodically.
@@ -41,6 +41,9 @@ class ControlSystem {
 
   /// @brief Configuration settings.
   Configuration& configuration_ = Configuration::GetInstance();
+
+  /// @brief The Display.
+  DisplayManager display_;
 
 };
 

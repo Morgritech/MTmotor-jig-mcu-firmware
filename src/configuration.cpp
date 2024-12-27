@@ -8,6 +8,7 @@
 
 #include "configuration.h"
 
+#include <Arduino.h>
 #include <ArduinoLog.h>
 
 namespace mtmotor_jig {
