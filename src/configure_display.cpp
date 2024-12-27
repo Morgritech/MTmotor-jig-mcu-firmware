@@ -8,6 +8,8 @@
 
 #include "configure_display.h"
 
+#include <Arduino.h>
+
 namespace mtmotor_jig {
 
 ConfigureDisplay& ConfigureDisplay::GetInstance() {
