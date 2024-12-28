@@ -11,6 +11,8 @@
 #include <Arduino.h>
 #include <LiquidCrystal.h>
 
+#include "configuration.h"
+
 namespace mtmotor_jig {
 
 DisplayManager::DisplayManager() {}

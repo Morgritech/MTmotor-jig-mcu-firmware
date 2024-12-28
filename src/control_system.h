@@ -10,11 +10,10 @@
 #define CONTROL_SYSTEM_H_
 
 #include <Arduino.h>
-#include <momentary_button.h>
-#include <stepper_driver.h>
 
 #include "configuration.h"
 #include "input_manager.h"
+#include "motor_manager.h"
 #include "display_manager.h"
 
 namespace mtmotor_jig {
@@ -45,6 +44,7 @@ class ControlSystem {
 
   // Sensors and actuators.
   InputManager inputs_; ///< The User inputs (encoder, buttons, serial, etc.).
+  MotorManager motor_; ///< The Motor drive system.
   DisplayManager display_; ///< The display (LCD).
 
   // Control flags and indicator variables.

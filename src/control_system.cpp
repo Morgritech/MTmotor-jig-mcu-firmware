@@ -10,11 +10,10 @@
 
 #include <Arduino.h>
 #include <ArduinoLog.h>
-#include <momentary_button.h>
-#include <stepper_driver.h>
 
 #include "configuration.h"
 #include "input_manager.h"
+#include "motor_manager.h"
 #include "display_manager.h"
 
 namespace mtmotor_jig {
@@ -26,6 +25,7 @@ ControlSystem::~ControlSystem() {}
 void ControlSystem::Begin() {
   configuration_.BeginHardware();
   inputs_.Begin();
+  motor_.Begin();
   display_.Begin();
   LogGeneralStatus(); // Log initial status of control system.
 }

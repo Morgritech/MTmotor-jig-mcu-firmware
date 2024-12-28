@@ -9,6 +9,9 @@
 #include "input_manager.h"
 
 #include <Arduino.h>
+#include <ArduinoLog.h>
+
+#include "configuration.h"
 
 namespace mtmotor_jig {
 
