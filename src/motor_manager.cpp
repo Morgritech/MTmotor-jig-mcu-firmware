@@ -35,16 +35,17 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
   // Process control actions.
   switch(control_action) {
     case Configuration::ControlAction::kSelectNext: {
-      // Fall through to select previous which stops the motor.
+      // Fall through to select previous which resets the motor.
       [[fallthrough]];
     }
     case Configuration::ControlAction::kSelectPrevious: {
       // Stop motor.
-      if (stepper_driver_.power_state() == mt::StepperDriver::PowerState::kEnabled) {
-        stepper_driver_.set_power_state(mt::StepperDriver::PowerState::kDisabled);
-        Log.noticeln(F("Motion status: Stopped."));       
-      }
+      //if (stepper_driver_.power_state() == mt::StepperDriver::PowerState::kEnabled) {
+      //  stepper_driver_.set_power_state(mt::StepperDriver::PowerState::kDisabled);
+      //  Log.noticeln(F("Motion status: Stopped."));       
+      //}
 
+      motion_type_ = mt::StepperDriver::MotionType::kStopAndReset;
       break;
     }
     case Configuration::ControlAction::kToggleDirection: {
