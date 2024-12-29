@@ -98,11 +98,27 @@ void ControlSystem::CheckAndProcess() {
 
 void ControlSystem::LogGeneralStatus() const {
   Log.noticeln(F("General Status"));
-  if (control_mode_ == Configuration::ControlMode::kContinuousMenu) {
-    Log.noticeln(F("Control mode: continuous"));
-  }
-  else if (control_mode_ == Configuration::ControlMode::kOscillateMenu) {
-    Log.noticeln(F("Control mode: oscillate"));
+  switch (control_mode_) {
+    case Configuration::ControlMode::kSplashScreen: {
+      Log.noticeln(F("Control mode: splash screen"));
+      break;
+    }
+    case Configuration::ControlMode::kHomeScreen: {
+      Log.noticeln(F("Control mode: home screen"));
+      break;
+    }
+    case Configuration::ControlMode::kContinuousMenu: {
+      Log.noticeln(F("Control mode: continuous"));
+      break;
+    }
+    case Configuration::ControlMode::kOscillateMenu: {
+      Log.noticeln(F("Control mode: oscillate"));
+      break;
+    }
+    case Configuration::ControlMode::kStatusBar: {
+      Log.noticeln(F("Control mode: status bar"));
+      break;
+    }
   }
 
   motor_.LogGeneralStatus(control_mode_);

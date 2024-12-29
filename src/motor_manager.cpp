@@ -118,7 +118,7 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
         // Not really needed since enabling power will achieve the same states in the move functions.
         //motion_type_ = mt::StepperDriver::MotionType::kRelative;
         //motion_direction_ = previous_motion_direction_;
-        Log.noticeln(F("Motion status: Started."));     
+        Log.noticeln(F("Motion status: started."));     
       }
       else {
         // Disallow movement.
@@ -130,7 +130,7 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
         speed_index_ = configuration_.kDefaultSpeedIndex_;
         stepper_driver_.SetSpeed(configuration_.kSpeeds_RPM_[speed_index_],
                             mt::StepperDriver::SpeedUnits::kRevolutionsPerMinute);
-        Log.noticeln(F("Motion status: Stopped."));       
+        Log.noticeln(F("Motion status: stopped."));       
       }
       
       break;
@@ -195,6 +195,13 @@ void MotorManager::LogGeneralStatus(Configuration::ControlMode control_mode) con
   
   Log.noticeln(F("Sweep angle (degrees): %F"), configuration_.kSweepAngles_degrees_[sweep_angle_index_]);
   Log.noticeln(F("Speed (RPM): %F"), configuration_.kSpeeds_RPM_[speed_index_]);
+
+  if (stepper_driver_.power_state() == mt::StepperDriver::PowerState::kDisabled) {
+    Log.noticeln(F("Motion status: stopped."));
+  }
+  else {
+    Log.noticeln(F("Motion status: started."));
+  }
 }
 
 }  // namespace mtmotor_jig

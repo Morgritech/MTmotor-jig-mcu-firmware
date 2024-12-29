@@ -36,11 +36,11 @@ Configuration::ControlAction InputManager::Check(Configuration::ControlMode cont
   // Process the encoder dial rotation, button presses, and serial input; one character at a time.
   if (rotation_direction == mt::RotaryEncoder::RotationDirection::kPositive) {
     control_action = Configuration::ControlAction::kSelectNext;
-    Log.noticeln(F("Encoder dial Clockwise rotation."));
+    Log.noticeln(F("Encoder dial clockwise rotation."));
   } 
   else if (rotation_direction == mt::RotaryEncoder::RotationDirection::kNegative) {
     control_action = Configuration::ControlAction::kSelectPrevious;
-    Log.noticeln(F("Encoder dial Counter-clockwise rotation."));
+    Log.noticeln(F("Encoder dial counter-clockwise rotation."));
   }
   else if (controller_button_press_type == mt::MomentaryButton::PressType::kShortPress) {
     control_action = Configuration::ControlAction::kCycleSpeed;
