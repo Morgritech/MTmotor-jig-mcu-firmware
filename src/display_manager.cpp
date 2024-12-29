@@ -11,6 +11,8 @@
 #include <Arduino.h>
 #include <LiquidCrystal.h>
 
+#include "configuration.h"
+
 namespace mtmotor_jig {
 
 DisplayManager::DisplayManager() {}
@@ -46,9 +48,9 @@ void DisplayManager::Draw(Configuration::ControlMode control_mode, const String&
       lcd_.print(status);
       break;
     }
-
-    lcd_.setCursor(0, cursor_position_y_);
   }
+
+  lcd_.setCursor(0, cursor_position_y_);
 }
 
 void DisplayManager::DrawScreenItems(const String screen_items[], const uint8_t size_of_screen_items) {

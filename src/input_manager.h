@@ -20,6 +20,7 @@ namespace mtmotor_jig {
 /// @brief The Input Manager class.
 class InputManager {
  public:
+ 
   /// @brief Construct an Input Manager object.
   InputManager();
 
