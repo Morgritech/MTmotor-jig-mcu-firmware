@@ -32,16 +32,80 @@ void ControlSystem::Begin() {
 
 void ControlSystem::CheckAndProcess() {
 
-  // Check for user input.
+  // Check inputs.
   control_action_ = inputs_.Check(control_mode_);
 
-  // Process control actions.
-  // TODO: Implement the control actions.
+  // Process inputs.
+  switch (control_action_) {
+    case Configuration::ControlAction::kSelectNext: {
+      // Fall through to select previous which changes control mode.
+      [[fallthrough]];
+    }
+    case Configuration::ControlAction::kSelectPrevious: {
+      if (control_mode_ == Configuration::ControlMode::kContinuousMenu) {
+        control_mode_ = Configuration::ControlMode::kOscillateMenu;
+        Log.noticeln(F("Control mode: oscillate"));
+      }
+      else if (control_mode_ == Configuration::ControlMode::kOscillateMenu) {
+        control_mode_ = Configuration::ControlMode::kContinuousMenu;
+        Log.noticeln(F("Control mode: continuous"));
+      }
 
+      break;
+    }
+    case Configuration::ControlAction::kToggleLogReport: {
+      // Toggle reporting/output of log messages over serial.
+      configuration_.ToggleLogs();
+      break;
+    }
+    case Configuration::ControlAction::kLogGeneralStatus: {
+      // Log/report the general status of the control system.
+      LogGeneralStatus();
+      break;
+    }
+    case Configuration::ControlAction::kReportFirmwareVersion: {
+      // Log/report the firmware version.
+      configuration_.ReportFirmwareVersion();
+    }
+    case Configuration::ControlAction::kIdle: {
+      // No action.
+      //Log.noticeln(F("Idle: no action."));
+      break;
+    }
+    default: {
+      Log.errorln(F("Invalid control action."));
+      break;
+    }    
+  }
+
+  // Initiate outputs.
+  motor_.Actuate(control_mode_, control_action_);
   display_.Draw(control_mode_);
-  while (true);
+
+  switch (control_mode_) {
+    case Configuration::ControlMode::kSplashScreen: {
+      control_mode_ = Configuration::ControlMode::kHomeScreen;
+      Log.noticeln(F("Control mode: home screen"));
+      break;
+    }
+    case Configuration::ControlMode::kHomeScreen: {
+      control_mode_ = Configuration::ControlMode::kContinuousMenu;
+      Log.noticeln(F("Control mode: continuous"));
+      break;
+    }
+  }
 }
 
-void ControlSystem::LogGeneralStatus() const {}
+void ControlSystem::LogGeneralStatus() const {
+  Log.noticeln(F("General Status"));
+  if (control_mode_ == Configuration::ControlMode::kContinuousMenu) {
+    Log.noticeln(F("Control mode: continuous"));
+  }
+  else if (control_mode_ == Configuration::ControlMode::kOscillateMenu) {
+    Log.noticeln(F("Control mode: oscillate"));
+  }
+
+  motor_.LogGeneralStatus(control_mode_);
+}
 
 } // namespace mtmotor_jig
