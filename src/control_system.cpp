@@ -78,7 +78,6 @@ void ControlSystem::CheckAndProcess() {
   // Initiate outputs.
   String status = F("");
   motor_.Actuate(control_mode_, control_action_, status);
-  if (status != F("")) MTMOTOR_JIG_SERIAL.println(status);
   display_.Draw(control_mode_, status);
 
   // Transistion through the initial control modes.

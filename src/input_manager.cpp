@@ -50,9 +50,11 @@ Configuration::ControlAction InputManager::Check(Configuration::ControlMode cont
     switch (control_mode) {
       case Configuration::ControlMode::kContinuousMenu: {
         control_action = Configuration::ControlAction::kToggleDirection;
+        break;
       }
       case Configuration::ControlMode::kOscillateMenu: {
         control_action = Configuration::ControlAction::kCycleAngle;
+        break;
       }
     }
 
