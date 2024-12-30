@@ -68,17 +68,11 @@ void ControlSystem::CheckAndProcess() {
       configuration_.ReportFirmwareVersion();
       break;
     }
-    case Configuration::ControlAction::kIdle: {
-      // No action.
-      //Log.noticeln(F("Idle: no action."));
-      break;
-    }   
   }
 
   // Initiate outputs.
-  String status = F("");
-  motor_.Actuate(control_mode_, control_action_, status);
-  display_.Draw(control_mode_, status);
+  motor_.Actuate(control_mode_, control_action_, status_);
+  display_.Draw(control_mode_, control_action_, status_);
 
   // Transistion through the initial control modes.
   switch (control_mode_) {

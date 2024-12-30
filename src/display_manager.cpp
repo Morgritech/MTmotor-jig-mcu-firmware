@@ -22,9 +22,11 @@ DisplayManager::~DisplayManager() {}
 void DisplayManager::Begin() {
   lcd_.begin(configuration_.kDisplayWidth_, configuration_.kDisplayHeight_);
   lcd_.blink(); // Blink the display cursor.
+  //lcd_.cursor(); // Show a static display cursor.
 }
 
-void DisplayManager::Draw(Configuration::ControlMode control_mode, const String& status) {
+void DisplayManager::Draw(Configuration::ControlMode control_mode, Configuration::ControlAction control_action,
+                          const String& status) {
   switch (control_mode) {
     case Configuration::ControlMode::kSplashScreen: {
       DrawScreenItems(configuration_.kSplashScreenMenuItems_, configuration_.kSizeOfSplashScreenMenuItems_);
@@ -45,12 +47,11 @@ void DisplayManager::Draw(Configuration::ControlMode control_mode, const String&
     }
   }
 
-  if (status != F("")) {
+  if (control_action != Configuration::ControlAction::kIdle || control_mode == Configuration::ControlMode::kHomeScreen) {
     lcd_.setCursor(0, configuration_.kStatusBarCursorPositionY_);
     lcd_.print(status);
+    lcd_.setCursor(0, cursor_position_y_);
   }
-
-  lcd_.setCursor(0, cursor_position_y_);
 }
 
 void DisplayManager::DrawScreenItems(const String screen_items[], const uint8_t size_of_screen_items) {

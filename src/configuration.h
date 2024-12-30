@@ -139,8 +139,8 @@ class Configuration {
   static const uint8_t kSizeOfHomeScreenMenuItems_ = 3; ///< No. of home screen menu items.
   /// @brief The home screen menu items.
   const String kHomeScreenMenuItems_[kSizeOfHomeScreenMenuItems_] = {"__Select_Mode_______",   // 0
-                                                                     "> Continuous"        ,   // 1
-                                                                     "> Oscillate"          }; // 2
+                                                                     "o Continuous"        ,   // 1
+                                                                     "o Oscillate"          }; // 2
   const uint8_t kContinuousMenuCursorPositionY_ = 1; ///< The cursor position (y-axis) for the continuous menu.
   const uint8_t kOscillateMenuCursorPositionY_ = 2; ///< The cursor position (y-axis) for the oscillate menu.
   const uint8_t kStatusBarCursorPositionY_ = 3; ///< The cursor position (y-axis) for the status bar.
