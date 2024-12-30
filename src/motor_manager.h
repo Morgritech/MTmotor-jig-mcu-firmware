@@ -27,11 +27,11 @@ class MotorManager {
   ~MotorManager();
 
   /// @brief Initialise the motor.
-  void Begin();
+  void Begin(); ///< This must be called only once.
 
   /// @brief Actuate the motor.
   void Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action,
-               String& status_output);
+               String& status_output); ///< This must be called repeatedly.
 
   /// @brief Log/report the general status of the motor.
   void LogGeneralStatus(Configuration::ControlMode control_mode) const;

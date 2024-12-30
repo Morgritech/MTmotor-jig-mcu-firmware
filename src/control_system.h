@@ -29,10 +29,10 @@ class ControlSystem {
   ~ControlSystem();
 
   /// @brief Initialise the hardware (Serial port, logging, pins, etc.).
-  void Begin();
+  void Begin(); ///< This must be called only once.
 
   /// @brief Check inputs and trigger outputs/actions.
-  void CheckAndProcess(); ///< This must be called periodically.
+  void CheckAndProcess(); ///< This must be called repeatedly.
 
  private:
 

@@ -28,10 +28,10 @@ class InputManager {
   ~InputManager();
 
   /// @brief Initialise the inputs.
-  void Begin();
+  void Begin(); ///< This must be called only once.
 
   /// @brief Check for user input.
-  Configuration::ControlAction Check(Configuration::ControlMode control_mode);
+  Configuration::ControlAction Check(Configuration::ControlMode control_mode); ///< This must be called repeatedly.
 
  private:
 

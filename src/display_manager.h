@@ -27,7 +27,7 @@ class DisplayManager {
   ~DisplayManager();
 
   /// @brief Initialise the display.
-  void Begin();
+  void Begin(); ///< This must be called only once.
 
   /// @brief Draw items to the display based on the control mode.
   /// @param control_mode The control mode.

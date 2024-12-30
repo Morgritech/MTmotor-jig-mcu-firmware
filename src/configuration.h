@@ -60,7 +60,7 @@ class Configuration {
   Configuration& operator=(const Configuration&) = delete;
 
   /// @brief Initialise the hardware (Serial port, logging, pins, etc.).
-  void BeginHardware() const;
+  void BeginHardware() const; ///< This must be called only once.
 
   /// @brief Toggle log messages.
   void ToggleLogs();
@@ -155,7 +155,8 @@ class Configuration {
   ~Configuration();
 
   // Debug helpers and logger properties (for debugging and system reporting).
-  int log_level_ =  LOG_LEVEL_VERBOSE; ///< The log level.
+  int log_level_ = LOG_LEVEL_SILENT; ///< The log level.
+  //int log_level_ = LOG_LEVEL_VERBOSE; ///< The log level.
 
 };
 
