@@ -58,7 +58,15 @@ void Configuration::ToggleLogs() {
 }
 
 void Configuration::ReportFirmwareVersion() {
-  String version = kName + String(kMajor) + "." + String(kMinor) + "." + String(kPatch) + kSuffix;
+  String version = kName;
+  version += F("-");
+  version += String(kMajor);
+  version += F(".");
+  version += String(kMinor);
+  version += F(".");
+  version += String(kPatch);
+  if (strlen(kSuffix) > 0) version += F("-");
+  version += kSuffix;
   MTMOTOR_JIG_SERIAL.println(version);
 }
 

@@ -31,7 +31,8 @@ void MotorManager::Begin() {
   stepper_driver_.set_power_state(mt::StepperDriver::PowerState::kDisabled); // Save power when idle.
 }
 
-void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action) {
+void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action,
+                           String& status_output) {
   // Process control actions.
   switch(control_action) {
     case Configuration::ControlAction::kSelectNext: {
@@ -118,7 +119,7 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
         // Not really needed since enabling power will achieve the same states in the move functions.
         //motion_type_ = mt::StepperDriver::MotionType::kRelative;
         //motion_direction_ = previous_motion_direction_;
-        Log.noticeln(F("Motion status: Started."));     
+        Log.noticeln(F("Motion status: started."));     
       }
       else {
         // Disallow movement.
@@ -130,13 +131,14 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
         speed_index_ = configuration_.kDefaultSpeedIndex_;
         stepper_driver_.SetSpeed(configuration_.kSpeeds_RPM_[speed_index_],
                             mt::StepperDriver::SpeedUnits::kRevolutionsPerMinute);
-        Log.noticeln(F("Motion status: Stopped."));       
+        Log.noticeln(F("Motion status: stopped."));       
       }
       
       break;
     }
   }
 
+  // Actuate the motor based on the control mode.
   switch (control_mode) {
     case Configuration::ControlMode::kContinuousMenu: {      
       if (motion_status_ != mt::StepperDriver::MotionStatus::kConstantSpeed 
@@ -182,6 +184,43 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
       break;
     }
   }
+
+  // Create the status message.
+  if (control_action != Configuration::ControlAction::kIdle || control_mode == Configuration::ControlMode::kHomeScreen) {
+    status_output = F("..");
+    
+    if (stepper_driver_.power_state() == mt::StepperDriver::PowerState::kEnabled) {
+      status_output += F("ON..");
+    }
+    else {
+      status_output += F("OFF.");
+    }
+
+    status_output += String(configuration_.kSpeeds_RPM_[speed_index_], 0);
+    status_output += F("RPM.");
+
+    switch (control_mode) {
+      case Configuration::ControlMode::kHomeScreen: {
+        // Fall through to continuous menu.
+        [[fallthrough]];
+      }
+      case Configuration::ControlMode::kContinuousMenu: {
+        if (motion_direction_ == mt::StepperDriver::MotionDirection::kPositive) {
+          status_output += F("CW......");
+        }
+        else {
+          status_output += F("CCW.....");
+        }
+
+        break;
+      }
+      case Configuration::ControlMode::kOscillateMenu: {
+        status_output += String(configuration_.kSweepAngles_degrees_[sweep_angle_index_], 0);
+        status_output += F("deg..");
+        break;
+      }
+    }
+  }
 }
 
 void MotorManager::LogGeneralStatus(Configuration::ControlMode control_mode) const {
@@ -195,6 +234,13 @@ void MotorManager::LogGeneralStatus(Configuration::ControlMode control_mode) con
   
   Log.noticeln(F("Sweep angle (degrees): %F"), configuration_.kSweepAngles_degrees_[sweep_angle_index_]);
   Log.noticeln(F("Speed (RPM): %F"), configuration_.kSpeeds_RPM_[speed_index_]);
+
+  if (stepper_driver_.power_state() == mt::StepperDriver::PowerState::kDisabled) {
+    Log.noticeln(F("Motion status: stopped."));
+  }
+  else {
+    Log.noticeln(F("Motion status: started."));
+  }
 }
 
 }  // namespace mtmotor_jig

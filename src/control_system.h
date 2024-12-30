@@ -50,6 +50,7 @@ class ControlSystem {
   // Control flags and indicator variables.
   Configuration::ControlMode control_mode_ = configuration_.kDefaultControlMode_; ///< Variable to keep track of the control system mode.
   Configuration::ControlAction control_action_ = Configuration::ControlAction::kIdle; ///< Variable to keep track of the control actions from user inputs.
+  String status_ = ""; ///< Variable to keep track of the status message to display.
 };
 
 } // namespace mtmotor_jig

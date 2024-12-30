@@ -33,7 +33,6 @@ class Configuration {
     kHomeScreen,
     kContinuousMenu,
     kOscillateMenu,
-    kStatusBar,
   };
 
   /// @brief Enum of control actions.
@@ -71,8 +70,8 @@ class Configuration {
 
   // GPIO pins.
   const uint8_t kEncoderButtonPin_ = 53; ///< Input pin for the encoder button to control motor direction or angle.
-  const uint8_t kEncoderContactAPin_ = 23; ///< Input pin for the encoder contact A to control mode selection.
-  const uint8_t kEncoderContactBPin_ = 24; ///< Input pin for the encoder contact B to control mode selection.
+  const uint8_t kEncoderContactAPin_ = 24; ///< Input pin for the encoder contact A to control mode selection.
+  const uint8_t kEncoderContactBPin_ = 23; ///< Input pin for the encoder contact B to control mode selection.
   const uint8_t kControllerButtonPin_ = 26; ///< Input pin for the controller button to control motor speed.
   const uint8_t kControllerBuzzerPin_ = 49; ///< Input pin for the controller buzzer.
   const uint8_t kControllerSdMosiPin_ = 22; ///< Input pin for the controller SD card MOSI (master out slave in) interface.
@@ -85,9 +84,9 @@ class Configuration {
   const uint8_t kLcdD5Pin_ = 51; ///< Output pin for the LCD D5 interface.
   const uint8_t kLcdD6Pin_ = 46; ///< Output pin for the LCD D6 interface.
   const uint8_t kLcdD7Pin_ = 50; ///< Output pin for the LCD D7 interface.
-  const uint8_t kMotorDriverPulPin_ = 11; ///< Output pin for the stepper driver PUL/STP/CLK (pulse/step) interface.
-  const uint8_t kMotorDriverDirPin_ = 12; ///< Output pin for the stepper driver DIR/CW (direction) interface.
-  const uint8_t kMotorDriverEnaPin_ = 13; ///< Output pin for the stepper driver ENA/EN (enable) interface.
+  const uint8_t kMotorDriverPulPin_ = 2; ///< Output pin for the stepper driver PUL/STP/CLK (pulse/step) interface.
+  const uint8_t kMotorDriverDirPin_ = 3; ///< Output pin for the stepper driver DIR/CW (direction) interface.
+  const uint8_t kMotorDriverEnaPin_ = 4; ///< Output pin for the stepper driver ENA/EN (enable) interface.
   const uint8_t kLimitSwitchPin_ = 32; ///< Input pin for the the limit switch to reset the motor's soft home position.
 
   // Control system properties.
@@ -99,7 +98,7 @@ class Configuration {
   // Encoder dial and button properties.
   const uint8_t kEncoderDetents_ = 20; ///< Encoder detents.
   const uint16_t kEncoderMaxRotationAngle_degrees_ = 360.0F; ///< Encoder maximum rotation angle (degrees).
-  const mt::MomentaryButton::PinState kUnpressedPinState_ = mt::MomentaryButton::PinState::kLow; ///< Button unpressed pin states.
+  const mt::MomentaryButton::PinState kUnpressedPinState_ = mt::MomentaryButton::PinState::kHigh; ///< Button unpressed pin states.
   const uint16_t kDebouncePeriod_ms_ = 20; ///< Button debounce periods (ms).
   const uint16_t kShortPressPeriod_ms_ = 500; ///< Button short press periods (ms).
   const uint16_t kLongPressPeriod_ms_ = 1000; ///< Button long press periods (ms).
@@ -140,8 +139,8 @@ class Configuration {
   static const uint8_t kSizeOfHomeScreenMenuItems_ = 3; ///< No. of home screen menu items.
   /// @brief The home screen menu items.
   const String kHomeScreenMenuItems_[kSizeOfHomeScreenMenuItems_] = {"__Select_Mode_______",   // 0
-                                                                     "> Continuous"        ,   // 1
-                                                                     "> Oscillate"          }; // 2
+                                                                     "o Continuous"        ,   // 1
+                                                                     "o Oscillate"          }; // 2
   const uint8_t kContinuousMenuCursorPositionY_ = 1; ///< The cursor position (y-axis) for the continuous menu.
   const uint8_t kOscillateMenuCursorPositionY_ = 2; ///< The cursor position (y-axis) for the oscillate menu.
   const uint8_t kStatusBarCursorPositionY_ = 3; ///< The cursor position (y-axis) for the status bar.

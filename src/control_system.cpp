@@ -66,22 +66,15 @@ void ControlSystem::CheckAndProcess() {
     case Configuration::ControlAction::kReportFirmwareVersion: {
       // Log/report the firmware version.
       configuration_.ReportFirmwareVersion();
-    }
-    case Configuration::ControlAction::kIdle: {
-      // No action.
-      //Log.noticeln(F("Idle: no action."));
       break;
     }
-    default: {
-      Log.errorln(F("Invalid control action."));
-      break;
-    }    
   }
 
   // Initiate outputs.
-  motor_.Actuate(control_mode_, control_action_);
-  display_.Draw(control_mode_);
+  motor_.Actuate(control_mode_, control_action_, status_);
+  display_.Draw(control_mode_, control_action_, status_);
 
+  // Transistion through the initial control modes.
   switch (control_mode_) {
     case Configuration::ControlMode::kSplashScreen: {
       control_mode_ = Configuration::ControlMode::kHomeScreen;
@@ -98,11 +91,23 @@ void ControlSystem::CheckAndProcess() {
 
 void ControlSystem::LogGeneralStatus() const {
   Log.noticeln(F("General Status"));
-  if (control_mode_ == Configuration::ControlMode::kContinuousMenu) {
-    Log.noticeln(F("Control mode: continuous"));
-  }
-  else if (control_mode_ == Configuration::ControlMode::kOscillateMenu) {
-    Log.noticeln(F("Control mode: oscillate"));
+  switch (control_mode_) {
+    case Configuration::ControlMode::kSplashScreen: {
+      Log.noticeln(F("Control mode: splash screen"));
+      break;
+    }
+    case Configuration::ControlMode::kHomeScreen: {
+      Log.noticeln(F("Control mode: home screen"));
+      break;
+    }
+    case Configuration::ControlMode::kContinuousMenu: {
+      Log.noticeln(F("Control mode: continuous"));
+      break;
+    }
+    case Configuration::ControlMode::kOscillateMenu: {
+      Log.noticeln(F("Control mode: oscillate"));
+      break;
+    }
   }
 
   motor_.LogGeneralStatus(control_mode_);

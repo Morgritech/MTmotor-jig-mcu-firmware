@@ -30,7 +30,8 @@ class MotorManager {
   void Begin();
 
   /// @brief Actuate the motor.
-  void Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action);
+  void Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action,
+               String& status_output);
 
   /// @brief Log/report the general status of the motor.
   void LogGeneralStatus(Configuration::ControlMode control_mode) const;
@@ -42,11 +43,11 @@ class MotorManager {
 
   // Stepper motor driver.
   mt::StepperDriver stepper_driver_{configuration_.kMotorDriverPulPin_,
-                                  configuration_.kMotorDriverDirPin_,
-                                  configuration_.kMotorDriverEnaPin_,
-                                  configuration_.kMicrostepMode_,
-                                  configuration_.kFullStepAngle_degrees_,
-                                  configuration_.kGearRatio_};
+                                    configuration_.kMotorDriverDirPin_,
+                                    configuration_.kMotorDriverEnaPin_,
+                                    configuration_.kMicrostepMode_,
+                                    configuration_.kFullStepAngle_degrees_,
+                                    configuration_.kGearRatio_};
 
   // Control flags and indicator variables.
   mt::StepperDriver::MotionDirection motion_direction_ = configuration_.kDefaultMotionDirection_; ///< Variable to keep track of the motion direction.

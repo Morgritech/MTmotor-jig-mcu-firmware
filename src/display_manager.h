@@ -32,7 +32,8 @@ class DisplayManager {
   /// @brief Draw items to the display based on the control mode.
   /// @param control_mode The control mode.
   /// @param status The status message to display.
-  void Draw(Configuration::ControlMode control_mode, const String& status = "");
+  void Draw(Configuration::ControlMode control_mode, Configuration::ControlAction control_action,
+            const String& status);
 
  private:
 

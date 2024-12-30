@@ -13,7 +13,7 @@
 
 namespace mtmotor_jig {
 
-inline constexpr char* kName = "mtmotor-jig-mcu-firmware-";
+inline constexpr char* kName = "mtmotor-jig-mcu-firmware";
 inline constexpr uint16_t kMajor = 0;
 inline constexpr uint16_t kMinor = 1;
 inline constexpr uint16_t kPatch = 0;
