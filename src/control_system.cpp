@@ -66,22 +66,22 @@ void ControlSystem::CheckAndProcess() {
     case Configuration::ControlAction::kReportFirmwareVersion: {
       // Log/report the firmware version.
       configuration_.ReportFirmwareVersion();
+      break;
     }
     case Configuration::ControlAction::kIdle: {
       // No action.
       //Log.noticeln(F("Idle: no action."));
       break;
-    }
-    default: {
-      Log.errorln(F("Invalid control action."));
-      break;
-    }    
+    }   
   }
 
   // Initiate outputs.
-  motor_.Actuate(control_mode_, control_action_);
-  display_.Draw(control_mode_);
+  String status = F("");
+  motor_.Actuate(control_mode_, control_action_, status);
+  if (status != F("")) MTMOTOR_JIG_SERIAL.println(status);
+  display_.Draw(control_mode_, status);
 
+  // Transistion through the initial control modes.
   switch (control_mode_) {
     case Configuration::ControlMode::kSplashScreen: {
       control_mode_ = Configuration::ControlMode::kHomeScreen;
@@ -113,10 +113,6 @@ void ControlSystem::LogGeneralStatus() const {
     }
     case Configuration::ControlMode::kOscillateMenu: {
       Log.noticeln(F("Control mode: oscillate"));
-      break;
-    }
-    case Configuration::ControlMode::kStatusBar: {
-      Log.noticeln(F("Control mode: status bar"));
       break;
     }
   }

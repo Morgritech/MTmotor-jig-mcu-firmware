@@ -33,7 +33,6 @@ class Configuration {
     kHomeScreen,
     kContinuousMenu,
     kOscillateMenu,
-    kStatusBar,
   };
 
   /// @brief Enum of control actions.

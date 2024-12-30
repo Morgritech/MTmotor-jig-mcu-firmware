@@ -30,7 +30,8 @@ class MotorManager {
   void Begin();
 
   /// @brief Actuate the motor.
-  void Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action);
+  void Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action,
+               String& status_output);
 
   /// @brief Log/report the general status of the motor.
   void LogGeneralStatus(Configuration::ControlMode control_mode) const;

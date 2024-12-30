@@ -43,11 +43,11 @@ void DisplayManager::Draw(Configuration::ControlMode control_mode, const String&
       cursor_position_y_ = configuration_.kOscillateMenuCursorPositionY_;
       break;
     }
-    case Configuration::ControlMode::kStatusBar: {
-      lcd_.setCursor(0, configuration_.kStatusBarCursorPositionY_);
-      lcd_.print(status);
-      break;
-    }
+  }
+
+  if (status != F("")) {
+    lcd_.setCursor(0, configuration_.kStatusBarCursorPositionY_);
+    lcd_.print(status);
   }
 
   lcd_.setCursor(0, cursor_position_y_);
