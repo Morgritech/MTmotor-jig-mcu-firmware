@@ -24,6 +24,8 @@ ControlSystem::~ControlSystem() {}
 
 void ControlSystem::Begin() {
   configuration_.BeginHardware();
+  tone(configuration_.kControllerBuzzerPin_, configuration_.kBuzzerStartupFrequency_Hz_,
+       configuration_.kBuzzerStartupDuration_ms_); // Sound the buzzer at startup.
   inputs_.Begin();
   motor_.Begin();
   display_.Begin();

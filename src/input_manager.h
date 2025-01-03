@@ -53,6 +53,11 @@ class InputManager {
                                        configuration_.kDebouncePeriod_ms_,
                                        configuration_.kShortPressPeriod_ms_,
                                        configuration_.kLongPressPeriod_ms_}; ///< Button to control motor speed.
+  mt::MomentaryButton limit_switch_{configuration_.kLimitSwitchPin_,
+                                    configuration_.kUnpressedPinState_,
+                                    configuration_.kDebouncePeriod_ms_,
+                                    configuration_.kShortPressPeriod_ms_,
+                                    configuration_.kLongPressPeriod_ms_}; ///< Limit switch to simulate a soft home position.
 };
 
 } // namespace mtmotor_jig
