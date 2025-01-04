@@ -55,6 +55,12 @@ void ControlSystem::CheckAndProcess() {
 
       break;
     }
+    case Configuration::ControlAction::kGoHome: {
+      previous_control_mode_ = control_mode_;
+      control_mode_ = Configuration::ControlMode::kHoming;
+      Log.noticeln(F("Control mode: homing"));
+      break;
+    }
     case Configuration::ControlAction::kToggleLogReport: {
       // Toggle reporting/output of log messages over serial.
       configuration_.ToggleLogs();
@@ -76,7 +82,7 @@ void ControlSystem::CheckAndProcess() {
   motor_.Actuate(control_mode_, control_action_, status_);
   display_.Draw(control_mode_, control_action_, status_);
 
-  // Transistion through the initial control modes.
+  // Transistion through the initial control modes, and process any further control mode changes.
   switch (control_mode_) {
     case Configuration::ControlMode::kSplashScreen: {
       control_mode_ = Configuration::ControlMode::kHomeScreen;
@@ -86,6 +92,14 @@ void ControlSystem::CheckAndProcess() {
     case Configuration::ControlMode::kHomeScreen: {
       control_mode_ = Configuration::ControlMode::kContinuousMenu;
       Log.noticeln(F("Control mode: continuous"));
+      break;
+    }
+    case Configuration::ControlMode::kHoming: {
+      if (motor_.Homing() == false) {
+        control_mode_ = previous_control_mode_;
+        Log.noticeln(F("Control mode: returned to previous mode"));
+      }
+      
       break;
     }
   }

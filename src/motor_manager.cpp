@@ -40,12 +40,6 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
       [[fallthrough]];
     }
     case Configuration::ControlAction::kSelectPrevious: {
-      // Stop motor.
-      //if (stepper_driver_.power_state() == mt::StepperDriver::PowerState::kEnabled) {
-      //  stepper_driver_.set_power_state(mt::StepperDriver::PowerState::kDisabled);
-      //  Log.noticeln(F("Motion status: Stopped."));       
-      //}
-
       motion_type_ = mt::StepperDriver::MotionType::kStopAndReset;
       break;
     }
@@ -119,7 +113,7 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
         // Not really needed since enabling power will achieve the same states in the move functions.
         //motion_type_ = mt::StepperDriver::MotionType::kRelative;
         //motion_direction_ = previous_motion_direction_;
-        Log.noticeln(F("Motion status: started."));     
+        Log.noticeln(F("Motion status: started"));     
       }
       else {
         // Disallow movement.
@@ -131,9 +125,30 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
         speed_index_ = configuration_.kDefaultSpeedIndex_;
         stepper_driver_.SetSpeed(configuration_.kSpeeds_RPM_[speed_index_],
                             mt::StepperDriver::SpeedUnits::kRevolutionsPerMinute);
-        Log.noticeln(F("Motion status: stopped."));       
+        Log.noticeln(F("Motion status: stopped"));       
       }
       
+      break;
+    }
+    case Configuration::ControlAction::kResetHome: {
+      // Stop motor.
+      if (stepper_driver_.power_state() == mt::StepperDriver::PowerState::kEnabled) {
+        stepper_driver_.set_power_state(mt::StepperDriver::PowerState::kDisabled);
+        Log.noticeln(F("Motion status: stopped"));       
+      }
+
+      // Reset the soft home position to the current position.
+      stepper_driver_.ResetAngularPosition();
+      break;
+    }
+    case Configuration::ControlAction::kGoHome: {
+      // Start motor.
+      if (stepper_driver_.power_state() == mt::StepperDriver::PowerState::kDisabled) {
+        stepper_driver_.set_power_state(mt::StepperDriver::PowerState::kEnabled);
+      }
+
+      motion_type_ = mt::StepperDriver::MotionType::kAbsolute;
+      Log.noticeln(F("Motion status: homing"));
       break;
     }
   }
@@ -169,7 +184,7 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
           motion_type_ = mt::StepperDriver::MotionType::kRelative;
         }
         else if (stepper_driver_.power_state() == mt::StepperDriver::PowerState::kEnabled) {
-
+          // Change sweep direction.
           if (motion_direction_ == mt::StepperDriver::MotionDirection::kPositive) {
             motion_direction_ = mt::StepperDriver::MotionDirection::kNegative; 
           }
@@ -179,6 +194,16 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
 
           sweep_direction_ = static_cast<float>(motion_direction_);
         }
+      }
+
+      break;
+    }
+    case Configuration::ControlMode::kHoming: {
+      mt::StepperDriver::MotionStatus motion_status = stepper_driver_.MoveByAngle(0, mt::StepperDriver::AngleUnits::kDegrees, motion_type_);
+      if (motion_status == mt::StepperDriver::MotionStatus::kIdle) {
+        // Homing completed OR stop and reset issued.
+        motion_type_ = mt::StepperDriver::MotionType::kStopAndReset;
+        Log.noticeln(F("Motion status: homing completed"));
       }
 
       break;
@@ -223,6 +248,15 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
   }
 }
 
+bool MotorManager::Homing() {
+  if (motion_type_ == mt::StepperDriver::MotionType::kAbsolute) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
 void MotorManager::LogGeneralStatus(Configuration::ControlMode control_mode) const {
   Log.noticeln(F("General Motor Status"));
   if (motion_direction_ == mt::StepperDriver::MotionDirection::kPositive) {
@@ -236,10 +270,10 @@ void MotorManager::LogGeneralStatus(Configuration::ControlMode control_mode) con
   Log.noticeln(F("Speed (RPM): %F"), configuration_.kSpeeds_RPM_[speed_index_]);
 
   if (stepper_driver_.power_state() == mt::StepperDriver::PowerState::kDisabled) {
-    Log.noticeln(F("Motion status: stopped."));
+    Log.noticeln(F("Motion status: stopped"));
   }
   else {
-    Log.noticeln(F("Motion status: started."));
+    Log.noticeln(F("Motion status: started"));
   }
 }
 

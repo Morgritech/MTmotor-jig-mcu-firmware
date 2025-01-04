@@ -29,11 +29,19 @@ class MotorManager {
   /// @brief Initialise the motor.
   void Begin(); ///< This must be called only once.
 
-  /// @brief Actuate the motor.
+  /// @brief Actuate the motor based on the current action and control mode.
+  /// @param control_mode The control mode.
+  /// @param control_action The control action.
+  /// @param status_output The status message to return, indicating the current action.
   void Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action,
                String& status_output); ///< This must be called repeatedly.
 
-  /// @brief Log/report the general status of the motor.
+  /// @brief Get the homing status.
+  /// @return The homing status.
+  bool Homing();
+
+  /// @brief Log/report the general status of the motor based on the current control mode.
+  /// @param control_mode The control mode.
   void LogGeneralStatus(Configuration::ControlMode control_mode) const;
 
  private:

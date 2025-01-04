@@ -33,6 +33,7 @@ class Configuration {
     kHomeScreen,
     kContinuousMenu,
     kOscillateMenu,
+    kHoming,
   };
 
   /// @brief Enum of control actions.
@@ -161,9 +162,8 @@ class Configuration {
   ~Configuration();
 
   // Debug helpers and logger properties (for debugging and system reporting).
-  int log_level_ = LOG_LEVEL_SILENT; ///< The log level.
-  //int log_level_ = LOG_LEVEL_VERBOSE; ///< The log level.
-
+  //int log_level_ = LOG_LEVEL_SILENT; ///< The log level.
+  int log_level_ = LOG_LEVEL_VERBOSE; ///< The log level.
 };
 
 } // namespace mtmotor_jig
