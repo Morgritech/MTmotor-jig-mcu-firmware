@@ -36,13 +36,13 @@ class MotorManager {
   void Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action,
                String& status_output); ///< This must be called repeatedly.
 
-  /// @brief Get the homing status.
-  /// @return The homing status.
-  bool Homing();
-
   /// @brief Log/report the general status of the motor based on the current control mode.
   /// @param control_mode The control mode.
   void LogGeneralStatus(Configuration::ControlMode control_mode) const;
+
+  /// @brief Get the homing status.
+  /// @return The homing status.
+  bool homing() const;
 
  private:
 
@@ -65,6 +65,8 @@ class MotorManager {
   uint8_t sweep_angle_index_ = configuration_.kDefaultSweepAngleIndex_; ///< Index to keep track of the sweep angle set from the lookup table.
   uint8_t speed_index_ = configuration_.kDefaultSpeedIndex_; ///< Index to keep track of the motor speed set from the lookup table.
   mt::StepperDriver::MotionStatus motion_status_ = mt::StepperDriver::MotionStatus::kIdle; ///< Variable to keep track of the motion status.
+  float homing_angle_degrees_ = 0.0F; ///< Variable to store the angular position (degrees) for homing.
+  bool homing_ = false; ///< Variable to keep track of the homing status.
 };
 
 } // namespace mtmotor_jig

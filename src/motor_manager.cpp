@@ -147,8 +147,14 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
         stepper_driver_.set_power_state(mt::StepperDriver::PowerState::kEnabled);
       }
 
+      homing_ = true;
       motion_type_ = mt::StepperDriver::MotionType::kStopAndReset;
+      float angular_position_degrees_ = stepper_driver_.GetAngularPosition(mt::StepperDriver::AngleUnits::kDegrees);
+      // Constrain the angular position to the range [0, 360).
+      homing_angle_degrees_ = 0.0 - fmod(angular_position_degrees_, 360.0);
       Log.noticeln(F("Motion status: homing initiated"));
+      Log.noticeln(F("Current angular position (degrees): %F"), angular_position_degrees_);
+      Log.noticeln(F("Homing angular position (degrees): %F"), homing_angle_degrees_);
       break;
     }
   }
@@ -198,20 +204,21 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
 
       break;
     }
-    case Configuration::ControlMode::kHoming: {     
-      mt::StepperDriver::MotionStatus motion_status = stepper_driver_.MoveByAngle(0,
+    case Configuration::ControlMode::kHoming: {
+      mt::StepperDriver::MotionStatus motion_status = stepper_driver_.MoveByAngle(homing_angle_degrees_,
                                                                               mt::StepperDriver::AngleUnits::kDegrees,
                                                                               motion_type_);
       if (motion_status == mt::StepperDriver::MotionStatus::kIdle) {
         if (control_action == Configuration::ControlAction::kGoHome
             && motion_type_ == mt::StepperDriver::MotionType::kStopAndReset) {
           // First iteration.
-          motion_type_ = mt::StepperDriver::MotionType::kAbsolute;
+          motion_type_ = mt::StepperDriver::MotionType::kRelative;
           Log.noticeln(F("Motion status: homing started"));
         }
         else {
           // Homing completed OR stop and reset issued.
           motion_type_ = mt::StepperDriver::MotionType::kStopAndReset;
+          homing_ = false;
           stepper_driver_.set_power_state(mt::StepperDriver::PowerState::kDisabled);
           Log.noticeln(F("Motion status: homing finished or stopped"));
         }
@@ -223,6 +230,8 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
 
   // Create the status message.
   if (control_action != Configuration::ControlAction::kIdle || control_mode == Configuration::ControlMode::kHomeScreen) {
+    Log.noticeln(F("Creating display status"));
+
     status_output = F("..");
     
     if (stepper_driver_.power_state() == mt::StepperDriver::PowerState::kEnabled) {
@@ -255,16 +264,11 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
         status_output += F("deg..");
         break;
       }
+      case Configuration::ControlMode::kHoming: {
+        status_output += F("Homing..");
+        break;
+      }
     }
-  }
-}
-
-bool MotorManager::Homing() {
-  if (motion_type_ == mt::StepperDriver::MotionType::kAbsolute) {
-    return true;
-  }
-  else {
-    return false;
   }
 }
 
@@ -280,12 +284,19 @@ void MotorManager::LogGeneralStatus(Configuration::ControlMode control_mode) con
   Log.noticeln(F("Sweep angle (degrees): %F"), configuration_.kSweepAngles_degrees_[sweep_angle_index_]);
   Log.noticeln(F("Speed (RPM): %F"), configuration_.kSpeeds_RPM_[speed_index_]);
 
-  if (stepper_driver_.power_state() == mt::StepperDriver::PowerState::kDisabled) {
+  if (control_mode == Configuration::ControlMode::kHoming) {
+    Log.noticeln(F("Motion status: homing"));
+  }
+  else if (stepper_driver_.power_state() == mt::StepperDriver::PowerState::kDisabled) {
     Log.noticeln(F("Motion status: stopped"));
   }
   else {
     Log.noticeln(F("Motion status: started"));
   }
+}
+
+bool MotorManager::homing() const {
+  return homing_;
 }
 
 }  // namespace mtmotor_jig

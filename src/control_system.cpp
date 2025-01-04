@@ -35,7 +35,13 @@ void ControlSystem::Begin() {
 void ControlSystem::CheckAndProcess() {
 
   // Check inputs.
-  control_action_ = inputs_.Check(control_mode_);
+  if (previous_control_mode_ == Configuration::ControlMode::kHoming) {
+    control_action_ = Configuration::ControlAction::kResetHome;
+    previous_control_mode_ = control_mode_;
+  }
+  else {
+    control_action_ = inputs_.Check(control_mode_);
+  }
 
   // Process inputs.
   switch (control_action_) {
@@ -95,11 +101,12 @@ void ControlSystem::CheckAndProcess() {
       break;
     }
     case Configuration::ControlMode::kHoming: {
-      if (motor_.Homing() == false) {
+      if (motor_.homing() == false) {
         control_mode_ = previous_control_mode_;
+        previous_control_mode_ = Configuration::ControlMode::kHoming;
         Log.noticeln(F("Control mode: returned to previous mode"));
       }
-      
+
       break;
     }
   }
