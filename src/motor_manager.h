@@ -59,7 +59,6 @@ class MotorManager {
 
   // Control flags and indicator variables.
   mt::StepperDriver::MotionDirection motion_direction_ = configuration_.kDefaultMotionDirection_; ///< Variable to keep track of the motion direction.
-  //mt::StepperDriver::MotionDirection previous_motion_direction_ = configuration_.kDefaultMotionDirection_; // Variable to keep track of the previously set motion direction.
   mt::StepperDriver::MotionType motion_type_ = mt::StepperDriver::MotionType::kRelative; ///< Variable to keep track of the motion type.
   float sweep_direction_ = static_cast<float>(motion_direction_); ///< Variable to keep track of the sweep direction.
   uint8_t sweep_angle_index_ = configuration_.kDefaultSweepAngleIndex_; ///< Index to keep track of the sweep angle set from the lookup table.
