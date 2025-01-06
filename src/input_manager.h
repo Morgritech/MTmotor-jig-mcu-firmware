@@ -59,7 +59,7 @@ class InputManager {
                                     configuration_.kUnpressedPinState_,
                                     configuration_.kDebouncePeriod_ms_,
                                     configuration_.kShortPressPeriod_ms_,
-                                    configuration_.kLongPressPeriod_ms_}; ///< Limit switch to simulate a soft home position.
+                                    configuration_.kLongPressPeriod_ms_}; ///< Limit switch to manipulate the motor with respect to a soft home position.
 };
 
 } // namespace mtmotor_jig
