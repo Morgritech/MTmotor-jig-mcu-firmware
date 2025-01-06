@@ -42,7 +42,7 @@ class ControlSystem {
   /// @brief Configuration settings.
   Configuration& configuration_ = Configuration::GetInstance();
 
-  // Sensors and actuators, inputs and outputs.
+  // Sensors and actuators / inputs and outputs.
   InputManager inputs_; ///< The User inputs (encoder, buttons, serial, etc.).
   MotorManager motor_; ///< The Motor drive system.
   DisplayManager display_; ///< The display (LCD).
