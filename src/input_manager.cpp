@@ -35,7 +35,7 @@ Configuration::ControlAction InputManager::Check(Configuration::ControlMode cont
   mt::MomentaryButton::PressType controller_button_press_type = controller_button_.DetectPressType();
   mt::MomentaryButton::PressType limit_switch_press_type = limit_switch_.DetectPressType();
 
-  // Process the encoder dial rotation, button presses, and serial input; one character at a time.
+  // Process the encoder dial rotation, button presses, and serial input (one character at a time).
   if (rotation_direction == mt::RotaryEncoder::RotationDirection::kPositive) {
     control_action = Configuration::ControlAction::kSelectNext;
     Log.noticeln(F("Encoder dial clockwise rotation"));
