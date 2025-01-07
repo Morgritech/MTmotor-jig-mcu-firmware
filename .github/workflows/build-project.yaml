@@ -1,0 +1,26 @@
+name: Build project
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build-project:
+    name: Build project
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Compile project
+        uses: arduino/compile-sketches@v1
+        with:
+          libraries: |
+            - name: MT-arduino-rotary-encoder@1.1.0
+            - name: MT-arduino-momentary-button@3.0.1
+            - name: MT-arduino-stepper-driver@3.1.1
+            - name: ArduinoLog@1.1.1
+          sketch-paths: |
+            - ./

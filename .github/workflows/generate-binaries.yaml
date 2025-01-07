@@ -1,0 +1,31 @@
+name: Generate binaries
+on: 
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  generate-binaries:
+    name: Generate binaries
+    runs-on: ubuntu-latest
+    env:
+      # Environment variables
+      BUILD_DIR: build
+      SKETCH_NAME: src
+      ARTIFACT_NAME: binaries
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install and setup dependencies
+        run: |
+          sudo apt-get update
+          sudo bash -x scripts/setup-build-linux.sh -cli --path
+          sudo bash -x scripts/setup-build-linux.sh -deps
+      - name: Build/compile the project
+        run: sudo bash -x scripts/setup-build-linux.sh -build
+      - name: Upload compiled binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: |
+            ${{ github.workspace }}/${{ env.BUILD_DIR }}/*/${{ env.SKETCH_NAME }}*
+            retention-days: 7
