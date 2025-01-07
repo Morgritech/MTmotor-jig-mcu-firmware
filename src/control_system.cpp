@@ -88,7 +88,7 @@ void ControlSystem::CheckAndProcess() {
   motor_.Actuate(control_mode_, control_action_, status_);
   display_.Draw(control_mode_, control_action_, status_);
 
-  // Transistion through the initial control modes, and process any further control mode changes.
+  // Transition through the initial control modes, and process any further control mode changes.
   switch (control_mode_) {
     case Configuration::ControlMode::kSplashScreen: {
       control_mode_ = Configuration::ControlMode::kHomeScreen;
@@ -129,6 +129,10 @@ void ControlSystem::LogGeneralStatus() const {
     }
     case Configuration::ControlMode::kOscillateMenu: {
       Log.noticeln(F("Control mode: oscillate"));
+      break;
+    }
+    case Configuration::ControlMode::kHoming: {
+      Log.noticeln(F("Control mode: homing"));
       break;
     }
   }
