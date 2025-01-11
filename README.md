@@ -4,6 +4,8 @@
 
 Microcontroller firmware for MTmotor-jig; a test jig for testing motors and motor control devices.
 
+![MTmotor-jig demo](images/mtmotor-jig%20demo%202.5x%20speed%20720p%20gif.gif)
+
 ## Introduction
 
 ### Microcontroller
