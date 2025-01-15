@@ -37,6 +37,12 @@ The following libraries (available via the [Arduino library manager](https://www
 - [MT-arduino-stepper-driver](https://github.com/Morgritech/MT-arduino-stepper-driver)
 - [Arduino-Log](https://github.com/thijse/Arduino-Log)
 
+### UML class diagram
+
+The image below shows a high level overview of the system:
+
+![UML class diagram](images/uml-class-diagram-overview.png)
+
 ## Setup and build
 
 As with any other Arduino project, you can simply download the project and open the sketch folder ([src](src)) in the Arduino IDE. You can manually install the required libraries via the built-in library manager in the IDE, and build/compile/upload the project via the relevant options in the IDE.
