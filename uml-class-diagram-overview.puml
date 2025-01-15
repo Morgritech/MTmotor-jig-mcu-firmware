@@ -22,22 +22,19 @@ package MTmotor-jig-mcu-firmware {
 
   class DisplayManager {
     +void Begin()
-    +void Draw(Configuration::ControlMode control_mode, Configuration::ControlAction control_action,
-               const String& status)
-    -void DrawScreenItems(const String screen_items[], const uint8_t size_of_screen_items)
+    +void Draw(\nConfiguration::ControlMode control_mode, \nConfiguration::ControlAction control_action, \nconst String& status)
+    -void DrawScreenItems(\nconst String screen_items[], \nconst uint8_t size_of_screen_items)
   }
 
   class InputManager {
     +void Begin()
-    +Configuration::ControlAction Check(Configuration::ControlMode control_mode)
+    +Configuration::ControlAction Check(\nConfiguration::ControlMode control_mode)
   }
 
   class MotorManager {
     +void Begin()
-    +void Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action,
-                  String& status_output)
-    +void Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action,
-                  String& status_output)
+    +void Actuate(\nConfiguration::ControlMode control_mode, \nConfiguration::ControlAction control_action, \nString& status_output)
+    +void Actuate(\nConfiguration::ControlMode control_mode, \nConfiguration::ControlAction control_action, \nString& status_output)
     +void LogGeneralStatus(Configuration::ControlMode control_mode) const
     +bool homing() const
   }
