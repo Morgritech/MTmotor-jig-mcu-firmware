@@ -2,3 +2,4 @@ MT-arduino-rotary-encoder@1.1.0
 MT-arduino-momentary-button@3.0.1
 MT-arduino-stepper-driver@3.1.1
 ArduinoLog@1.1.1
+LiquidCrystal@1.0.7
