@@ -1,4 +1,4 @@
-// Copyright (C) 2024 Morgritech
+// Copyright (C) 2025 Morgritech
 //
 // Licensed under GNU General Public License v3.0 (GPLv3) License.
 // See the LICENSE file in the project root for full license details.
@@ -27,7 +27,7 @@ class DisplayManager {
   ~DisplayManager();
 
   /// @brief Initialise the display.
-  void Begin();
+  void Begin(); ///< This must be called only once.
 
   /// @brief Draw items to the display based on the control mode.
   /// @param control_mode The control mode.

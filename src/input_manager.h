@@ -1,4 +1,4 @@
-// Copyright (C) 2024 Morgritech
+// Copyright (C) 2025 Morgritech
 //
 // Licensed under GNU General Public License v3.0 (GPLv3) License.
 // See the LICENSE file in the project root for full license details.
@@ -28,10 +28,12 @@ class InputManager {
   ~InputManager();
 
   /// @brief Initialise the inputs.
-  void Begin();
+  void Begin(); ///< This must be called only once.
 
-  /// @brief Check for user input.
-  Configuration::ControlAction Check(Configuration::ControlMode control_mode);
+  /// @brief Check for user input based on the current control mode.
+  /// @param control_mode The control mode.
+  /// @return The control action.
+  Configuration::ControlAction Check(Configuration::ControlMode control_mode); ///< This must be called repeatedly.
 
  private:
 
@@ -53,6 +55,11 @@ class InputManager {
                                        configuration_.kDebouncePeriod_ms_,
                                        configuration_.kShortPressPeriod_ms_,
                                        configuration_.kLongPressPeriod_ms_}; ///< Button to control motor speed.
+  mt::MomentaryButton limit_switch_{configuration_.kLimitSwitchPin_,
+                                    configuration_.kUnpressedPinState_,
+                                    configuration_.kDebouncePeriod_ms_,
+                                    configuration_.kShortPressPeriod_ms_,
+                                    configuration_.kLongPressPeriod_ms_}; ///< Limit switch to manipulate the motor with respect to a soft home position.
 };
 
 } // namespace mtmotor_jig

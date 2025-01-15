@@ -1,0 +1,97 @@
+@startuml
+title UML Class Diagram - High Level System Overview
+
+left to right direction
+
+package MTmotor-jig-mcu-firmware {
+  class ArduinoSketch {
+    +setup()
+    +loop()
+  }
+
+  class Configuration {
+    +{static} Configuration& GetInstance()
+    +void BeginHardware()
+    +void ToggleLogs()
+    +void ReportFirmwareVersion()
+  }
+
+  class ControlSystem {
+    +void Begin()
+    +void CheckAndProcess()
+    -void LogGeneralStatus() const
+  }
+
+  class DisplayManager {
+    +void Begin()
+    +void Draw(Configuration::ControlMode control_mode, Configuration::ControlAction control_action, const String& status)
+    -void DrawScreenItems(const String screen_items[], const uint8_t size_of_screen_items)
+  }
+
+  class InputManager {
+    +void Begin()
+    +Configuration::ControlAction Check(Configuration::ControlMode control_mode)
+  }
+
+  class MotorManager {
+    +void Begin()
+    +void Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action, String& status_output)
+    +void Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action, String& status_output)
+    +void LogGeneralStatus(Configuration::ControlMode control_mode) const
+    +bool homing() const
+  }
+}
+
+together {
+
+  package ArduinoLog {
+    class ArduinoLog {
+    }
+  }
+
+  package LiquidCrystal {
+    class LiquidCrystal {
+    }
+  }
+
+  package MT-rotary-encoder {
+    class RotaryEncoder {
+    }
+  }
+
+  package MT-arduino-momentary-button {
+    class MomentaryButton {
+    }
+  }
+
+  package MT-arduino-stepper-driver {
+    class StepperDriver {
+    }
+  }
+
+}
+
+ArduinoSketch "1" o-- "0..*" ControlSystem : Has
+ArduinoSketch <.. ArduinoLog.ArduinoLog
+
+Configuration <.. ArduinoLog.ArduinoLog
+
+ControlSystem "1" o-- "1" Configuration : Has
+ControlSystem "1" o- "1" DisplayManager : Has
+ControlSystem "1" o- "1" InputManager : Has
+ControlSystem "1" o- "1" MotorManager : Has
+ControlSystem <.. ArduinoLog.ArduinoLog
+
+DisplayManager "1" o-- "1" Configuration : Has 
+DisplayManager "1" o-- "0..*" LiquidCrystal.LiquidCrystal: Has
+
+InputManager "1" o-- "1" Configuration : Has
+InputManager "1" o-- "0..*" MomentaryButton : Has
+InputManager "1" o-- "0..*" RotaryEncoder : Has
+InputManager <.. ArduinoLog.ArduinoLog
+
+MotorManager "1" o-- "1" Configuration : Has
+MotorManager "1" o-- "0..*" StepperDriver : Has
+MotorManager <.. ArduinoLog.ArduinoLog
+
+@enduml

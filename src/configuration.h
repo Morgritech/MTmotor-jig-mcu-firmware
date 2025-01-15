@@ -1,4 +1,4 @@
-// Copyright (C) 2024 Morgritech
+// Copyright (C) 2025 Morgritech
 //
 // Licensed under GNU General Public License v3.0 (GPLv3) License.
 // See the LICENSE file in the project root for full license details.
@@ -33,6 +33,7 @@ class Configuration {
     kHomeScreen,
     kContinuousMenu,
     kOscillateMenu,
+    kHoming,
   };
 
   /// @brief Enum of control actions.
@@ -43,6 +44,8 @@ class Configuration {
     kCycleAngle = 'a',
     kCycleSpeed = 's',
     kToggleMotion = 'm',
+    kResetHome = 'x',
+    kGoHome = 'h',
     kToggleLogReport = 'r',
     kLogGeneralStatus = 'l',
     kReportFirmwareVersion = 'v',
@@ -60,7 +63,7 @@ class Configuration {
   Configuration& operator=(const Configuration&) = delete;
 
   /// @brief Initialise the hardware (Serial port, logging, pins, etc.).
-  void BeginHardware() const;
+  void BeginHardware() const; ///< This must be called only once.
 
   /// @brief Toggle log messages.
   void ToggleLogs();
@@ -87,7 +90,7 @@ class Configuration {
   const uint8_t kMotorDriverPulPin_ = 2; ///< Output pin for the stepper driver PUL/STP/CLK (pulse/step) interface.
   const uint8_t kMotorDriverDirPin_ = 3; ///< Output pin for the stepper driver DIR/CW (direction) interface.
   const uint8_t kMotorDriverEnaPin_ = 4; ///< Output pin for the stepper driver ENA/EN (enable) interface.
-  const uint8_t kLimitSwitchPin_ = 32; ///< Input pin for the the limit switch to reset the motor's soft home position.
+  const uint8_t kLimitSwitchPin_ = 32; ///< Input pin for the the limit switch to simulate a soft home position.
 
   // Control system properties.
   const ControlMode kDefaultControlMode_ = ControlMode::kSplashScreen; ///< The default/initial control mode. 
@@ -146,6 +149,10 @@ class Configuration {
   const uint8_t kStatusBarCursorPositionY_ = 3; ///< The cursor position (y-axis) for the status bar.
   const uint8_t kDefaultCursorPositionY_ = kContinuousMenuCursorPositionY_; ///< The default/initial cursor position (y-axis).
 
+  // Buzzer properties.
+  const uint16_t kBuzzerStartupFrequency_Hz_ = 4000; ///< The buzzer frequency (Hz) at startup.
+  const uint16_t kBuzzerStartupDuration_ms_ = 100; ///< The buzzer duration (ms) at startup.
+
  private:
 
   /// @brief Private constructor so objects cannot be manually instantiated. 
@@ -155,8 +162,8 @@ class Configuration {
   ~Configuration();
 
   // Debug helpers and logger properties (for debugging and system reporting).
-  int log_level_ =  LOG_LEVEL_VERBOSE; ///< The log level.
-
+  int log_level_ = LOG_LEVEL_SILENT; ///< The log level.
+  //int log_level_ = LOG_LEVEL_VERBOSE; ///< The log level.
 };
 
 } // namespace mtmotor_jig

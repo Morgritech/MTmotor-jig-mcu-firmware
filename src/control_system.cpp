@@ -1,4 +1,4 @@
-// Copyright (C) 2024 Morgritech
+// Copyright (C) 2025 Morgritech
 //
 // Licensed under GNU General Public License v3.0 (GPLv3) License.
 // See the LICENSE file in the project root for full license details.
@@ -24,6 +24,8 @@ ControlSystem::~ControlSystem() {}
 
 void ControlSystem::Begin() {
   configuration_.BeginHardware();
+  tone(configuration_.kControllerBuzzerPin_, configuration_.kBuzzerStartupFrequency_Hz_,
+       configuration_.kBuzzerStartupDuration_ms_); // Sound the buzzer at startup.
   inputs_.Begin();
   motor_.Begin();
   display_.Begin();
@@ -33,7 +35,13 @@ void ControlSystem::Begin() {
 void ControlSystem::CheckAndProcess() {
 
   // Check inputs.
-  control_action_ = inputs_.Check(control_mode_);
+  if (previous_control_mode_ == Configuration::ControlMode::kHoming) {
+    control_action_ = Configuration::ControlAction::kResetHome;
+    previous_control_mode_ = control_mode_;
+  }
+  else {
+    control_action_ = inputs_.Check(control_mode_);
+  }
 
   // Process inputs.
   switch (control_action_) {
@@ -51,6 +59,12 @@ void ControlSystem::CheckAndProcess() {
         Log.noticeln(F("Control mode: continuous"));
       }
 
+      break;
+    }
+    case Configuration::ControlAction::kGoHome: {
+      previous_control_mode_ = control_mode_;
+      control_mode_ = Configuration::ControlMode::kHoming;
+      Log.noticeln(F("Control mode: homing"));
       break;
     }
     case Configuration::ControlAction::kToggleLogReport: {
@@ -74,7 +88,7 @@ void ControlSystem::CheckAndProcess() {
   motor_.Actuate(control_mode_, control_action_, status_);
   display_.Draw(control_mode_, control_action_, status_);
 
-  // Transistion through the initial control modes.
+  // Transition through the initial control modes, and process any further control mode changes.
   switch (control_mode_) {
     case Configuration::ControlMode::kSplashScreen: {
       control_mode_ = Configuration::ControlMode::kHomeScreen;
@@ -84,6 +98,15 @@ void ControlSystem::CheckAndProcess() {
     case Configuration::ControlMode::kHomeScreen: {
       control_mode_ = Configuration::ControlMode::kContinuousMenu;
       Log.noticeln(F("Control mode: continuous"));
+      break;
+    }
+    case Configuration::ControlMode::kHoming: {
+      if (motor_.homing() == false) {
+        control_mode_ = previous_control_mode_;
+        previous_control_mode_ = Configuration::ControlMode::kHoming;
+        Log.noticeln(F("Control mode: returned to previous mode"));
+      }
+
       break;
     }
   }
@@ -106,6 +129,10 @@ void ControlSystem::LogGeneralStatus() const {
     }
     case Configuration::ControlMode::kOscillateMenu: {
       Log.noticeln(F("Control mode: oscillate"));
+      break;
+    }
+    case Configuration::ControlMode::kHoming: {
+      Log.noticeln(F("Control mode: homing"));
       break;
     }
   }
