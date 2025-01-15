@@ -1,6 +1,8 @@
 @startuml
 title UML Class Diagram - High Level System Overview
 
+left to right direction
+
 package MTmotor-jig-mcu-firmware {
   class ArduinoSketch {
     +setup()
@@ -22,70 +24,74 @@ package MTmotor-jig-mcu-firmware {
 
   class DisplayManager {
     +void Begin()
-    +void Draw(\nConfiguration::ControlMode control_mode, \nConfiguration::ControlAction control_action, \nconst String& status)
-    -void DrawScreenItems(\nconst String screen_items[], \nconst uint8_t size_of_screen_items)
+    +void Draw(Configuration::ControlMode control_mode, Configuration::ControlAction control_action, const String& status)
+    -void DrawScreenItems(const String screen_items[], const uint8_t size_of_screen_items)
   }
 
   class InputManager {
     +void Begin()
-    +Configuration::ControlAction Check(\nConfiguration::ControlMode control_mode)
+    +Configuration::ControlAction Check(Configuration::ControlMode control_mode)
   }
 
   class MotorManager {
     +void Begin()
-    +void Actuate(\nConfiguration::ControlMode control_mode, \nConfiguration::ControlAction control_action, \nString& status_output)
-    +void Actuate(\nConfiguration::ControlMode control_mode, \nConfiguration::ControlAction control_action, \nString& status_output)
+    +void Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action, String& status_output)
+    +void Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action, String& status_output)
     +void LogGeneralStatus(Configuration::ControlMode control_mode) const
     +bool homing() const
   }
 }
 
-package ArduinoLog {
-  class Logging {
-  }
-}
+together {
 
-package LiquidCrystal {
-  class LiquidCrystal {
+  package ArduinoLog {
+    class ArduinoLog {
+    }
   }
-}
 
-package MT-rotary-encoder {
-  class RotaryEncoder {
+  package LiquidCrystal {
+    class LiquidCrystal {
+    }
   }
-}
 
-package MT-arduino-momentary-button {
-  class MomentaryButton {
+  package MT-rotary-encoder {
+    class RotaryEncoder {
+    }
   }
-}
 
-package MT-arduino-stepper-driver {
-  class StepperDriver {
+  package MT-arduino-momentary-button {
+    class MomentaryButton {
+    }
   }
+
+  package MT-arduino-stepper-driver {
+    class StepperDriver {
+    }
+  }
+
 }
 
 ArduinoSketch "1" o-- "0..*" ControlSystem : Has
-ArduinoSketch <.. Logging
+ArduinoSketch <.. ArduinoLog.ArduinoLog
 
-Configuration <.. Logging
+Configuration <.. ArduinoLog.ArduinoLog
 
 ControlSystem "1" o-- "1" Configuration : Has
 ControlSystem "1" o- "1" DisplayManager : Has
 ControlSystem "1" o- "1" InputManager : Has
 ControlSystem "1" o- "1" MotorManager : Has
-ControlSystem <.. Logging
+ControlSystem <.. ArduinoLog.ArduinoLog
 
 DisplayManager "1" o-- "1" Configuration : Has 
-DisplayManager "1" o-- "0..*" LiquidCrystal: Has
+DisplayManager "1" o-- "0..*" LiquidCrystal.LiquidCrystal: Has
 
 InputManager "1" o-- "1" Configuration : Has
 InputManager "1" o-- "0..*" MomentaryButton : Has
 InputManager "1" o-- "0..*" RotaryEncoder : Has
-InputManager <.. Logging
+InputManager <.. ArduinoLog.ArduinoLog
 
 MotorManager "1" o-- "1" Configuration : Has
 MotorManager "1" o-- "0..*" StepperDriver : Has
-MotorManager <.. Logging
+MotorManager <.. ArduinoLog.ArduinoLog
 
 @enduml
