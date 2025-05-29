@@ -6,8 +6,7 @@
 /// @file display_manager.h
 /// @brief Class that handles visual output to the display.
 
-#ifndef DISPLAY_MANAGER_H_
-#define DISPLAY_MANAGER_H_
+#pragma once
 
 #include <Arduino.h>
 #include <LiquidCrystal.h>
@@ -54,5 +53,3 @@ class DisplayManager {
 };
 
 } // namespace mtmotor_jig
-
-#endif // DISPLAY_MANAGER_H_

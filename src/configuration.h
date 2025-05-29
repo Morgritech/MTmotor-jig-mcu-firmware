@@ -6,8 +6,7 @@
 /// @file configuration.h
 /// @brief Class that sets up common configuration settings, including serial port and pin definitions, etc.
 
-#ifndef CONFIGURATION_H_
-#define CONFIGURATION_H_
+#pragma once
 
 #include <Arduino.h>
 #include <ArduinoLog.h>
@@ -167,5 +166,3 @@ class Configuration {
 };
 
 } // namespace mtmotor_jig
-
-#endif // CONFIGURATION_H_

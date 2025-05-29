@@ -6,8 +6,7 @@
 /// @file control_system.h
 /// @brief Class that links sensor inputs (buttons, serial, etc.) to actuator outputs (display, steppers, etc.).
 
-#ifndef CONTROL_SYSTEM_H_
-#define CONTROL_SYSTEM_H_
+#pragma once
 
 #include <Arduino.h>
 
@@ -55,5 +54,3 @@ class ControlSystem {
 };
 
 } // namespace mtmotor_jig
-
-#endif // CONTROL_SYSTEM_H_

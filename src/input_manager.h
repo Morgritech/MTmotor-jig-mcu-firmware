@@ -6,8 +6,7 @@
 /// @file input_manager.h
 /// @brief Class that handles user input (buttons, serial, etc.).
 
-#ifndef INPUT_MANAGER_H_
-#define INPUT_MANAGER_H_
+#pragma once
 
 #include <Arduino.h>
 #include <momentary_button.h>
@@ -63,5 +62,3 @@ class InputManager {
 };
 
 } // namespace mtmotor_jig
-
-#endif // INPUT_MANAGER_H_
