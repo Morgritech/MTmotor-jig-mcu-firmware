@@ -116,10 +116,10 @@ class Configuration {
   const float kDirDelay_us_ = 5.0F; ///< Minimum delay (us) for the stepper driver Dir pin.
   const float kEnaDelay_us_ = 5.0F; ///< Minimum delay (us) for the stepper driver Ena pin.
   const mt::StepperDriver::MotionDirection kDefaultMotionDirection_ = mt::StepperDriver::MotionDirection::kPositive; ///< Initial/default motion direction (Clockwise (CW)).
-  static const uint8_t kSizeOfSweepAngles_ = 4; ///< No. of sweep angles in the lookup table.
+  static constexpr uint8_t kSizeOfSweepAngles_ = 4; ///< No. of sweep angles in the lookup table.
   const float kSweepAngles_degrees_[kSizeOfSweepAngles_] = {45.0F, 90.0F, 180.0F, 360.0F}; ///< Lookup table for sweep angles (degrees) during oscillation.
   const uint8_t kDefaultSweepAngleIndex_ = 0; ///< Index of initial/default sweep angle.
-  static const uint8_t kSizeOfSpeeds_ = 4; ///< No. of speeds in the lookup table.
+  static constexpr uint8_t kSizeOfSpeeds_ = 4; ///< No. of speeds in the lookup table.
   const float kSpeeds_RPM_[kSizeOfSpeeds_] = {7.0F, 10.0F, 13.0F, 16.0F}; ///< Lookup table for rotation speeds (RPM).
   const uint8_t kDefaultSpeedIndex_ = 0; ///< Index of initial/default speed.
   const float kAcceleration_microsteps_per_s_per_s_ = 6000.0; //8000.0; ///< Acceleration (microsteps per second-squared).
@@ -131,14 +131,14 @@ class Configuration {
   // Display properties.
   const uint8_t kDisplayHeight_ = 4; ///< The Display height (Rows).
   const uint8_t kDisplayWidth_ = 20; ///< The Display width (Columns).
-  static const uint8_t kSizeOfSplashScreenMenuItems_ = 4; ///< No. of splash screen menu items.
+  static constexpr uint8_t kSizeOfSplashScreenMenuItems_ = 4; ///< No. of splash screen menu items.
   /// @brief The splash screen menu items.
   const String kSplashScreenMenuItems_[kSizeOfSplashScreenMenuItems_] = {"____MTmotor-jig_____",   // 0
                                                                          "   Test motors &"    ,   // 1
                                                                          "   motor control"    ,   // 2
                                                                          "      devices"        }; // 3
   const uint16_t kSplashScreenDelay_ms_ = 1500; ///< Period of time in milliseconds (ms) to show the splash screen.
-  static const uint8_t kSizeOfHomeScreenMenuItems_ = 3; ///< No. of home screen menu items.
+  static constexpr uint8_t kSizeOfHomeScreenMenuItems_ = 3; ///< No. of home screen menu items.
   /// @brief The home screen menu items.
   const String kHomeScreenMenuItems_[kSizeOfHomeScreenMenuItems_] = {"__Select_Mode_______",   // 0
                                                                      "o Continuous"        ,   // 1
