@@ -27,7 +27,7 @@ class Configuration {
  public:
 
   /// @brief Enum of control system modes.
-  enum class ControlMode {
+  enum class ControlMode : uint8_t {
     kSplashScreen,
     kHomeScreen,
     kContinuousMenu,
@@ -36,7 +36,7 @@ class Configuration {
   };
 
   /// @brief Enum of control actions.
-  enum class ControlAction {
+  enum class ControlAction : uint8_t {
     kSelectNext = 'n',
     kSelectPrevious = 'p',
     kToggleDirection = 'd',
