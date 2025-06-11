@@ -37,9 +37,10 @@ class DisplayManager {
  private:
 
   /// @brief Draw items to the display.
+  /// @tparam N The size of the screen items.
   /// @param screen_items The screen items to draw.
-  /// @param size_of_screen_items The number of screen items.
-  void DrawScreenItems(const String screen_items[], const uint8_t size_of_screen_items);
+  template <size_t N>
+  void DrawScreenItems(const String (&screen_items)[N]);
 
   /// @brief Configuration settings.
   Configuration& configuration_ = Configuration::GetInstance();
