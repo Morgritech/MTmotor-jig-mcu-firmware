@@ -42,9 +42,9 @@ class ControlSystem {
   Configuration& configuration_ = Configuration::GetInstance();
 
   // Sensors and actuators / inputs and outputs.
-  InputManager inputs_; ///< The User inputs (encoder, buttons, serial, etc.).
-  MotorManager motor_; ///< The Motor drive system.
-  DisplayManager display_; ///< The display (LCD).
+  InputManager inputs_{}; ///< The User inputs (encoder, buttons, serial, etc.).
+  MotorManager motor_{}; ///< The Motor drive system.
+  DisplayManager display_{}; ///< The display (LCD).
 
   // Control flags and indicator variables.
   Configuration::ControlMode control_mode_ = configuration_.kDefaultControlMode_; ///< Variable to keep track of the control system mode.

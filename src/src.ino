@@ -12,7 +12,7 @@
 #include "control_system.h"
 
 /// @brief The Control System instance.
-mtmotor_jig::ControlSystem control_system;
+mtmotor_jig::ControlSystem control_system{};
 
 /// @brief The main application entry point for initialisation tasks.
 void setup() {
