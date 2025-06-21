@@ -71,27 +71,27 @@ together {
 
 }
 
-ArduinoSketch "1" o-- "0..*" ControlSystem : Has
+ArduinoSketch "1" *-- "0..*" ControlSystem : Has
 ArduinoSketch <.. ArduinoLog.ArduinoLog
 
 Configuration <.. ArduinoLog.ArduinoLog
 
 ControlSystem "1" o-- "1" Configuration : Has
-ControlSystem "1" o- "1" DisplayManager : Has
-ControlSystem "1" o- "1" InputManager : Has
-ControlSystem "1" o- "1" MotorManager : Has
+ControlSystem "1" *- "1" DisplayManager : Has
+ControlSystem "1" *- "1" InputManager : Has
+ControlSystem "1" *- "1" MotorManager : Has
 ControlSystem <.. ArduinoLog.ArduinoLog
 
 DisplayManager "1" o-- "1" Configuration : Has 
-DisplayManager "1" o-- "0..*" LiquidCrystal.LiquidCrystal: Has
+DisplayManager "1" *-- "0..*" LiquidCrystal.LiquidCrystal: Has
 
 InputManager "1" o-- "1" Configuration : Has
-InputManager "1" o-- "0..*" MomentaryButton : Has
-InputManager "1" o-- "0..*" RotaryEncoder : Has
+InputManager "1" *-- "0..*" MomentaryButton : Has
+InputManager "1" *-- "0..*" RotaryEncoder : Has
 InputManager <.. ArduinoLog.ArduinoLog
 
 MotorManager "1" o-- "1" Configuration : Has
-MotorManager "1" o-- "0..*" StepperDriver : Has
+MotorManager "1" *-- "0..*" StepperDriver : Has
 MotorManager <.. ArduinoLog.ArduinoLog
 
 @enduml
