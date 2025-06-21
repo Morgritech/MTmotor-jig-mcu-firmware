@@ -6,8 +6,7 @@
 /// @file version.h
 /// @brief Variables to define the firmware name and version.
 
-#ifndef VERSION_H_
-#define VERSION_H_
+#pragma once
 
 #include <Arduino.h>
 
@@ -20,5 +19,3 @@ inline constexpr uint16_t kPatch = 0;
 inline constexpr char* kSuffix = "rc.1";
 
 } // namespace mtmotor_jig
-
-#endif // VERSION_H_

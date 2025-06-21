@@ -6,8 +6,7 @@
 /// @file configuration.h
 /// @brief Class that sets up common configuration settings, including serial port and pin definitions, etc.
 
-#ifndef CONFIGURATION_H_
-#define CONFIGURATION_H_
+#pragma once
 
 #include <Arduino.h>
 #include <ArduinoLog.h>
@@ -28,7 +27,7 @@ class Configuration {
  public:
 
   /// @brief Enum of control system modes.
-  enum class ControlMode {
+  enum class ControlMode : uint8_t {
     kSplashScreen,
     kHomeScreen,
     kContinuousMenu,
@@ -37,7 +36,7 @@ class Configuration {
   };
 
   /// @brief Enum of control actions.
-  enum class ControlAction {
+  enum class ControlAction : uint8_t {
     kSelectNext = 'n',
     kSelectPrevious = 'p',
     kToggleDirection = 'd',
@@ -117,10 +116,10 @@ class Configuration {
   const float kDirDelay_us_ = 5.0F; ///< Minimum delay (us) for the stepper driver Dir pin.
   const float kEnaDelay_us_ = 5.0F; ///< Minimum delay (us) for the stepper driver Ena pin.
   const mt::StepperDriver::MotionDirection kDefaultMotionDirection_ = mt::StepperDriver::MotionDirection::kPositive; ///< Initial/default motion direction (Clockwise (CW)).
-  static const uint8_t kSizeOfSweepAngles_ = 4; ///< No. of sweep angles in the lookup table.
+  static constexpr uint8_t kSizeOfSweepAngles_ = 4; ///< No. of sweep angles in the lookup table.
   const float kSweepAngles_degrees_[kSizeOfSweepAngles_] = {45.0F, 90.0F, 180.0F, 360.0F}; ///< Lookup table for sweep angles (degrees) during oscillation.
   const uint8_t kDefaultSweepAngleIndex_ = 0; ///< Index of initial/default sweep angle.
-  static const uint8_t kSizeOfSpeeds_ = 4; ///< No. of speeds in the lookup table.
+  static constexpr uint8_t kSizeOfSpeeds_ = 4; ///< No. of speeds in the lookup table.
   const float kSpeeds_RPM_[kSizeOfSpeeds_] = {7.0F, 10.0F, 13.0F, 16.0F}; ///< Lookup table for rotation speeds (RPM).
   const uint8_t kDefaultSpeedIndex_ = 0; ///< Index of initial/default speed.
   const float kAcceleration_microsteps_per_s_per_s_ = 6000.0; //8000.0; ///< Acceleration (microsteps per second-squared).
@@ -132,18 +131,18 @@ class Configuration {
   // Display properties.
   const uint8_t kDisplayHeight_ = 4; ///< The Display height (Rows).
   const uint8_t kDisplayWidth_ = 20; ///< The Display width (Columns).
-  static const uint8_t kSizeOfSplashScreenMenuItems_ = 4; ///< No. of splash screen menu items.
   /// @brief The splash screen menu items.
-  const String kSplashScreenMenuItems_[kSizeOfSplashScreenMenuItems_] = {"____MTmotor-jig_____",   // 0
-                                                                         "   Test motors &"    ,   // 1
-                                                                         "   motor control"    ,   // 2
-                                                                         "      devices"        }; // 3
+  const String kSplashScreenMenuItems_[4] = {"____MTmotor-jig_____",   // 0
+                                             "   Test motors &"    ,   // 1
+                                             "   motor control"    ,   // 2
+                                             "      devices"        }; // 3
+  //                                          0                  19
   const uint16_t kSplashScreenDelay_ms_ = 1500; ///< Period of time in milliseconds (ms) to show the splash screen.
-  static const uint8_t kSizeOfHomeScreenMenuItems_ = 3; ///< No. of home screen menu items.
   /// @brief The home screen menu items.
-  const String kHomeScreenMenuItems_[kSizeOfHomeScreenMenuItems_] = {"__Select_Mode_______",   // 0
-                                                                     "o Continuous"        ,   // 1
-                                                                     "o Oscillate"          }; // 2
+  const String kHomeScreenMenuItems_[3] = {"__Select_Mode_______",   // 0
+                                           "o Continuous"        ,   // 1
+                                           "o Oscillate"          }; // 2
+  //                                        0                  19
   const uint8_t kContinuousMenuCursorPositionY_ = 1; ///< The cursor position (y-axis) for the continuous menu.
   const uint8_t kOscillateMenuCursorPositionY_ = 2; ///< The cursor position (y-axis) for the oscillate menu.
   const uint8_t kStatusBarCursorPositionY_ = 3; ///< The cursor position (y-axis) for the status bar.
@@ -167,5 +166,3 @@ class Configuration {
 };
 
 } // namespace mtmotor_jig
-
-#endif // CONFIGURATION_H_

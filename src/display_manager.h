@@ -6,8 +6,7 @@
 /// @file display_manager.h
 /// @brief Class that handles visual output to the display.
 
-#ifndef DISPLAY_MANAGER_H_
-#define DISPLAY_MANAGER_H_
+#pragma once
 
 #include <Arduino.h>
 #include <LiquidCrystal.h>
@@ -38,9 +37,10 @@ class DisplayManager {
  private:
 
   /// @brief Draw items to the display.
+  /// @tparam N The size of the screen items.
   /// @param screen_items The screen items to draw.
-  /// @param size_of_screen_items The number of screen items.
-  void DrawScreenItems(const String screen_items[], const uint8_t size_of_screen_items);
+  template <size_t N>
+  void DrawScreenItems(const String (&screen_items)[N]);
 
   /// @brief Configuration settings.
   Configuration& configuration_ = Configuration::GetInstance();
@@ -54,5 +54,3 @@ class DisplayManager {
 };
 
 } // namespace mtmotor_jig
-
-#endif // DISPLAY_MANAGER_H_

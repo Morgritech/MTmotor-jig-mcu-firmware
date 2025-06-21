@@ -6,8 +6,7 @@
 /// @file motor_manager.h
 /// @brief Class that handles motor control.
 
-#ifndef MOTOR_MANAGER_H_
-#define MOTOR_MANAGER_H_
+#pragma once
 
 #include <Arduino.h>
 #include <stepper_driver.h>
@@ -70,5 +69,3 @@ class MotorManager {
 };
 
 } // namespace mtmotor_jig
-
-#endif // MOTOR_MANAGER_H_

@@ -28,27 +28,26 @@ void InputManager::Begin() {
 Configuration::ControlAction InputManager::Check(Configuration::ControlMode control_mode) {
   Configuration::ControlAction control_action = Configuration::ControlAction::kIdle;
 
-  // Check for encoder dial rotation.
-  mt::RotaryEncoder::RotationDirection rotation_direction = encoder_dial_.DetectRotation();
-  // Check for button presses.
-  mt::MomentaryButton::PressType encoder_button_press_type = encoder_button_.DetectPressType();
-  mt::MomentaryButton::PressType controller_button_press_type = controller_button_.DetectPressType();
-  mt::MomentaryButton::PressType limit_switch_press_type = limit_switch_.DetectPressType();
+  // Check and process the encoder dial rotation, button presses, and serial input (one character at a time).
+  using PressType = mt::MomentaryButton::PressType;
+  using RotationDirection = mt::RotaryEncoder::RotationDirection;
 
-  // Process the encoder dial rotation, button presses, and serial input (one character at a time).
-  if (rotation_direction == mt::RotaryEncoder::RotationDirection::kPositive) {
+  if (RotationDirection rotation_direction = encoder_dial_.DetectRotation();
+      rotation_direction == RotationDirection::kPositive) {
     control_action = Configuration::ControlAction::kSelectNext;
     Log.noticeln(F("Encoder dial clockwise rotation"));
   } 
-  else if (rotation_direction == mt::RotaryEncoder::RotationDirection::kNegative) {
+  else if (rotation_direction == RotationDirection::kNegative) {
     control_action = Configuration::ControlAction::kSelectPrevious;
     Log.noticeln(F("Encoder dial counter-clockwise rotation"));
   }
-  else if (controller_button_press_type == mt::MomentaryButton::PressType::kShortPress) {
+  else if (PressType controller_button_press_type = controller_button_.DetectPressType();
+           controller_button_press_type == PressType::kShortPress) {
     control_action = Configuration::ControlAction::kCycleSpeed;
     Log.noticeln(F("Controller button short press"));
   }
-  else if (encoder_button_press_type == mt::MomentaryButton::PressType::kShortPress) {
+  else if (PressType encoder_button_press_type = encoder_button_.DetectPressType();
+           encoder_button_press_type == PressType::kShortPress) {
     switch (control_mode) {
       case Configuration::ControlMode::kContinuousMenu: {
         control_action = Configuration::ControlAction::kToggleDirection;
@@ -62,16 +61,17 @@ Configuration::ControlAction InputManager::Check(Configuration::ControlMode cont
 
     Log.noticeln(F("Encoder button short press"));
   }
-  else if (controller_button_press_type == mt::MomentaryButton::PressType::kLongPress
-           || encoder_button_press_type == mt::MomentaryButton::PressType::kLongPress) {
+  else if (controller_button_press_type == PressType::kLongPress
+           || encoder_button_press_type == PressType::kLongPress) {
     control_action = Configuration::ControlAction::kToggleMotion;
     Log.noticeln(F("Button long press"));
   }
-  else if (limit_switch_press_type == mt::MomentaryButton::PressType::kShortPress) {
+  else if (PressType limit_switch_press_type = limit_switch_.DetectPressType();
+           limit_switch_press_type == PressType::kShortPress) {
     control_action = Configuration::ControlAction::kResetHome;
     Log.noticeln(F("Limit switch short press"));
   }
-  else if (limit_switch_press_type == mt::MomentaryButton::PressType::kLongPress) {
+  else if (limit_switch_press_type == PressType::kLongPress) {
     control_action = Configuration::ControlAction::kGoHome;
     Log.noticeln(F("Limit switch long press"));
   }

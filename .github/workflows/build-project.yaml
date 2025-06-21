@@ -18,9 +18,9 @@ jobs:
         uses: arduino/compile-sketches@v1
         with:
           libraries: |
-            - name: MT-arduino-rotary-encoder@1.1.0
-            - name: MT-arduino-momentary-button@3.0.1
-            - name: MT-arduino-stepper-driver@3.1.1
+            - name: MT-arduino-rotary-encoder@1.1.1
+            - name: MT-arduino-momentary-button@3.0.2
+            - name: MT-arduino-stepper-driver@3.1.2
             - name: ArduinoLog@1.1.1
             - name: LiquidCrystal@1.0.7
           sketch-paths: |

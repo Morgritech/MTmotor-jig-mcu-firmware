@@ -29,12 +29,12 @@ void DisplayManager::Draw(Configuration::ControlMode control_mode, Configuration
                           const String& status) {
   switch (control_mode) {
     case Configuration::ControlMode::kSplashScreen: {
-      DrawScreenItems(configuration_.kSplashScreenMenuItems_, configuration_.kSizeOfSplashScreenMenuItems_);
+      DrawScreenItems(configuration_.kSplashScreenMenuItems_);
       delay(configuration_.kSplashScreenDelay_ms_);
       break;
     }
     case Configuration::ControlMode::kHomeScreen: {
-      DrawScreenItems(configuration_.kHomeScreenMenuItems_, configuration_.kSizeOfHomeScreenMenuItems_);
+      DrawScreenItems(configuration_.kHomeScreenMenuItems_);
       break;
     }
     case Configuration::ControlMode::kContinuousMenu: {
@@ -54,12 +54,15 @@ void DisplayManager::Draw(Configuration::ControlMode control_mode, Configuration
   }
 }
 
-void DisplayManager::DrawScreenItems(const String screen_items[], const uint8_t size_of_screen_items) {
+template <size_t N>
+void DisplayManager::DrawScreenItems(const String (&screen_items)[N]) {
   lcd_.clear(); //Clear the display and position the cursor in the upper-left corner (0, 0).
 
-  for (uint8_t i = 0; i < size_of_screen_items; i++) {
+  uint8_t i = 0;
+  for (auto screen_item : screen_items) {
     lcd_.setCursor(0, i);
-    lcd_.print(screen_items[i]);
+    lcd_.print(screen_item);
+    i++;
   }
 }
 
