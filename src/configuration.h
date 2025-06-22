@@ -116,10 +116,10 @@ class Configuration {
   const float kDirDelay_us_ = 5.0F; ///< Minimum delay (us) for the stepper driver Dir pin.
   const float kEnaDelay_us_ = 5.0F; ///< Minimum delay (us) for the stepper driver Ena pin.
   const mt::StepperDriver::MotionDirection kDefaultMotionDirection_ = mt::StepperDriver::MotionDirection::kPositive; ///< Initial/default motion direction (Clockwise (CW)).
-  static constexpr uint8_t kSizeOfSweepAngles_ = 4; ///< No. of sweep angles in the lookup table.
+  inline static constexpr uint8_t kSizeOfSweepAngles_ = 4; ///< No. of sweep angles in the lookup table.
   const float kSweepAngles_degrees_[kSizeOfSweepAngles_] = {45.0F, 90.0F, 180.0F, 360.0F}; ///< Lookup table for sweep angles (degrees) during oscillation.
   const uint8_t kDefaultSweepAngleIndex_ = 0; ///< Index of initial/default sweep angle.
-  static constexpr uint8_t kSizeOfSpeeds_ = 4; ///< No. of speeds in the lookup table.
+  inline static constexpr uint8_t kSizeOfSpeeds_ = 4; ///< No. of speeds in the lookup table.
   const float kSpeeds_RPM_[kSizeOfSpeeds_] = {7.0F, 10.0F, 13.0F, 16.0F}; ///< Lookup table for rotation speeds (RPM).
   const uint8_t kDefaultSpeedIndex_ = 0; ///< Index of initial/default speed.
   const float kAcceleration_microsteps_per_s_per_s_ = 6000.0; //8000.0; ///< Acceleration (microsteps per second-squared).
