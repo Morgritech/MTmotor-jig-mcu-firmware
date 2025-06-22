@@ -21,7 +21,8 @@ class InputManager {
  public:
  
   /// @brief Construct an Input Manager object.
-  InputManager();
+  InputManager(Configuration& configuration, mt::RotaryEncoder& encoder_dial, mt::MomentaryButton& encoder_button, 
+               mt::MomentaryButton& controller_button, mt::MomentaryButton& limit_switch);
 
   /// @brief Destroy the Input Manager object.
   ~InputManager();
@@ -37,28 +38,13 @@ class InputManager {
  private:
 
   /// @brief Configuration settings.
-  Configuration& configuration_ = Configuration::GetInstance();
+  Configuration& configuration_;
 
   // Buttons to control the motor.
-  mt::RotaryEncoder encoder_dial_{configuration_.kEncoderContactAPin_,
-                                  configuration_.kEncoderContactBPin_,
-                                  configuration_.kEncoderDetents_,
-                                  configuration_.kEncoderMaxRotationAngle_degrees_}; ///< Encoder dial to control mode selection.
-  mt::MomentaryButton encoder_button_{configuration_.kEncoderButtonPin_,
-                                       configuration_.kUnpressedPinState_,
-                                       configuration_.kDebouncePeriod_ms_,
-                                       configuration_.kShortPressPeriod_ms_,
-                                       configuration_.kLongPressPeriod_ms_}; ///< Button to control motor direction or angle.
-  mt::MomentaryButton controller_button_{configuration_.kControllerButtonPin_,
-                                       configuration_.kUnpressedPinState_,
-                                       configuration_.kDebouncePeriod_ms_,
-                                       configuration_.kShortPressPeriod_ms_,
-                                       configuration_.kLongPressPeriod_ms_}; ///< Button to control motor speed.
-  mt::MomentaryButton limit_switch_{configuration_.kLimitSwitchPin_,
-                                    configuration_.kUnpressedPinState_,
-                                    configuration_.kDebouncePeriod_ms_,
-                                    configuration_.kShortPressPeriod_ms_,
-                                    configuration_.kLongPressPeriod_ms_}; ///< Limit switch to manipulate the motor with respect to a soft home position.
+  mt::RotaryEncoder& encoder_dial_; ///< Encoder dial to control mode selection.
+  mt::MomentaryButton& encoder_button_; ///< Button to control motor direction or angle.
+  mt::MomentaryButton& controller_button_; ///< Button to control motor speed.
+  mt::MomentaryButton& limit_switch_; ///< Limit switch to manipulate the motor with respect to a soft home position.
 };
 
 } // namespace mtmotor_jig

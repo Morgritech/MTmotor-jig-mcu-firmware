@@ -9,6 +9,10 @@
 #pragma once
 
 #include <Arduino.h>
+#include <momentary_button.h>
+#include <rotary_encoder.h>
+#include <stepper_driver.h>
+#include <LiquidCrystal.h>
 
 #include "configuration.h"
 #include "input_manager.h"
@@ -40,6 +44,39 @@ class ControlSystem {
 
   /// @brief Configuration settings.
   Configuration& configuration_ = Configuration::GetInstance();
+
+  // Buttons to control the motor.
+  mt::RotaryEncoder encoder_dial_{configuration_.kEncoderContactAPin_,
+                                  configuration_.kEncoderContactBPin_,
+                                  configuration_.kEncoderDetents_,
+                                  configuration_.kEncoderMaxRotationAngle_degrees_}; ///< Encoder dial to control mode selection.
+  mt::MomentaryButton encoder_button_{configuration_.kEncoderButtonPin_,
+                                       configuration_.kUnpressedPinState_,
+                                       configuration_.kDebouncePeriod_ms_,
+                                       configuration_.kShortPressPeriod_ms_,
+                                       configuration_.kLongPressPeriod_ms_}; ///< Button to control motor direction or angle.
+  mt::MomentaryButton controller_button_{configuration_.kControllerButtonPin_,
+                                       configuration_.kUnpressedPinState_,
+                                       configuration_.kDebouncePeriod_ms_,
+                                       configuration_.kShortPressPeriod_ms_,
+                                       configuration_.kLongPressPeriod_ms_}; ///< Button to control motor speed.
+  mt::MomentaryButton limit_switch_{configuration_.kLimitSwitchPin_,
+                                    configuration_.kUnpressedPinState_,
+                                    configuration_.kDebouncePeriod_ms_,
+                                    configuration_.kShortPressPeriod_ms_,
+                                    configuration_.kLongPressPeriod_ms_}; ///< Limit switch to manipulate the motor with respect to a soft home position.  
+
+  // Stepper motor driver.
+  mt::StepperDriver stepper_driver_{configuration_.kMotorDriverPulPin_,
+                                    configuration_.kMotorDriverDirPin_,
+                                    configuration_.kMotorDriverEnaPin_,
+                                    configuration_.kMicrostepMode_,
+                                    configuration_.kFullStepAngle_degrees_,
+                                    configuration_.kGearRatio_};
+
+  /// @brief The LCD display.
+  LiquidCrystal lcd_{configuration_.kLcdRsPin_, configuration_.kLcdEnaPin_, configuration_.kLcdD4Pin_,
+                     configuration_.kLcdD5Pin_, configuration_.kLcdD6Pin_, configuration_.kLcdD7Pin_};
 
   // Sensors and actuators / inputs and outputs.
   InputManager inputs_{}; ///< The User inputs (encoder, buttons, serial, etc.).

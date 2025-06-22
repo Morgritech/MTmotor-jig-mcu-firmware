@@ -15,7 +15,11 @@
 
 namespace mtmotor_jig {
 
-InputManager::InputManager() {}
+InputManager::InputManager(Configuration& configuration, mt::RotaryEncoder& encoder_dial,
+                           mt::MomentaryButton& encoder_button, mt::MomentaryButton& controller_button,
+                           mt::MomentaryButton& limit_switch)
+    : configuration_(configuration), encoder_dial_(encoder_dial), encoder_button_(encoder_button),
+      controller_button_(controller_button), limit_switch_(limit_switch) {};
 
 InputManager::~InputManager() {}
 
