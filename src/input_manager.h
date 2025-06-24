@@ -9,10 +9,9 @@
 #pragma once
 
 #include <Arduino.h>
-#include <momentary_button.h>
-#include <rotary_encoder.h>
 
 #include "configuration.h"
+#include "input.h"
 
 namespace mtmotor_jig {
 
@@ -21,8 +20,7 @@ class InputManager {
  public:
  
   /// @brief Construct an Input Manager object.
-  InputManager(Configuration& configuration, mt::RotaryEncoder& encoder_dial, mt::MomentaryButton& encoder_button, 
-               mt::MomentaryButton& controller_button, mt::MomentaryButton& limit_switch);
+  InputManager(InputInterface& inputs);
 
   /// @brief Destroy the Input Manager object.
   ~InputManager();
@@ -37,14 +35,8 @@ class InputManager {
 
  private:
 
-  /// @brief Configuration settings.
-  Configuration& configuration_;
-
   // Buttons to control the motor.
-  mt::RotaryEncoder& encoder_dial_; ///< Encoder dial to control mode selection.
-  mt::MomentaryButton& encoder_button_; ///< Button to control motor direction or angle.
-  mt::MomentaryButton& controller_button_; ///< Button to control motor speed.
-  mt::MomentaryButton& limit_switch_; ///< Limit switch to manipulate the motor with respect to a soft home position.
+  InputInterface& inputs_; ///< The inputs.
 };
 
 } // namespace mtmotor_jig

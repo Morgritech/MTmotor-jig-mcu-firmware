@@ -12,24 +12,26 @@
 #include <ArduinoLog.h>
 
 #include "configuration.h"
+#include "input.h"
 
 namespace mtmotor_jig {
 
-InputManager::InputManager(Configuration& configuration, mt::RotaryEncoder& encoder_dial,
-                           mt::MomentaryButton& encoder_button, mt::MomentaryButton& controller_button,
-                           mt::MomentaryButton& limit_switch)
-    : configuration_(configuration), encoder_dial_(encoder_dial), encoder_button_(encoder_button),
-      controller_button_(controller_button), limit_switch_(limit_switch) {};
+InputManager::InputManager(InputInterface& inputs) : inputs_(inputs) {};
 
 InputManager::~InputManager() {}
 
 void InputManager::Begin() {
+  inputs_.Begin();
+/*
   encoder_button_.set_long_press_option(configuration_.kLongPressOption_);
   controller_button_.set_long_press_option(configuration_.kLongPressOption_);
   limit_switch_.set_long_press_option(configuration_.kLongPressOption_);
+*/
 }
 
 Configuration::ControlAction InputManager::Check(Configuration::ControlMode control_mode) {
+  return inputs_.Check(control_mode);
+/*
   Configuration::ControlAction control_action = Configuration::ControlAction::kIdle;
 
   // Check and process the encoder dial rotation, button presses, and serial input (one character at a time).
@@ -89,6 +91,7 @@ Configuration::ControlAction InputManager::Check(Configuration::ControlMode cont
   }
 
   return control_action;
+*/
 }
 
 } // namespace mtmotor_jig

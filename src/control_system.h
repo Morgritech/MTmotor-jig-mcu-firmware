@@ -15,6 +15,7 @@
 #include <LiquidCrystal.h>
 
 #include "configuration.h"
+#include "input.h"
 #include "input_manager.h"
 #include "motor_manager.h"
 #include "display_manager.h"
@@ -78,8 +79,10 @@ class ControlSystem {
   LiquidCrystal lcd_{configuration_.kLcdRsPin_, configuration_.kLcdEnaPin_, configuration_.kLcdD4Pin_,
                      configuration_.kLcdD5Pin_, configuration_.kLcdD6Pin_, configuration_.kLcdD7Pin_};
 
+  Input<mt::RotaryEncoder> inputs_{configuration_, encoder_dial_};
+
   // Sensors and actuators / inputs and outputs.
-  InputManager inputs_{}; ///< The User inputs (encoder, buttons, serial, etc.).
+  InputManager input_manager{inputs_}; ///< The User inputs (encoder, buttons, serial, etc.).
   MotorManager motor_{}; ///< The Motor drive system.
   DisplayManager display_{}; ///< The display (LCD).
 
