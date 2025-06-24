@@ -13,16 +13,22 @@
 #include <rotary_encoder.h>
 
 #include "configuration.h"
+#include "input_interface.h"
 
 namespace mtmotor_jig {
 
+template<typename InputType>
+struct InputTraits {
+  typeid(InputType) type_id_; ///< The type of the input.
+};
+
 /// @brief The Input class.
-class Input {
+class Input : public InputInterface {
  public:
  
   /// @brief Construct an Input object.
   template <typename InputType>
-  Input();
+  Input(InputType test);
 
   /// @brief Destroy the Input object.
   ~Input();
