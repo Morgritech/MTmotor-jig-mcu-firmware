@@ -20,15 +20,6 @@ InputManager::InputManager(InputInterface& inputs) : inputs_(inputs) {};
 
 InputManager::~InputManager() {}
 
-void InputManager::Begin() {
-  inputs_.Begin();
-/*
-  encoder_button_.set_long_press_option(configuration_.kLongPressOption_);
-  controller_button_.set_long_press_option(configuration_.kLongPressOption_);
-  limit_switch_.set_long_press_option(configuration_.kLongPressOption_);
-*/
-}
-
 Configuration::ControlAction InputManager::Check(Configuration::ControlMode control_mode) {
   return inputs_.Check(control_mode);
 /*

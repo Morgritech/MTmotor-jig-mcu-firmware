@@ -30,13 +30,10 @@ class Input : public InputInterface {
  public:
  
   /// @brief Construct an Input object.
-  Input(Configuration& configuration, InputType& input);
+  Input(Configuration::InputId id, InputType& input);
 
   /// @brief Destroy the Input object.
   ~Input();
-
-  /// @brief Initialise the input.
-  void Begin() override; ///< This must be called only once.
 
   /// @brief Check for user input based on the current control mode.
   /// @param control_mode The control mode.
@@ -45,8 +42,8 @@ class Input : public InputInterface {
 
  private:
 
-  /// @brief Configuration settings.
-  Configuration& configuration_;
+  /// @brief The input ID.
+  Configuration::InputId id_;
 
   /// @brief The input.
   InputType& input_;

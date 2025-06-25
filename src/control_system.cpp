@@ -23,12 +23,17 @@ ControlSystem::ControlSystem() {}
 ControlSystem::~ControlSystem() {}
 
 void ControlSystem::Begin() {
+  // Hardware.
   configuration_.BeginHardware();
-  tone(configuration_.kControllerBuzzerPin_, configuration_.kBuzzerStartupFrequency_Hz_,
-       configuration_.kBuzzerStartupDuration_ms_); // Sound the buzzer at startup.
-  inputs_.Begin();
+  // Inputs.
+  encoder_button_.set_long_press_option(configuration_.kLongPressOption_);
+  controller_button_.set_long_press_option(configuration_.kLongPressOption_);
+  limit_switch_.set_long_press_option(configuration_.kLongPressOption_);
+  // Outputs.
   motor_.Begin();
   display_.Begin();
+  tone(configuration_.kControllerBuzzerPin_, configuration_.kBuzzerStartupFrequency_Hz_,
+       configuration_.kBuzzerStartupDuration_ms_); // Sound the buzzer at startup.
   LogGeneralStatus(); // Log initial status of control system.
 }
 
@@ -40,7 +45,7 @@ void ControlSystem::CheckAndProcess() {
     previous_control_mode_ = control_mode_;
   }
   else {
-    control_action_ = inputs_.Check(control_mode_);
+//    control_action_ = inputs_.Check(control_mode_);
   }
 
   // Process inputs.

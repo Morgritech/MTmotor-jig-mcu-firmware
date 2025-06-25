@@ -26,6 +26,15 @@ namespace mtmotor_jig {
 class Configuration {
  public:
 
+  /// @brief Enum of input ID's.
+  enum class InputId : uint8_t {
+    kEncoderDial,
+    kEncoderButton,
+    kControllerButton,
+    kLimitSwitch,
+    kSerialInput,
+  };
+
   /// @brief Enum of control system modes.
   enum class ControlMode : uint8_t {
     kSplashScreen,

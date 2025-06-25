@@ -18,16 +18,10 @@
 namespace mtmotor_jig {
 
 template <typename InputType>
-Input<InputType>::Input(Configuration& configuration, InputType& input)
-    : configuration_(configuration), input_(input) {}
+Input<InputType>::Input(Configuration::InputId id, InputType& input) : input_(input) {}
 
 template <typename InputType>
 Input<InputType>::~Input() {}
-
-template <typename InputType>
-void Input<InputType>::Begin() {
-  // Implementation here
-}
 
 template <typename InputType>
 Configuration::ControlAction Input<InputType>::Check(Configuration::ControlMode control_mode) {

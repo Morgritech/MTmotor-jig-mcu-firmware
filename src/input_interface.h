@@ -21,9 +21,6 @@ class InputInterface {
   /// @brief Destroy the Input Interface object.
   ~InputInterface() = default;
 
-  /// @brief Initialise the inputs.
-  virtual void Begin() = 0; ///< This must be called only once.
-
   /// @brief Check for user input based on the current control mode.
   /// @param control_mode The control mode.
   /// @return The control action.

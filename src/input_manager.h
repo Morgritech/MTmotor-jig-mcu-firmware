@@ -25,9 +25,6 @@ class InputManager {
   /// @brief Destroy the Input Manager object.
   ~InputManager();
 
-  /// @brief Initialise the inputs.
-  void Begin(); ///< This must be called only once.
-
   /// @brief Check for user input based on the current control mode.
   /// @param control_mode The control mode.
   /// @return The control action.
