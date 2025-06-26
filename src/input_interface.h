@@ -29,7 +29,7 @@ class InputInterface {
 
   /// @brief Struct of event data.
   struct Event {
-    int input_id;   
+    Configuration::InputId input_id;
     EventType event_type;
   };
 
@@ -38,7 +38,7 @@ class InputInterface {
 
   /// @brief Check for user input based on the current control mode.
   /// @param control_mode The control mode.
-  /// @return The control action.
+  /// @return The input event.
   virtual Event Check(Configuration::ControlMode control_mode) = 0; ///< This must be called repeatedly.
 };
 

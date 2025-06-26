@@ -26,7 +26,7 @@ Input<InputType>::~Input() {}
 template <typename InputType>
 InputInterface::Event Input<InputType>::Check(Configuration::ControlMode control_mode) {
   // Implementation here
-  return InputInterface::Event{id_, 0}; // Example return
+  return {id_, InputInterface::EventType::kIdle}; // Example return
 }
 
 // Explicit instantiations
