@@ -18,13 +18,28 @@ namespace mtmotor_jig {
 class InputInterface {
  public:
  
+  /// @brief Enum of event types.
+  enum class EventType : int8_t {
+    kNegativeRotation = -1,
+    kIdle = 0,
+    kPositiveRotation = 1,    
+    kShortPress,
+    kLongPress,
+  };
+
+  /// @brief Struct of event data.
+  struct Event {
+    int input_id;   
+    EventType event_type;
+  };
+
   /// @brief Destroy the Input Interface object.
   ~InputInterface() = default;
 
   /// @brief Check for user input based on the current control mode.
   /// @param control_mode The control mode.
   /// @return The control action.
-  virtual Configuration::ControlAction Check(Configuration::ControlMode control_mode) = 0; ///< This must be called repeatedly.
+  virtual Event Check(Configuration::ControlMode control_mode) = 0; ///< This must be called repeatedly.
 };
 
 } // namespace mtmotor_jig

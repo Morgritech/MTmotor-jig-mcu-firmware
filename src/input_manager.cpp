@@ -21,7 +21,7 @@ InputManager::InputManager(InputInterface& inputs) : inputs_(inputs) {};
 InputManager::~InputManager() {}
 
 Configuration::ControlAction InputManager::Check(Configuration::ControlMode control_mode) {
-  return inputs_.Check(control_mode);
+  //return inputs_.Check(control_mode);
 /*
   Configuration::ControlAction control_action = Configuration::ControlAction::kIdle;
 

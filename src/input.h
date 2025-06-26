@@ -28,7 +28,7 @@ struct InputTraits {
 template <typename InputType>
 class Input : public InputInterface {
  public:
- 
+
   /// @brief Construct an Input object.
   Input(Configuration::InputId id, InputType& input);
 
@@ -38,7 +38,7 @@ class Input : public InputInterface {
   /// @brief Check for user input based on the current control mode.
   /// @param control_mode The control mode.
   /// @return The control action.
-  Configuration::ControlAction Check([[maybe_unused]] Configuration::ControlMode control_mode) override; ///< This must be called repeatedly.
+  InputInterface::Event Check([[maybe_unused]] Configuration::ControlMode control_mode) override; ///< This must be called repeatedly.
 
  private:
 
