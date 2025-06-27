@@ -11,6 +11,7 @@
 #include <Arduino.h>
 #include <LiquidCrystal.h>
 
+#include "common_types.h"
 #include "configuration.h"
 
 namespace mtmotor_jig {
@@ -25,29 +26,29 @@ void DisplayManager::Begin() {
   //lcd_.cursor(); // Show a static display cursor.
 }
 
-void DisplayManager::Draw(Configuration::ControlMode control_mode, Configuration::ControlAction control_action,
+void DisplayManager::Draw(common::ControlMode control_mode, common::ControlAction control_action,
                           const String& status) {
   switch (control_mode) {
-    case Configuration::ControlMode::kSplashScreen: {
+    case common::ControlMode::kSplashScreen: {
       DrawScreenItems(configuration_.kSplashScreenMenuItems_);
       delay(configuration_.kSplashScreenDelay_ms_);
       break;
     }
-    case Configuration::ControlMode::kHomeScreen: {
+    case common::ControlMode::kHomeScreen: {
       DrawScreenItems(configuration_.kHomeScreenMenuItems_);
       break;
     }
-    case Configuration::ControlMode::kContinuousMenu: {
+    case common::ControlMode::kContinuousMenu: {
       cursor_position_y_ = configuration_.kContinuousMenuCursorPositionY_;
       break;
     }
-    case Configuration::ControlMode::kOscillateMenu: {
+    case common::ControlMode::kOscillateMenu: {
       cursor_position_y_ = configuration_.kOscillateMenuCursorPositionY_;
       break;
     }
   }
 
-  if (control_action != Configuration::ControlAction::kIdle || control_mode == Configuration::ControlMode::kHomeScreen) {
+  if (control_action != common::ControlAction::kIdle || control_mode == common::ControlMode::kHomeScreen) {
     lcd_.setCursor(0, configuration_.kStatusBarCursorPositionY_);
     lcd_.print(status);
     lcd_.setCursor(0, cursor_position_y_);

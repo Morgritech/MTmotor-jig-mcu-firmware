@@ -15,16 +15,18 @@
 #include <momentary_button.h>
 #include <rotary_encoder.h>
 
+#include "common_types.h"
+
 namespace mtmotor_jig {
 
 template <typename InputType>
-Input<InputType>::Input(Configuration::InputId id, InputType& input) : input_(input) {}
+Input<InputType>::Input(common::InputId id, InputType& input) : input_(input) {}
 
 template <typename InputType>
 Input<InputType>::~Input() {}
 
 template <typename InputType>
-InputInterface::Event Input<InputType>::Check(Configuration::ControlMode control_mode) {
+Inputs::Event Input<InputType>::Check(common::ControlMode control_mode) {
   // Implementation here
   return {id_, InputInterface::EventType::kIdle}; // Example return
 }

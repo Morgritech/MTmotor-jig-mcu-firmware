@@ -12,6 +12,7 @@
 #include <momentary_button.h>
 #include <rotary_encoder.h>
 
+#include "common_types.h"
 #include "configuration.h"
 #include "input_interface.h"
 
@@ -30,7 +31,7 @@ class Input : public InputInterface {
  public:
 
   /// @brief Construct an Input object.
-  Input(Configuration::InputId id, InputType& input);
+  Input(common::InputId id, InputType& input);
 
   /// @brief Destroy the Input object.
   ~Input();
@@ -38,12 +39,12 @@ class Input : public InputInterface {
   /// @brief Check for user input based on the current control mode.
   /// @param control_mode The control mode.
   /// @return The control action.
-  InputInterface::Event Check([[maybe_unused]] Configuration::ControlMode control_mode) override; ///< This must be called repeatedly.
+  Inputs::Event Check([[maybe_unused]] common::ControlMode control_mode) override; ///< This must be called repeatedly.
 
  private:
 
   /// @brief The input ID.
-  Configuration::InputId id_;
+  common::InputId id_;
 
   /// @brief The input.
   InputType& input_;

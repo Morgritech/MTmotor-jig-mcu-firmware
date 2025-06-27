@@ -14,6 +14,7 @@
 #include <stepper_driver.h>
 #include <LiquidCrystal.h>
 
+#include "common_types.h"
 #include "configuration.h"
 #include "input.h"
 #include "input_manager.h"
@@ -79,7 +80,7 @@ class ControlSystem {
   LiquidCrystal lcd_{configuration_.kLcdRsPin_, configuration_.kLcdEnaPin_, configuration_.kLcdD4Pin_,
                      configuration_.kLcdD5Pin_, configuration_.kLcdD6Pin_, configuration_.kLcdD7Pin_};
 
-  Input<mt::RotaryEncoder> input1_{Configuration::InputId::kEncoderDial, encoder_dial_};
+  Input<mt::RotaryEncoder> input1_{common::InputId::kEncoderDial, encoder_dial_};
 
 
   // Sensors and actuators / inputs and outputs.
@@ -88,9 +89,9 @@ class ControlSystem {
   DisplayManager display_{}; ///< The display (LCD).
 
   // Control flags and indicator variables.
-  Configuration::ControlMode control_mode_ = configuration_.kDefaultControlMode_; ///< Variable to keep track of the control system mode.
-  Configuration::ControlMode previous_control_mode_ = configuration_.kDefaultControlMode_; ///< Variable to keep track of the previously set control system mode.
-  Configuration::ControlAction control_action_ = Configuration::ControlAction::kIdle; ///< Variable to keep track of the control actions from user inputs.
+  common::ControlMode control_mode_ = configuration_.kDefaultControlMode_; ///< Variable to keep track of the control system mode.
+  common::ControlMode previous_control_mode_ = configuration_.kDefaultControlMode_; ///< Variable to keep track of the previously set control system mode.
+  common::ControlAction control_action_ = common::ControlAction::kIdle; ///< Variable to keep track of the control actions from user inputs.
   String status_ = ""; ///< Variable to keep track of the status message to display.
 };
 

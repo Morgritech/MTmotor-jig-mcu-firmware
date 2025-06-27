@@ -10,6 +10,7 @@
 
 #include <Arduino.h>
 
+#include "common_types.h"
 #include "configuration.h"
 #include "input.h"
 
@@ -28,7 +29,7 @@ class InputManager {
   /// @brief Check for user input based on the current control mode.
   /// @param control_mode The control mode.
   /// @return The control action.
-  Configuration::ControlAction Check(Configuration::ControlMode control_mode); ///< This must be called repeatedly.
+  common::ControlAction Check(common::ControlMode control_mode); ///< This must be called repeatedly.
 
  private:
 

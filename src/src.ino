@@ -8,7 +8,6 @@
 
 #include <ArduinoLog.h>
 
-#include "configuration.h"
 #include "control_system.h"
 
 /// @brief The Control System instance.

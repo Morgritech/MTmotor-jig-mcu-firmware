@@ -11,6 +11,7 @@
 #include <Arduino.h>
 #include <ArduinoLog.h>
 
+#include "common_types.h"
 #include "configuration.h"
 #include "input_manager.h"
 #include "motor_manager.h"
@@ -40,8 +41,8 @@ void ControlSystem::Begin() {
 void ControlSystem::CheckAndProcess() {
 
   // Check inputs.
-  if (previous_control_mode_ == Configuration::ControlMode::kHoming) {
-    control_action_ = Configuration::ControlAction::kResetHome;
+  if (previous_control_mode_ == common::ControlMode::kHoming) {
+    control_action_ = common::ControlAction::kResetHome;
     previous_control_mode_ = control_mode_;
   }
   else {
@@ -50,39 +51,39 @@ void ControlSystem::CheckAndProcess() {
 
   // Process inputs.
   switch (control_action_) {
-    case Configuration::ControlAction::kSelectNext: {
+    case common::ControlAction::kSelectNext: {
       // Fall through to select previous which changes control mode.
       [[fallthrough]];
     }
-    case Configuration::ControlAction::kSelectPrevious: {
-      if (control_mode_ == Configuration::ControlMode::kContinuousMenu) {
-        control_mode_ = Configuration::ControlMode::kOscillateMenu;
+    case common::ControlAction::kSelectPrevious: {
+      if (control_mode_ == common::ControlMode::kContinuousMenu) {
+        control_mode_ = common::ControlMode::kOscillateMenu;
         Log.noticeln(F("Control mode: oscillate"));
       }
-      else if (control_mode_ == Configuration::ControlMode::kOscillateMenu) {
-        control_mode_ = Configuration::ControlMode::kContinuousMenu;
+      else if (control_mode_ == common::ControlMode::kOscillateMenu) {
+        control_mode_ = common::ControlMode::kContinuousMenu;
         Log.noticeln(F("Control mode: continuous"));
       }
 
       break;
     }
-    case Configuration::ControlAction::kGoHome: {
+    case common::ControlAction::kGoHome: {
       previous_control_mode_ = control_mode_;
-      control_mode_ = Configuration::ControlMode::kHoming;
+      control_mode_ = common::ControlMode::kHoming;
       Log.noticeln(F("Control mode: homing"));
       break;
     }
-    case Configuration::ControlAction::kToggleLogReport: {
+    case common::ControlAction::kToggleLogReport: {
       // Toggle reporting/output of log messages over serial.
       configuration_.ToggleLogs();
       break;
     }
-    case Configuration::ControlAction::kLogGeneralStatus: {
+    case common::ControlAction::kLogGeneralStatus: {
       // Log/report the general status of the control system.
       LogGeneralStatus();
       break;
     }
-    case Configuration::ControlAction::kReportFirmwareVersion: {
+    case common::ControlAction::kReportFirmwareVersion: {
       // Log/report the firmware version.
       configuration_.ReportFirmwareVersion();
       break;
@@ -95,20 +96,20 @@ void ControlSystem::CheckAndProcess() {
 
   // Transition through the initial control modes, and process any further control mode changes.
   switch (control_mode_) {
-    case Configuration::ControlMode::kSplashScreen: {
-      control_mode_ = Configuration::ControlMode::kHomeScreen;
+    case common::ControlMode::kSplashScreen: {
+      control_mode_ = common::ControlMode::kHomeScreen;
       Log.noticeln(F("Control mode: home screen"));
       break;
     }
-    case Configuration::ControlMode::kHomeScreen: {
-      control_mode_ = Configuration::ControlMode::kContinuousMenu;
+    case common::ControlMode::kHomeScreen: {
+      control_mode_ = common::ControlMode::kContinuousMenu;
       Log.noticeln(F("Control mode: continuous"));
       break;
     }
-    case Configuration::ControlMode::kHoming: {
+    case common::ControlMode::kHoming: {
       if (motor_.homing() == false) {
         control_mode_ = previous_control_mode_;
-        previous_control_mode_ = Configuration::ControlMode::kHoming;
+        previous_control_mode_ = common::ControlMode::kHoming;
         Log.noticeln(F("Control mode: returned to previous mode"));
       }
 
@@ -120,23 +121,23 @@ void ControlSystem::CheckAndProcess() {
 void ControlSystem::LogGeneralStatus() const {
   Log.noticeln(F("General Status"));
   switch (control_mode_) {
-    case Configuration::ControlMode::kSplashScreen: {
+    case common::ControlMode::kSplashScreen: {
       Log.noticeln(F("Control mode: splash screen"));
       break;
     }
-    case Configuration::ControlMode::kHomeScreen: {
+    case common::ControlMode::kHomeScreen: {
       Log.noticeln(F("Control mode: home screen"));
       break;
     }
-    case Configuration::ControlMode::kContinuousMenu: {
+    case common::ControlMode::kContinuousMenu: {
       Log.noticeln(F("Control mode: continuous"));
       break;
     }
-    case Configuration::ControlMode::kOscillateMenu: {
+    case common::ControlMode::kOscillateMenu: {
       Log.noticeln(F("Control mode: oscillate"));
       break;
     }
-    case Configuration::ControlMode::kHoming: {
+    case common::ControlMode::kHoming: {
       Log.noticeln(F("Control mode: homing"));
       break;
     }

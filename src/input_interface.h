@@ -3,14 +3,16 @@
 // Licensed under GNU General Public License v3.0 (GPLv3) License.
 // See the LICENSE file in the project root for full license details.
 
-/// @file input_manager.h
+/// @file input_interface.h
 /// @brief Class that defines the interface for generic inputs (buttons, serial, etc.).
 
 #pragma once
 
 #include <Arduino.h>
 
-#include "configuration.h"
+#include "common_types.h"
+#include "configuration.h
+#include "input_types.h"
 
 namespace mtmotor_jig {
 
@@ -18,28 +20,13 @@ namespace mtmotor_jig {
 class InputInterface {
  public:
  
-  /// @brief Enum of event types.
-  enum class EventType : int8_t {
-    kNegativeRotation = -1,
-    kIdle = 0,
-    kPositiveRotation = 1,    
-    kShortPress,
-    kLongPress,
-  };
-
-  /// @brief Struct of event data.
-  struct Event {
-    Configuration::InputId input_id;
-    EventType event_type;
-  };
-
   /// @brief Destroy the Input Interface object.
   ~InputInterface() = default;
 
   /// @brief Check for user input based on the current control mode.
   /// @param control_mode The control mode.
   /// @return The input event.
-  virtual Event Check(Configuration::ControlMode control_mode) = 0; ///< This must be called repeatedly.
+  virtual Inputs::Event Check(common::ControlMode control_mode) = 0; ///< This must be called repeatedly.
 };
 
 } // namespace mtmotor_jig

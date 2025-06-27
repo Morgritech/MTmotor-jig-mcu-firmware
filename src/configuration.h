@@ -14,6 +14,7 @@
 #include <stepper_driver.h>
 
 #include "version.h"
+#include "common_types.h"
 
 /// @brief Macro to define Serial port.
 #ifndef MTMOTOR_JIG_SERIAL
@@ -25,40 +26,6 @@ namespace mtmotor_jig {
 /// @brief The Configuration class using the singleton pattern i.e., only a single instance can exist.
 class Configuration {
  public:
-
-  /// @brief Enum of input ID's.
-  enum class InputId : uint8_t {
-    kEncoderDial,
-    kEncoderButton,
-    kControllerButton,
-    kLimitSwitch,
-    kSerialInput,
-  };
-
-  /// @brief Enum of control system modes.
-  enum class ControlMode : uint8_t {
-    kSplashScreen,
-    kHomeScreen,
-    kContinuousMenu,
-    kOscillateMenu,
-    kHoming,
-  };
-
-  /// @brief Enum of control actions.
-  enum class ControlAction : uint8_t {
-    kSelectNext = 'n',
-    kSelectPrevious = 'p',
-    kToggleDirection = 'd',
-    kCycleAngle = 'a',
-    kCycleSpeed = 's',
-    kToggleMotion = 'm',
-    kResetHome = 'x',
-    kGoHome = 'h',
-    kToggleLogReport = 'r',
-    kLogGeneralStatus = 'l',
-    kReportFirmwareVersion = 'v',
-    kIdle = '0',
-  };
 
   /// @brief Static method to get the single instance.
   /// @return The Configuration instance. 
@@ -101,7 +68,7 @@ class Configuration {
   const uint8_t kLimitSwitchPin_ = 32; ///< Input pin for the the limit switch to simulate a soft home position.
 
   // Control system properties.
-  const ControlMode kDefaultControlMode_ = ControlMode::kSplashScreen; ///< The default/initial control mode. 
+  const common::ControlMode kDefaultControlMode_ = common::ControlMode::kSplashScreen; ///< The default/initial control mode. 
 
   // Serial properties.
   const int kBaudRate_ = 9600; ///< The serial communication speed.

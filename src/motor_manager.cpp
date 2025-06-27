@@ -11,6 +11,7 @@
 #include <Arduino.h>
 #include <stepper_driver.h>
 
+#include "common_types.h"
 #include "configuration.h"
 
 namespace mtmotor_jig {
@@ -31,19 +32,19 @@ void MotorManager::Begin() {
   stepper_driver_.set_power_state(mt::StepperDriver::PowerState::kEnabled);
 }
 
-void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action,
+void MotorManager::Actuate(common::ControlMode control_mode, common::ControlAction control_action,
                            String& status_output) {
   // Process control actions.
   switch(control_action) {
-    case Configuration::ControlAction::kSelectNext: {
+    case common::ControlAction::kSelectNext: {
       // Fall through to select previous which resets the motor.
       [[fallthrough]];
     }
-    case Configuration::ControlAction::kSelectPrevious: {
+    case common::ControlAction::kSelectPrevious: {
       motion_type_ = mt::StepperDriver::MotionType::kStopAndReset;
       break;
     }
-    case Configuration::ControlAction::kToggleDirection: {
+    case common::ControlAction::kToggleDirection: {
       // Start motor, or, change motor direction.
       if (allow_motion_ == false) {
         // Fall through to start motor.
@@ -64,7 +65,7 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
         break;
       }
     }
-    case Configuration::ControlAction::kCycleAngle: {
+    case common::ControlAction::kCycleAngle: {
       // Start motor, or, cycle through sweep angles.
       if (allow_motion_ == false) {
         // Fall through to start motor.
@@ -84,7 +85,7 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
         break;
       }
     }
-    case Configuration::ControlAction::kCycleSpeed: {
+    case common::ControlAction::kCycleSpeed: {
       //  Start motor, or, cycle through motor speed settings.
       if (allow_motion_ == false) {
         // Fall through to start motor.          
@@ -105,7 +106,7 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
         break;
       }
     }
-    case Configuration::ControlAction::kToggleMotion: {
+    case common::ControlAction::kToggleMotion: {
       // Toggle (start/stop) the motor.
       if (allow_motion_ == false) {
         // Allow movement.
@@ -124,7 +125,7 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
       
       break;
     }
-    case Configuration::ControlAction::kResetHome: {
+    case common::ControlAction::kResetHome: {
       // Stop motor.
       if (allow_motion_ == true) {
         allow_motion_ = false;
@@ -135,7 +136,7 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
       stepper_driver_.ResetAngularPosition();
       break;
     }
-    case Configuration::ControlAction::kGoHome: {
+    case common::ControlAction::kGoHome: {
       // Start motor.
       if (allow_motion_ == false) {
         allow_motion_ = true;
@@ -154,7 +155,7 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
   }
 
   // Create the status message.
-  if (control_action != Configuration::ControlAction::kIdle || control_mode == Configuration::ControlMode::kHomeScreen) {
+  if (control_action != common::ControlAction::kIdle || control_mode == common::ControlMode::kHomeScreen) {
     Log.noticeln(F("Creating display status"));
 
     status_output = F("..");
@@ -170,11 +171,11 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
     status_output += F("RPM.");
 
     switch (control_mode) {
-      case Configuration::ControlMode::kHomeScreen: {
+      case common::ControlMode::kHomeScreen: {
         // Fall through to continuous menu.
         [[fallthrough]];
       }
-      case Configuration::ControlMode::kContinuousMenu: {
+      case common::ControlMode::kContinuousMenu: {
         if (motion_direction_ == mt::StepperDriver::MotionDirection::kPositive) {
           status_output += F("CW......");
         }
@@ -184,12 +185,12 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
 
         break;
       }
-      case Configuration::ControlMode::kOscillateMenu: {
+      case common::ControlMode::kOscillateMenu: {
         status_output += String(configuration_.kSweepAngles_degrees_[sweep_angle_index_], 0);
         status_output += F("deg..");
         break;
       }
-      case Configuration::ControlMode::kHoming: {
+      case common::ControlMode::kHoming: {
         status_output += F("Homing..");
         break;
       }
@@ -200,7 +201,7 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
   if (allow_motion_ == false) return; // Do not actuate the motor if movement is disallowed.
 
   switch (control_mode) {
-    case Configuration::ControlMode::kContinuousMenu: {      
+    case common::ControlMode::kContinuousMenu: {      
       if (motion_status_ != mt::StepperDriver::MotionStatus::kConstantSpeed 
           || motion_type_ == mt::StepperDriver::MotionType::kStopAndReset) {
         // Accelerate to constant speed.
@@ -218,7 +219,7 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
 
       break;
     }
-    case Configuration::ControlMode::kOscillateMenu: {
+    case common::ControlMode::kOscillateMenu: {
       mt::StepperDriver::MotionStatus motion_status = stepper_driver_.MoveByAngle(sweep_direction_ 
                                                       * configuration_.kSweepAngles_degrees_[sweep_angle_index_],
                                                       mt::StepperDriver::AngleUnits::kDegrees, motion_type_);
@@ -243,12 +244,12 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
 
       break;
     }
-    case Configuration::ControlMode::kHoming: {
+    case common::ControlMode::kHoming: {
       mt::StepperDriver::MotionStatus motion_status = stepper_driver_.MoveByAngle(homing_angle_degrees_,
                                                                               mt::StepperDriver::AngleUnits::kDegrees,
                                                                               motion_type_);
       if (motion_status == mt::StepperDriver::MotionStatus::kIdle) {
-        if (control_action == Configuration::ControlAction::kGoHome
+        if (control_action == common::ControlAction::kGoHome
             && motion_type_ == mt::StepperDriver::MotionType::kStopAndReset) {
           // First iteration.
           motion_type_ = mt::StepperDriver::MotionType::kRelative;
@@ -268,7 +269,7 @@ void MotorManager::Actuate(Configuration::ControlMode control_mode, Configuratio
   }
 }
 
-void MotorManager::LogGeneralStatus(Configuration::ControlMode control_mode) const {
+void MotorManager::LogGeneralStatus(common::ControlMode control_mode) const {
   Log.noticeln(F("General Motor Status"));
   if (motion_direction_ == mt::StepperDriver::MotionDirection::kPositive) {
     Log.noticeln(F("Motion direction: clockwise (CW)"));
@@ -280,7 +281,7 @@ void MotorManager::LogGeneralStatus(Configuration::ControlMode control_mode) con
   Log.noticeln(F("Sweep angle (degrees): %F"), configuration_.kSweepAngles_degrees_[sweep_angle_index_]);
   Log.noticeln(F("Speed (RPM): %F"), configuration_.kSpeeds_RPM_[speed_index_]);
 
-  if (control_mode == Configuration::ControlMode::kHoming) {
+  if (control_mode == common::ControlMode::kHoming) {
     Log.noticeln(F("Motion status: homing"));
   }
   else if (allow_motion_ == false) {

@@ -11,6 +11,7 @@
 #include <Arduino.h>
 #include <stepper_driver.h>
 
+#include "common_types.h"
 #include "configuration.h"
 
 namespace mtmotor_jig {
@@ -32,12 +33,12 @@ class MotorManager {
   /// @param control_mode The control mode.
   /// @param control_action The control action.
   /// @param status_output The status message to return, indicating the current action.
-  void Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action,
+  void Actuate(common::ControlMode control_mode, common::ControlAction control_action,
                String& status_output); ///< This must be called repeatedly.
 
   /// @brief Log/report the general status of the motor based on the current control mode.
   /// @param control_mode The control mode.
-  void LogGeneralStatus(Configuration::ControlMode control_mode) const;
+  void LogGeneralStatus(common::ControlMode control_mode) const;
 
   /// @brief Get the homing status.
   /// @return The homing status.

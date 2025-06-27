@@ -11,6 +11,7 @@
 #include <Arduino.h>
 #include <LiquidCrystal.h>
 
+#include "common_types.h"
 #include "configuration.h"
 
 namespace mtmotor_jig {
@@ -31,7 +32,7 @@ class DisplayManager {
   /// @brief Draw items to the display based on the control mode.
   /// @param control_mode The control mode.
   /// @param status The status message to display.
-  void Draw(Configuration::ControlMode control_mode, Configuration::ControlAction control_action,
+  void Draw(common::ControlMode control_mode, common::ControlAction control_action,
             const String& status);
 
  private:
