@@ -13,7 +13,7 @@
 #include <rotary_encoder.h>
 
 #include "common_types.h"
-#include "configuration.h"
+#include "input_types.h"
 #include "input_interface.h"
 
 namespace mtmotor_jig {
@@ -36,10 +36,9 @@ class Input : public InputInterface {
   /// @brief Destroy the Input object.
   ~Input();
 
-  /// @brief Check for user input based on the current control mode.
-  /// @param control_mode The control mode.
+  /// @brief Check for user input.
   /// @return The control action.
-  Inputs::Event Check([[maybe_unused]] common::ControlMode control_mode) override; ///< This must be called repeatedly.
+  inputs::Event Check() override; ///< This must be called repeatedly.
 
  private:
 
