@@ -12,7 +12,8 @@
 
 #include "common_types.h"
 #include "configuration.h"
-#include "input.h"
+#include "input_types.h"
+#include "input_interface.h"
 
 namespace mtmotor_jig {
 
@@ -29,7 +30,7 @@ class InputManager {
   /// @brief Check for user input based on the current control mode.
   /// @param control_mode The control mode.
   /// @return The control action.
-  common::ControlAction Check(common::ControlMode control_mode); ///< This must be called repeatedly.
+  inputs::Event Check(common::ControlMode control_mode); ///< This must be called repeatedly.
 
  private:
 

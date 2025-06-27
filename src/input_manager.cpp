@@ -13,7 +13,8 @@
 
 #include "common_types.h"
 #include "configuration.h"
-#include "input.h"
+#include "input_types.h"
+#include "input_interface.h"
 
 namespace mtmotor_jig {
 
@@ -21,7 +22,7 @@ InputManager::InputManager(InputInterface& inputs) : inputs_(inputs) {};
 
 InputManager::~InputManager() {}
 
-common::ControlAction InputManager::Check(common::ControlMode control_mode) {
+inputs::Event InputManager::Check(common::ControlMode control_mode) {
   //return inputs_.Check(control_mode);
 /*
   common::ControlAction control_action = common::ControlAction::kIdle;
