@@ -16,6 +16,7 @@
 #include <rotary_encoder.h>
 
 #include "common_types.h"
+#include "input_types.h"
 
 namespace mtmotor_jig {
 
@@ -26,9 +27,9 @@ template <typename InputType>
 Input<InputType>::~Input() {}
 
 template <typename InputType>
-Inputs::Event Input<InputType>::Check(common::ControlMode control_mode) {
+inputs::Event Input<InputType>::Check() {
   // Implementation here
-  return {id_, InputInterface::EventType::kIdle}; // Example return
+  return {id_, inputs::EventType::kIdle}; // Example return
 }
 
 // Explicit instantiations
