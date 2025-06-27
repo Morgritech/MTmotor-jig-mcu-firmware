@@ -10,8 +10,6 @@
 
 #include <Arduino.h>
 
-#include "common_types.h"
-#include "configuration.h
 #include "input_types.h"
 
 namespace mtmotor_jig {
@@ -23,10 +21,9 @@ class InputInterface {
   /// @brief Destroy the Input Interface object.
   ~InputInterface() = default;
 
-  /// @brief Check for user input based on the current control mode.
-  /// @param control_mode The control mode.
+  /// @brief Check for user input.
   /// @return The input event.
-  virtual Inputs::Event Check(common::ControlMode control_mode) = 0; ///< This must be called repeatedly.
+  virtual inputs::Event Check() = 0; ///< This must be called repeatedly.
 };
 
 } // namespace mtmotor_jig
