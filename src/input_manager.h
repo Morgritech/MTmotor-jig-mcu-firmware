@@ -4,15 +4,13 @@
 // See the LICENSE file in the project root for full license details.
 
 /// @file input_manager.h
-/// @brief Class that handles user input (buttons, serial, etc.).
+/// @brief Class that handles user input (encoders, buttons, serial, etc.).
 
 #pragma once
 
 #include <Arduino.h>
 
 #include "common_types.h"
-#include "configuration.h"
-#include "input_types.h"
 #include "input_interface.h"
 
 namespace mtmotor_jig {
@@ -22,20 +20,34 @@ class InputManager {
  public:
  
   /// @brief Construct an Input Manager object.
-  InputManager(InputInterface& inputs);
+  /// @tparam Size The size of the input items.
+  /// @param inputs The input items.
+  template <size_t Size>
+  InputManager::InputManager(InputInterface* (&inputs)[Size]) : inputs_size_(Size) { // Initialised here to avoid explicit instantiation.
+    for (size_t i = 0; i < Size; i++) {
+      inputs_[i] = inputs[i];
+    }
+  }
+
+  // Comment out the above and uncomment this if you want to use explicit instantiation in the .cpp file.
+  //template <size_t Size>
+  //InputManager(InputInterface* (&inputs)[Size]);
 
   /// @brief Destroy the Input Manager object.
   ~InputManager();
 
-  /// @brief Check for user input based on the current control mode.
+  /// @brief Check for user input.
   /// @param control_mode The control mode.
   /// @return The control action.
-  inputs::Event Check(common::ControlMode control_mode); ///< This must be called repeatedly.
+  common::ControlAction CheckAndProcess(common::ControlMode control_mode); ///< This must be called repeatedly.
 
  private:
 
-  // Buttons to control the motor.
-  InputInterface& inputs_; ///< The inputs.
+  /// @brief The inputs.
+  InputInterface* inputs_[4];
+
+  /// @brief The size of the inputs.
+  size_t inputs_size_;
 };
 
 } // namespace mtmotor_jig
