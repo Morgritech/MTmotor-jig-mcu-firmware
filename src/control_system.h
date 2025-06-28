@@ -14,8 +14,10 @@
 #include <stepper_driver.h>
 #include <LiquidCrystal.h>
 
-#include "common_types.h"
 #include "configuration.h"
+#include "common_types.h"
+#include "factories.h"
+#include "input_interface.h"
 #include "input.h"
 #include "input_manager.h"
 #include "motor_manager.h"
@@ -68,7 +70,7 @@ class ControlSystem {
                                     configuration_.kShortPressPeriod_ms_,
                                     configuration_.kLongPressPeriod_ms_}; ///< Limit switch to manipulate the motor with respect to a soft home position.  
 
-  // Stepper motor driver.
+  /// @brief The Stepper motor driver.
   mt::StepperDriver stepper_driver_{configuration_.kMotorDriverPulPin_,
                                     configuration_.kMotorDriverDirPin_,
                                     configuration_.kMotorDriverEnaPin_,
@@ -80,11 +82,16 @@ class ControlSystem {
   LiquidCrystal lcd_{configuration_.kLcdRsPin_, configuration_.kLcdEnaPin_, configuration_.kLcdD4Pin_,
                      configuration_.kLcdD5Pin_, configuration_.kLcdD6Pin_, configuration_.kLcdD7Pin_};
 
-  Input<mt::RotaryEncoder> input1_{common::InputId::kEncoderDial, encoder_dial_};
+  /// @brief The inputs.
+  InputInterface* inputs_[4] = {factories::CreateInput(common::InputId::kEncoderDial, encoder_dial_),
+                                factories::CreateInput(common::InputId::kEncoderButton, encoder_button_),
+                                factories::CreateInput(common::InputId::kControllerButton, controller_button_),
+                                factories::CreateInput(common::InputId::kLimitSwitch, limit_switch_)};
+  //Input<mt::RotaryEncoder> input1_{common::InputId::kEncoderDial, encoder_dial_};
+  //InputInterface* input2_ = factories::CreateInput(common::InputId::kEncoderButton, encoder_button_);
 
-
-  // Sensors and actuators / inputs and outputs.
-  InputManager input_manager{input1_}; ///< The User inputs (encoder, buttons, serial, etc.).
+  // Managers for sensors and actuators / inputs and outputs.
+  //InputManager input_manager{input1_}; ///< The User inputs (encoder, buttons, serial, etc.).
   MotorManager motor_{}; ///< The Motor drive system.
   DisplayManager display_{}; ///< The display (LCD).
 

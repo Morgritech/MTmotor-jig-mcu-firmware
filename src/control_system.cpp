@@ -11,8 +11,8 @@
 #include <Arduino.h>
 #include <ArduinoLog.h>
 
-#include "common_types.h"
 #include "configuration.h"
+#include "common_types.h"
 #include "input_manager.h"
 #include "motor_manager.h"
 #include "display_manager.h"
@@ -21,7 +21,12 @@ namespace mtmotor_jig {
 
 ControlSystem::ControlSystem() {}
 
-ControlSystem::~ControlSystem() {}
+ControlSystem::~ControlSystem() {
+  // Clean up dynamically allocated InputInterface objects.
+  for (auto& input : inputs_) {
+    delete input;
+  }
+}
 
 void ControlSystem::Begin() {
   // Hardware.
