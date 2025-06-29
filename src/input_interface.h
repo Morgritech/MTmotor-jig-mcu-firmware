@@ -19,11 +19,11 @@ class InputInterface {
  public:
  
   /// @brief Destroy the Input Interface object.
-  ~InputInterface() = default;
+  virtual ~InputInterface() = default;
 
   /// @brief Check for user input.
   /// @return The input event.
-  virtual inputs::Event Check() = 0; ///< This must be called repeatedly.
+  virtual inputs::Event Check() = 0;
 };
 
 } // namespace mtmotor_jig

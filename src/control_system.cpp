@@ -24,7 +24,8 @@ ControlSystem::ControlSystem() {}
 ControlSystem::~ControlSystem() {
   // Clean up dynamically allocated InputInterface objects.
   for (auto& input : inputs_) {
-    delete input;
+    delete input; // Deallocate/free memory.
+    input = nullptr; // Prevent dangling pointers.
   }
 }
 
