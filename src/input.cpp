@@ -4,7 +4,7 @@
 // See the LICENSE file in the project root for full license details.
 
 /// @file input.cpp
-/// @brief Class to create configurable inputs (encoders, buttons, serial, etc.).
+/// @brief Class to create configurable hardware inputs (encoders, buttons, etc.).
 
 #pragma once
 
