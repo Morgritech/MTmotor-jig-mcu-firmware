@@ -18,7 +18,6 @@ enum class InputId : uint8_t {
   kEncoderButton,
   kControllerButton,
   kLimitSwitch,
-  kSerialInput,
 };
 
 /// @brief Enum of control system modes.
