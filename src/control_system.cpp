@@ -4,7 +4,7 @@
 // See the LICENSE file in the project root for full license details.
 
 /// @file control_system.cpp
-/// @brief Class that links sensor inputs (buttons, serial, etc.) to actuator outputs (display, steppers, etc.).
+/// @brief Class that links sensor inputs (encoders, buttons, serial, etc.) to actuator outputs (display, motors, etc.).
 
 #include "control_system.h"
 
@@ -51,7 +51,7 @@ void ControlSystem::CheckAndProcess() {
     previous_control_mode_ = control_mode_;
   }
   else {
-//    control_action_ = inputs_.Check(control_mode_);
+    control_action_ = input_manager_.CheckAndProcess(control_mode_);
   }
 
   // Process inputs.

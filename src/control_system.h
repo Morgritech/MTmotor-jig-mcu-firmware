@@ -4,7 +4,7 @@
 // See the LICENSE file in the project root for full license details.
 
 /// @file control_system.h
-/// @brief Class that links sensor inputs (buttons, serial, etc.) to actuator outputs (display, steppers, etc.).
+/// @brief Class that links sensor inputs (encoders, buttons, serial, etc.) to actuator outputs (display, motors, etc.).
 
 #pragma once
 
@@ -18,7 +18,7 @@
 #include "common_types.h"
 #include "factories.h"
 #include "input_interface.h"
-#include "input.h"
+//#include "input.h"
 #include "input_manager.h"
 #include "motor_manager.h"
 #include "display_manager.h"
@@ -90,8 +90,8 @@ class ControlSystem {
   //Input<mt::RotaryEncoder> input1_{common::InputId::kEncoderDial, encoder_dial_};
   //InputInterface* input2_ = factories::CreateInput(common::InputId::kEncoderButton, encoder_button_);
 
-  // Managers for sensors and actuators / inputs and outputs.
-  //InputManager input_manager{input1_}; ///< The User inputs (encoder, buttons, serial, etc.).
+  // Managers for inputs and outputs (sensors and actuators).
+  InputManager input_manager_{inputs_}; ///< The User inputs (encoder, buttons, serial, etc.).
   MotorManager motor_{}; ///< The Motor drive system.
   DisplayManager display_{}; ///< The display (LCD).
 
