@@ -21,7 +21,7 @@
 namespace mtmotor_jig {
 
 template <typename InputType>
-Input<InputType>::Input(common::InputId id, InputType& input) : input_(input) {}
+Input<InputType>::Input(common::InputId id, InputType& input) : id_(id), input_(input) {}
 
 template <typename InputType>
 Input<InputType>::~Input() {}
