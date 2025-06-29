@@ -4,26 +4,17 @@
 // See the LICENSE file in the project root for full license details.
 
 /// @file input.h
-/// @brief Class for creating configurable inputs (buttons, serial, etc.).
+/// @brief Class to create configurable inputs (encoders, buttons, serial, etc.).
 
 #pragma once
 
 #include <Arduino.h>
-#include <momentary_button.h>
-#include <rotary_encoder.h>
 
 #include "common_types.h"
 #include "input_types.h"
 #include "input_interface.h"
 
 namespace mtmotor_jig {
-/*
-template<typename InputType>
-struct InputTraits {
-  typeid(InputType) type_id_; ///< The type of the input.
-  auto typeid = typeid(InputType)
-};
-*/
 
 /// @brief The Input class.
 template <typename InputType>

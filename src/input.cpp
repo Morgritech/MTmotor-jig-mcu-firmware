@@ -4,7 +4,7 @@
 // See the LICENSE file in the project root for full license details.
 
 /// @file input.cpp
-/// @brief Class for creating configurable inputs (buttons, serial, etc.).
+/// @brief Class to create configurable inputs (encoders, buttons, serial, etc.).
 
 #pragma once
 
@@ -26,10 +26,38 @@ Input<InputType>::Input(common::InputId id, InputType& input) : input_(input) {}
 template <typename InputType>
 Input<InputType>::~Input() {}
 
-template <typename InputType>
-inputs::Event Input<InputType>::Check() {
-  // Implementation here
-  return {id_, inputs::EventType::kIdle}; // Example return
+template <>
+inputs::Event Input<mt::RotaryEncoder>::Check() {
+  using RotationDirection = mt::RotaryEncoder::RotationDirection;
+
+  auto event = inputs::EventType::kIdle;
+
+  if (RotationDirection rotation_direction = input_.DetectRotation();
+      rotation_direction == RotationDirection::kPositive) {
+    event = inputs::EventType::kPositiveRotation;
+  }
+  else if (rotation_direction == RotationDirection::kNegative) {
+    event = inputs::EventType::kNegativeRotation;
+  }
+
+  return {id_, event};
+}
+
+template <>
+inputs::Event Input<mt::MomentaryButton>::Check() {
+  using PressType = mt::MomentaryButton::PressType;
+
+  auto event = inputs::EventType::kIdle;
+
+  if (PressType press_type = input_.DetectPressType();
+      press_type == PressType::kShortPress) {
+    event = inputs::EventType::kShortPress;
+  }
+  else if (press_type == PressType::kLongPress) {
+    event = inputs::EventType::kLongPress;
+  }
+
+  return {id_, event};
 }
 
 // Explicit instantiations
