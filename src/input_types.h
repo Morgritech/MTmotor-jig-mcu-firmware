@@ -14,6 +14,8 @@
 
 namespace mtmotor_jig::inputs {
 
+// Input object types.
+
 /// @brief Enum of event types.
 enum class EventType : int8_t {
   kNegativeRotation = -1,
