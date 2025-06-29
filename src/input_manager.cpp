@@ -25,37 +25,40 @@ namespace mtmotor_jig {
 InputManager::~InputManager() {}
 
 common::ControlAction InputManager::CheckAndProcess(common::ControlMode control_mode) {
-  inputs::Event input_event;
+  inputs::Event input_event{};
   
   // Check for input events from all hardware inputs (encoder dial, buttons).
   for (auto i = 0; i < inputs_size_; i++) {
     input_event = inputs_[i]->Check();
     if (input_event.event_type != inputs::EventType::kIdle) {
-      Log.noticeln(F("Input detected: ID=%d, Type=%d"), static_cast<int>(input_event.input_id),
-                   static_cast<int>(input_event.event_type));
+      Log.noticeln(F("Input detected: ID=%d, Type=%d"), static_cast<uint8_t>(input_event.input_id),
+                   static_cast<int8_t>(input_event.event_type));
       break;
     }
   }
 
-  common::ControlAction control_action = common::ControlAction::kIdle;
+  auto control_action = common::ControlAction::kIdle;
 
   // Process all hardware inputs and serial input (one character at a time).
   switch (input_event.event_type) {
-    case inputs::EventType::kPositiveRotation:
+    case inputs::EventType::kPositiveRotation: {
       control_action = common::ControlAction::kSelectNext;
+      Log.noticeln(F("Encoder dial clockwise rotation"));
       break;
-
-    case inputs::EventType::kNegativeRotation:
+    }
+    case inputs::EventType::kNegativeRotation: {
       control_action = common::ControlAction::kSelectPrevious;
+      Log.noticeln(F("Encoder dial counter-clockwise rotation"));
       break;
-
-    case inputs::EventType::kShortPress:
+    }
+    case inputs::EventType::kShortPress: {
       if (input_event.input_id == common::InputId::kControllerButton) {
         control_action = common::ControlAction::kCycleSpeed;
+        Log.noticeln(F("Controller button short press"));
       }
       else if (input_event.input_id == common::InputId::kEncoderButton) {
-        
         switch (control_mode) {
+          Log.noticeln(F("Encoder button short press"));
           case common::ControlMode::kContinuousMenu:
             control_action = common::ControlAction::kToggleDirection;
             break;
@@ -66,35 +69,36 @@ common::ControlAction InputManager::CheckAndProcess(common::ControlMode control_
       }
       else if (input_event.input_id == common::InputId::kLimitSwitch) {
         control_action = common::ControlAction::kResetHome;
+        Log.noticeln(F("Limit switch short press"));
       }
 
       break;
-
-    case inputs::EventType::kLongPress:
+    }
+    case inputs::EventType::kLongPress: {
       if (input_event.input_id == common::InputId::kControllerButton
           || input_event.input_id == common::InputId::kEncoderButton) {
         control_action = common::ControlAction::kToggleMotion;
+        Log.noticeln(F("Button long press"));
       }
       else if (input_event.input_id == common::InputId::kLimitSwitch) {
         control_action = common::ControlAction::kGoHome;
+        Log.noticeln(F("Limit switch long press"));
       }
 
       break;
-
-    case inputs::EventType::kIdle:
+    }
+    case inputs::EventType::kIdle: {
       // Check for serial input if there are no hardware inputs.
       if (MTMOTOR_JIG_SERIAL.available() > 0) {
         char serial_input = MTMOTOR_JIG_SERIAL.read();
         control_action = static_cast<common::ControlAction>(serial_input);
         Log.noticeln(F("Serial input: %c"), serial_input);
       }
-      else {
-        control_action = common::ControlAction::kIdle;
-      }
       
       break;
+    }
   }
-  
+
   return control_action;
 }
 
