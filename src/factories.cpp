@@ -18,13 +18,18 @@
 
 namespace mtmotor_jig::factories {
 
+// Uncomment this if you want to use explicit instantiation.
+/*
 template <typename InputType>
 InputInterface* CreateInput(common::InputId id, InputType& input) {
   return new Input<InputType>(id, input);
 }
+//*/
 
-// Explicit instantiations.
+// Explicit instantiations. Uncomment if you want to use it. Add new types as needed.
+/*
 template InputInterface* CreateInput<mt::MomentaryButton>(common::InputId, mt::MomentaryButton&);
 template InputInterface* CreateInput<mt::RotaryEncoder>(common::InputId, mt::RotaryEncoder&);
+//*/
 
 } // namespace mtmotor_jig::factories
