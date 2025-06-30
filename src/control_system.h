@@ -21,7 +21,7 @@
 //#include "input.h"
 #include "input_manager.h"
 #include "motor_manager.h"
-#include "display_manager.h"
+#include "display_dot_matrix.h"
 
 namespace mtmotor_jig {
 
@@ -70,6 +70,15 @@ class ControlSystem {
                                     configuration_.kShortPressPeriod_ms_,
                                     configuration_.kLongPressPeriod_ms_}; ///< Limit switch to manipulate the motor with respect to a soft home position.  
 
+  /// @brief The inputs (encoders, buttons, etc.).
+  InputInterface* inputs_[4] = {factories::CreateInput(common::InputId::kEncoderDial, encoder_dial_),
+                                factories::CreateInput(common::InputId::kEncoderButton, encoder_button_),
+                                factories::CreateInput(common::InputId::kControllerButton, controller_button_),
+                                factories::CreateInput(common::InputId::kLimitSwitch, limit_switch_)};
+  //Input<mt::RotaryEncoder> input1_{common::InputId::kEncoderDial, encoder_dial_};
+  //InputInterface* input2_ = factories::CreateInput(common::InputId::kEncoderButton, encoder_button_);
+  //InputInterface* input3_ = new Input<mt::MomentaryButton>(common::InputId::kControllerButton, controller_button_);
+  
   /// @brief The Stepper motor driver.
   mt::StepperDriver stepper_driver_{configuration_.kMotorDriverPulPin_,
                                     configuration_.kMotorDriverDirPin_,
@@ -79,21 +88,17 @@ class ControlSystem {
                                     configuration_.kGearRatio_};
 
   /// @brief The LCD display.
-  LiquidCrystal lcd_{configuration_.kLcdRsPin_, configuration_.kLcdEnaPin_, configuration_.kLcdD4Pin_,
-                     configuration_.kLcdD5Pin_, configuration_.kLcdD6Pin_, configuration_.kLcdD7Pin_};
+  LiquidCrystal dot_matrix_display_{configuration_.kLcdRsPin_,
+                                    configuration_.kLcdEnaPin_,
+                                    configuration_.kLcdD4Pin_,
+                                    configuration_.kLcdD5Pin_,
+                                    configuration_.kLcdD6Pin_,
+                                    configuration_.kLcdD7Pin_};
 
-  /// @brief The inputs.
-  InputInterface* inputs_[4] = {factories::CreateInput(common::InputId::kEncoderDial, encoder_dial_),
-                                factories::CreateInput(common::InputId::kEncoderButton, encoder_button_),
-                                factories::CreateInput(common::InputId::kControllerButton, controller_button_),
-                                factories::CreateInput(common::InputId::kLimitSwitch, limit_switch_)};
-  //Input<mt::RotaryEncoder> input1_{common::InputId::kEncoderDial, encoder_dial_};
-  //InputInterface* input2_ = factories::CreateInput(common::InputId::kEncoderButton, encoder_button_);
-
-  // Managers for inputs and outputs (sensors and actuators).
+  // Managers and objects for inputs and outputs (sensors and actuators).
   InputManager input_manager_{inputs_}; ///< The User inputs (encoder, buttons, serial, etc.).
   MotorManager motor_{}; ///< The Motor drive system.
-  DisplayManager display_{}; ///< The display (LCD).
+  DisplayDotMatrix display_{dot_matrix_display_}; ///< The (dot-matrix) display.
 
   // Control flags and indicator variables.
   common::ControlMode control_mode_ = configuration_.kDefaultControlMode_; ///< Variable to keep track of the control system mode.

@@ -15,7 +15,7 @@
 #include "common_types.h"
 #include "input_manager.h"
 #include "motor_manager.h"
-#include "display_manager.h"
+#include "display_dot_matrix.h"
 
 namespace mtmotor_jig {
 
@@ -38,7 +38,9 @@ void ControlSystem::Begin() {
   limit_switch_.set_long_press_option(configuration_.kLongPressOption_);
   // Outputs.
   motor_.Begin();
-  display_.Begin();
+  dot_matrix_display_.begin(configuration_.kDisplayWidth_, configuration_.kDisplayHeight_);
+  dot_matrix_display_.blink(); // Blink the display cursor.
+  //dot_matrix_display_.cursor(); // Show a static display cursor.  
   tone(configuration_.kControllerBuzzerPin_, configuration_.kBuzzerStartupFrequency_Hz_,
        configuration_.kBuzzerStartupDuration_ms_); // Sound the buzzer at startup.
   LogGeneralStatus(); // Log initial status of control system.
