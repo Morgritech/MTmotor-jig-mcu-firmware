@@ -3,8 +3,8 @@
 // Licensed under GNU General Public License v3.0 (GPLv3) License.
 // See the LICENSE file in the project root for full license details.
 
-/// @file motor_manager.h
-/// @brief Class that handles motor control.
+/// @file motor_stepper.h
+/// @brief Class that handles stepper motor control.
 
 #pragma once
 
@@ -17,17 +17,14 @@
 namespace mtmotor_jig {
 
 /// @brief The Motor Manager class.
-class MotorManager {
+class MotorStepper {
  public:
 
   /// @brief Construct a Motor Manager object.
-  MotorManager();
+  MotorStepper(mt::StepperDriver& stepper_driver, Configuration& configuration = Configuration::GetInstance());
 
   /// @brief Destroy the Motor Manager object.
-  ~MotorManager();
-
-  /// @brief Initialise the motor.
-  void Begin(); ///< This must be called only once.
+  ~MotorStepper();
 
   /// @brief Actuate the motor based on the current action and control mode.
   /// @param control_mode The control mode.
@@ -50,13 +47,8 @@ class MotorManager {
   Configuration& configuration_ = Configuration::GetInstance();
 
   // Stepper motor driver.
-  mt::StepperDriver stepper_driver_{configuration_.kMotorDriverPulPin_,
-                                    configuration_.kMotorDriverDirPin_,
-                                    configuration_.kMotorDriverEnaPin_,
-                                    configuration_.kMicrostepMode_,
-                                    configuration_.kFullStepAngle_degrees_,
-                                    configuration_.kGearRatio_};
-
+  mt::StepperDriver& stepper_driver_;
+  
   // Control flags and indicator variables.
   mt::StepperDriver::MotionDirection motion_direction_ = configuration_.kDefaultMotionDirection_; ///< Variable to keep track of the motion direction.
   mt::StepperDriver::MotionType motion_type_ = mt::StepperDriver::MotionType::kRelative; ///< Variable to keep track of the motion type.

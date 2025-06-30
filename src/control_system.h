@@ -20,7 +20,7 @@
 #include "input_interface.h"
 //#include "input.h"
 #include "input_manager.h"
-#include "motor_manager.h"
+#include "motor_stepper.h"
 #include "display_dot_matrix.h"
 
 namespace mtmotor_jig {
@@ -87,7 +87,7 @@ class ControlSystem {
                                     configuration_.kFullStepAngle_degrees_,
                                     configuration_.kGearRatio_};
 
-  /// @brief The LCD display.
+  /// @brief The (dot-matrix) LCD display driver.
   LiquidCrystal dot_matrix_display_{configuration_.kLcdRsPin_,
                                     configuration_.kLcdEnaPin_,
                                     configuration_.kLcdD4Pin_,
@@ -95,10 +95,10 @@ class ControlSystem {
                                     configuration_.kLcdD6Pin_,
                                     configuration_.kLcdD7Pin_};
 
-  // Managers and objects for inputs and outputs (sensors and actuators).
-  InputManager input_manager_{inputs_}; ///< The User inputs (encoder, buttons, serial, etc.).
-  MotorManager motor_{}; ///< The Motor drive system.
-  DisplayDotMatrix display_{dot_matrix_display_}; ///< The (dot-matrix) display.
+  // Managers and controllers for inputs and outputs (sensors and actuators).
+  InputManager input_manager_{inputs_}; ///< The User Inputs manager (encoder, buttons, serial, etc.).
+  MotorStepper stepper_motor_{stepper_driver_}; ///< The Stepper motor drive system.
+  DisplayDotMatrix display_{dot_matrix_display_}; ///< The (dot-matrix) LCD controller.
 
   // Control flags and indicator variables.
   common::ControlMode control_mode_ = configuration_.kDefaultControlMode_; ///< Variable to keep track of the control system mode.

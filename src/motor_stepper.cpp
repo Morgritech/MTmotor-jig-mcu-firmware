@@ -3,10 +3,10 @@
 // Licensed under GNU General Public License v3.0 (GPLv3) License.
 // See the LICENSE file in the project root for full license details.
 
-/// @file motor_manager.cpp
-/// @brief Class that handles motor control.
+/// @file motor_stepper.cpp
+/// @brief Class that handles stepper motor control.
 
-#include "motor_manager.h"
+#include "motor_stepper.h"
 
 #include <Arduino.h>
 #include <stepper_driver.h>
@@ -16,23 +16,12 @@
 
 namespace mtmotor_jig {
 
-MotorManager::MotorManager() {}
+MotorStepper::MotorStepper(mt::StepperDriver& stepper_driver, Configuration& configuration)
+    : stepper_driver_(stepper_driver), configuration_(configuration) {}
 
-MotorManager::~MotorManager() {}
+MotorStepper::~MotorStepper() {}
 
-void MotorManager::Begin() {
-  stepper_driver_.set_pul_delay_us(configuration_.kPulDelay_us_);
-  stepper_driver_.set_dir_delay_us(configuration_.kDirDelay_us_);
-  stepper_driver_.set_ena_delay_us(configuration_.kEnaDelay_us_);
-  stepper_driver_.SetSpeed(configuration_.kSpeeds_RPM_[configuration_.kDefaultSpeedIndex_],
-                           mt::StepperDriver::SpeedUnits::kRevolutionsPerMinute);
-  stepper_driver_.SetAcceleration(configuration_.kAcceleration_microsteps_per_s_per_s_,
-                                  mt::StepperDriver::AccelerationUnits::kMicrostepsPerSecondPerSecond);
-  stepper_driver_.set_acceleration_algorithm(configuration_.kAccelerationAlgorithm_);
-  stepper_driver_.set_power_state(mt::StepperDriver::PowerState::kEnabled);
-}
-
-void MotorManager::Actuate(common::ControlMode control_mode, common::ControlAction control_action,
+void MotorStepper::Actuate(common::ControlMode control_mode, common::ControlAction control_action,
                            String& status_output) {
   // Process control actions.
   switch(control_action) {
@@ -269,7 +258,7 @@ void MotorManager::Actuate(common::ControlMode control_mode, common::ControlActi
   }
 }
 
-void MotorManager::LogGeneralStatus(common::ControlMode control_mode) const {
+void MotorStepper::LogGeneralStatus(common::ControlMode control_mode) const {
   Log.noticeln(F("General Motor Status"));
   if (motion_direction_ == mt::StepperDriver::MotionDirection::kPositive) {
     Log.noticeln(F("Motion direction: clockwise (CW)"));
@@ -292,7 +281,7 @@ void MotorManager::LogGeneralStatus(common::ControlMode control_mode) const {
   }
 }
 
-bool MotorManager::homing() const {
+bool MotorStepper::homing() const {
   return homing_;
 }
 

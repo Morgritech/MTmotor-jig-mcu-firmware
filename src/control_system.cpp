@@ -10,12 +10,10 @@
 
 #include <Arduino.h>
 #include <ArduinoLog.h>
+#include <stepper_driver.h>
 
-#include "configuration.h"
 #include "common_types.h"
-#include "input_manager.h"
-#include "motor_manager.h"
-#include "display_dot_matrix.h"
+
 
 namespace mtmotor_jig {
 
@@ -36,13 +34,24 @@ void ControlSystem::Begin() {
   encoder_button_.set_long_press_option(configuration_.kLongPressOption_);
   controller_button_.set_long_press_option(configuration_.kLongPressOption_);
   limit_switch_.set_long_press_option(configuration_.kLongPressOption_);
-  // Outputs.
-  motor_.Begin();
+  // Outputs - Stepper motor.
+  stepper_driver_.set_pul_delay_us(configuration_.kPulDelay_us_);
+  stepper_driver_.set_dir_delay_us(configuration_.kDirDelay_us_);
+  stepper_driver_.set_ena_delay_us(configuration_.kEnaDelay_us_);
+  stepper_driver_.SetSpeed(configuration_.kSpeeds_RPM_[configuration_.kDefaultSpeedIndex_],
+                           mt::StepperDriver::SpeedUnits::kRevolutionsPerMinute);
+  stepper_driver_.SetAcceleration(configuration_.kAcceleration_microsteps_per_s_per_s_,
+                                  mt::StepperDriver::AccelerationUnits::kMicrostepsPerSecondPerSecond);
+  stepper_driver_.set_acceleration_algorithm(configuration_.kAccelerationAlgorithm_);
+  stepper_driver_.set_power_state(mt::StepperDriver::PowerState::kEnabled);
+  // Outputs - Display
   dot_matrix_display_.begin(configuration_.kDisplayWidth_, configuration_.kDisplayHeight_);
   dot_matrix_display_.blink(); // Blink the display cursor.
   //dot_matrix_display_.cursor(); // Show a static display cursor.  
+  // Outputs - Buzzer.
   tone(configuration_.kControllerBuzzerPin_, configuration_.kBuzzerStartupFrequency_Hz_,
        configuration_.kBuzzerStartupDuration_ms_); // Sound the buzzer at startup.
+
   LogGeneralStatus(); // Log initial status of control system.
 }
 
@@ -99,7 +108,7 @@ void ControlSystem::CheckAndProcess() {
   }
 
   // Initiate outputs.
-  motor_.Actuate(control_mode_, control_action_, status_);
+  stepper_motor_.Actuate(control_mode_, control_action_, status_);
   display_.Draw(control_mode_, control_action_, status_);
 
   // Transition through the initial control modes, and process any further control mode changes.
@@ -115,7 +124,7 @@ void ControlSystem::CheckAndProcess() {
       break;
     }
     case common::ControlMode::kHoming: {
-      if (motor_.homing() == false) {
+      if (stepper_motor_.homing() == false) {
         control_mode_ = previous_control_mode_;
         previous_control_mode_ = common::ControlMode::kHoming;
         Log.noticeln(F("Control mode: returned to previous mode"));
@@ -151,7 +160,7 @@ void ControlSystem::LogGeneralStatus() const {
     }
   }
 
-  motor_.LogGeneralStatus(control_mode_);
+  stepper_motor_.LogGeneralStatus(control_mode_);
 }
 
 } // namespace mtmotor_jig
