@@ -6,7 +6,7 @@
     "debounce_period_ms": 20,
     "short_press_period_ms": 500,
     "long_press_period_ms": 1000,
-    "long_press_option": "detect-while-holding"
+    "long_press_option": "detect_while_holding" // Options: "detect_while_holding", "detect_after_release"
   },
   "stepper": {
     "step_angle_degrees": 1.8,
@@ -18,7 +18,7 @@
     "sweep_angles_degrees": [45.0, 90.0, 180.0, 360.0],
     "speeds_rpm": [7.0, 10.0, 13.0, 16.0],
     "acceleration_microsteps_per_s_per_s": 6000.0,
-    "accelerationAlgorithm": "morgritech24"
+    "acceleration_algorithm": "morgridge24" // Options: "morgridge24", "austin05", "eiderman04"
   },
   "display": {
     "splash_screen_delay_ms": 1500
