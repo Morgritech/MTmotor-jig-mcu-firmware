@@ -1,0 +1,17 @@
+{
+  "serial": {
+    "baud_rate": 115200
+  },
+  "inputs": {
+    "debounce_period_ms": 20,
+    "short_press_period_ms": 500,
+    "long_press_period_ms": 1000,
+    "long_press_option": "detect-while-holding"
+  },
+  "stepper": {
+    "step_angle_degrees": 1.8,
+    "gear_ratio": 1.0,
+    "microstep_mode": 32,
+  }
+
+}
