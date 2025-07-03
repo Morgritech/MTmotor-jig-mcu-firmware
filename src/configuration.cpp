@@ -11,6 +11,9 @@
 #include <Arduino.h>
 #include <ArduinoLog.h>
 
+#define ARDUINOJSON_ENABLE_COMMENTS 1
+#include <ArduinoJson.h>
+
 namespace mtmotor_jig {
 
 Configuration& Configuration::GetInstance() {

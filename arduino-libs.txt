@@ -3,3 +3,4 @@ MT-arduino-momentary-button@3.0.2
 MT-arduino-stepper-driver@3.1.2
 ArduinoLog@1.1.1
 LiquidCrystal@1.0.7
+ArduinoJson@7.4.1
