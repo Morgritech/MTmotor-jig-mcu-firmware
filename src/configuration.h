@@ -101,9 +101,6 @@ class Configuration {
   const float kAcceleration_microsteps_per_s_per_s_ = 6000.0; //8000.0; ///< Acceleration (microsteps per second-squared).
   const mt::StepperDriver::AccelerationAlgorithm kAccelerationAlgorithm_ = mt::StepperDriver::AccelerationAlgorithm::kMorgridge24; ///< Acceleration algorithm.
 
-  // Other properties.
-  const uint16_t kStartupTime_ms_ = 1000; ///< Minimum startup/boot time in milliseconds (ms); based on the motor driver.
-
   // Display properties.
   const uint8_t kDisplayHeight_ = 4; ///< The Display height (Rows).
   const uint8_t kDisplayWidth_ = 20; ///< The Display width (Columns).
@@ -125,8 +122,12 @@ class Configuration {
   const uint8_t kDefaultCursorPositionY_ = kContinuousMenuCursorPositionY_; ///< The default/initial cursor position (y-axis).
 
   // Buzzer properties.
+  bool kBuzzerEnabled = true; ///< Whether the buzzer is enabled at startup.
   const uint16_t kBuzzerStartupFrequency_Hz_ = 4000; ///< The buzzer frequency (Hz) at startup.
   const uint16_t kBuzzerStartupDuration_ms_ = 100; ///< The buzzer duration (ms) at startup.
+
+  // Other properties.
+  const uint16_t kStartupTime_ms_ = 1000; ///< Minimum startup/boot time in milliseconds (ms); based on the motor driver.
 
  private:
 
