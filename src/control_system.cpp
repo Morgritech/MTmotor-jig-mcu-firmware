@@ -49,9 +49,11 @@ void ControlSystem::Begin() {
   dot_matrix_display_.blink(); // Blink the display cursor.
   //dot_matrix_display_.cursor(); // Show a static display cursor.  
   // Outputs - Buzzer.
-  tone(configuration_.kControllerBuzzerPin_, configuration_.kBuzzerStartupFrequency_Hz_,
-       configuration_.kBuzzerStartupDuration_ms_); // Sound the buzzer at startup.
-
+  if (configuration_.kBuzzerEnabled_) {
+    tone(configuration_.kControllerBuzzerPin_, configuration_.kBuzzerStartupFrequency_Hz_,
+        configuration_.kBuzzerStartupDuration_ms_); // Sound the buzzer at startup.
+  }
+  // Status.
   LogGeneralStatus(); // Log initial status of control system.
 }
 

@@ -122,7 +122,7 @@ class Configuration {
   const uint8_t kDefaultCursorPositionY_ = kContinuousMenuCursorPositionY_; ///< The default/initial cursor position (y-axis).
 
   // Buzzer properties.
-  bool kBuzzerEnabled = true; ///< Whether the buzzer is enabled at startup.
+  bool kBuzzerEnabled_ = false; ///< Whether the buzzer is enabled at startup.
   const uint16_t kBuzzerStartupFrequency_Hz_ = 4000; ///< The buzzer frequency (Hz) at startup.
   const uint16_t kBuzzerStartupDuration_ms_ = 100; ///< The buzzer duration (ms) at startup.
 
