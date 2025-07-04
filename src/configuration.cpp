@@ -10,6 +10,8 @@
 
 #include <Arduino.h>
 #include <ArduinoLog.h>
+#include <SPI.h>
+#include <SD.h>
 
 #define ARDUINOJSON_ENABLE_COMMENTS 1
 #include <ArduinoJson.h>
