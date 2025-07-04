@@ -56,9 +56,9 @@ class MotorStepper {
   uint8_t sweep_angle_index_ = configuration_.kDefaultSweepAngleIndex_; ///< Index to keep track of the sweep angle set from the lookup table.
   uint8_t speed_index_ = configuration_.kDefaultSpeedIndex_; ///< Index to keep track of the motor speed set from the lookup table.
   mt::StepperDriver::MotionStatus motion_status_ = mt::StepperDriver::MotionStatus::kIdle; ///< Variable to keep track of the motion status.
-  bool allow_motion_ = false; ///< Variable to keep track of the motion toggle based on user input.
+  bool allow_motion_ = false; ///< Flag to control the motion toggle based on user input.
   float homing_angle_degrees_ = 0.0F; ///< Variable to store the angular position (degrees) for homing.
-  bool homing_ = false; ///< Variable to keep track of the homing status.
+  bool homing_ = false; ///< Flag to keep track of the homing status.
 };
 
 } // namespace mtmotor_jig
