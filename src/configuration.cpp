@@ -23,7 +23,7 @@ Configuration& Configuration::GetInstance() {
   return instance;
 }
 
-void mtmotor_jig::Configuration::BeginHardware() const {
+void mtmotor_jig::Configuration::BeginHardware() {
   // Initialise the serial port.
   MTMOTOR_JIG_SERIAL.begin(kBaudRate_);
 
@@ -43,13 +43,9 @@ void mtmotor_jig::Configuration::BeginHardware() const {
   pinMode(kMotorDriverDirPin_, OUTPUT);
   pinMode(kMotorDriverEnaPin_, OUTPUT);
 
-  // Initialise the SD card.
-  if (!SD.begin(kControllerSdCsPin_)) {
-    Log.errorln(F("SD card initialisation failed!"));
-  } 
-  else {
-    Log.noticeln(F("SD card initialised successfully."));
-  }
+  // Read the configuration the default config file 
+  // or the first available config file on the SD card.
+  ReadConfigFromFileOnSd();
 
   // Delay for the startup time.
   delay(kStartupTime_ms_);
@@ -86,8 +82,38 @@ Configuration::Configuration() {}
 
 Configuration::~Configuration() {}
 
-void ReadConfigurationFromFile() {
+void Configuration::ReadConfigFromFileOnSd() {
+  if (!SD.begin(kControllerSdCsPin_)) {
+    Log.errorln(F("SD card initialisation failed!"));
+    return;
+  }
 
+  Log.noticeln(F("SD card initialised."));
+
+  char* serialised_json = nullptr; //""
+  File config_file = SD.open(kDefaultConfigFileName_);
+
+  if (config_file) {
+    Log.noticeln(F("Configuration file opened: %s"), kDefaultConfigFileName_);
+  }
+  else {
+    Log.errorln(F("Failed to open configuration file: %s"), kDefaultConfigFileName_);
+
+    // TODO(JM): 
+    // Attempt to read the first available configuration file.
+    // If ok, Log notice of the file that was opened.
+    // Else log error and return.
+    return;
+  }
+
+  while (config_file.available()) {
+    serialised_json += config_file.read();
+  }
+
+  // TODO(JM): 
+  // deserialise the JSON string into a JSON object.
+  // store the values in the relevant member variables.
+  Serial.println(serialised_json);
 }
 
 } // namespace mtmotor_jig

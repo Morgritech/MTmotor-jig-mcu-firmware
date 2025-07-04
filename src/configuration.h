@@ -38,7 +38,7 @@ class Configuration {
   Configuration& operator=(const Configuration&) = delete;
 
   /// @brief Initialise the hardware (Serial port, logging, pins, etc.).
-  void BeginHardware() const; ///< This must be called only once.
+  void BeginHardware(); ///< This must be called only once.
 
   /// @brief Toggle log messages.
   void ToggleLogs();
@@ -122,9 +122,12 @@ class Configuration {
   const uint8_t kDefaultCursorPositionY_ = kContinuousMenuCursorPositionY_; ///< The default/initial cursor position (y-axis).
 
   // Buzzer properties.
-  bool kBuzzerEnabled_ = false; ///< Whether the buzzer is enabled at startup.
+  bool kBuzzerEnabled_ = false; ///< Flag to control whether the buzzer is enabled at startup.
   const uint16_t kBuzzerStartupFrequency_Hz_ = 4000; ///< The buzzer frequency (Hz) at startup.
   const uint16_t kBuzzerStartupDuration_ms_ = 100; ///< The buzzer duration (ms) at startup.
+
+  // SD card and configuration file properties.
+  const char* kDefaultConfigFileName_ = "default.json";
 
   // Other properties.
   const uint16_t kStartupTime_ms_ = 1000; ///< Minimum startup/boot time in milliseconds (ms); based on the motor driver.
@@ -137,8 +140,8 @@ class Configuration {
   /// @brief Private destructor so objects cannot be manually instantiated. 
   ~Configuration();
 
-  /// @brief Read the configuration from a file (JSON format).
-  void ReadConfigurationFromFile();
+  /// @brief Read the configuration from a file (JSON format) on the SD card.
+  void ReadConfigFromFileOnSd();
 
   // Debug helpers and logger properties (for debugging and system reporting).
   int log_level_ = LOG_LEVEL_SILENT; ///< The log level.
