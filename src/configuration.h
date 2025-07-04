@@ -137,6 +137,9 @@ class Configuration {
   /// @brief Private destructor so objects cannot be manually instantiated. 
   ~Configuration();
 
+  /// @brief Read the configuration from a file (JSON format).
+  void ReadConfigurationFromFile();
+
   // Debug helpers and logger properties (for debugging and system reporting).
   int log_level_ = LOG_LEVEL_SILENT; ///< The log level.
   //int log_level_ = LOG_LEVEL_VERBOSE; ///< The log level.

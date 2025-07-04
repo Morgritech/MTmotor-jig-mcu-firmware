@@ -31,7 +31,6 @@ void mtmotor_jig::Configuration::BeginHardware() const {
   Log.begin(log_level_, &MTMOTOR_JIG_SERIAL);
 
   // Initialise the input pins.
-
   pinMode(kEncoderButtonPin_, INPUT_PULLUP);
   pinMode(kEncoderContactAPin_, INPUT_PULLUP);
   pinMode(kEncoderContactBPin_, INPUT_PULLUP);
@@ -43,6 +42,14 @@ void mtmotor_jig::Configuration::BeginHardware() const {
   pinMode(kMotorDriverPulPin_, OUTPUT);
   pinMode(kMotorDriverDirPin_, OUTPUT);
   pinMode(kMotorDriverEnaPin_, OUTPUT);
+
+  // Initialise the SD card.
+  if (!SD.begin(kControllerSdCsPin_)) {
+    Log.errorln(F("SD card initialisation failed!"));
+  } 
+  else {
+    Log.noticeln(F("SD card initialised successfully."));
+  }
 
   // Delay for the startup time.
   delay(kStartupTime_ms_);
@@ -78,5 +85,9 @@ void Configuration::ReportFirmwareVersion() {
 Configuration::Configuration() {}
 
 Configuration::~Configuration() {}
+
+void ReadConfigurationFromFile() {
+
+}
 
 } // namespace mtmotor_jig
