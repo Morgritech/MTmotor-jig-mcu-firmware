@@ -42,13 +42,9 @@ void mtmotor_jig::Configuration::BeginHardware() {
   pinMode(kMotorDriverPulPin_, OUTPUT);
   pinMode(kMotorDriverDirPin_, OUTPUT);
   pinMode(kMotorDriverEnaPin_, OUTPUT);
+  pinMode(kSdCsPin_, OUTPUT);
 
-  pinMode(10, OUTPUT);
-  //digitalWrite(10, HIGH);  
-  pinMode(kControllerSdCsPin_, OUTPUT);
-  //digitalWrite(kControllerSdCsPin_, HIGH);
-
-  // Read the configuration the default config file 
+  // Read the configuration the default config file
   // or the first available config file on the SD card.
   ReadConfigFromFileOnSd();
 
@@ -88,7 +84,7 @@ Configuration::Configuration() {}
 Configuration::~Configuration() {}
 
 void Configuration::ReadConfigFromFileOnSd() {
-  if (!SD.begin(kControllerSdCsPin_)) {
+  if (!SD.begin(kSdCsPin_)) {
     Log.errorln(F("SD card initialisation failed!"));
     return;
   }
