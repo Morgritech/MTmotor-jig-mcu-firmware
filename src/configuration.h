@@ -127,7 +127,7 @@ class Configuration {
   const uint16_t kBuzzerStartupDuration_ms_ = 100; ///< The buzzer duration (ms) at startup.
 
   // SD card and configuration file properties.
-  const char* kDefaultConfigFileName_ = "default.json";
+  const char* kDefaultConfigFileName_ = "default.txt";  ///< The default configuration file name. SD library allows only short 8.3 names.
 
   // Other properties.
   const uint16_t kStartupTime_ms_ = 1000; ///< Minimum startup/boot time in milliseconds (ms); based on the motor driver.
