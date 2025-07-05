@@ -47,25 +47,25 @@ class Configuration {
   void ReportFirmwareVersion();
 
   // GPIO pins.
-  const uint8_t kEncoderButtonPin_ = 53; ///< Input pin for the encoder button to control motor direction or angle.
-  const uint8_t kEncoderContactAPin_ = 24; ///< Input pin for the encoder contact A to control mode selection.
-  const uint8_t kEncoderContactBPin_ = 23; ///< Input pin for the encoder contact B to control mode selection.
-  const uint8_t kControllerButtonPin_ = 26; ///< Input pin for the controller button to control motor speed.
+  const uint8_t kEncoderButtonPin_ = 33; ///< Input pin for the encoder button to control motor direction or angle.
+  const uint8_t kEncoderContactAPin_ = 27; ///< Input pin for the encoder contact A to control mode selection.
+  const uint8_t kEncoderContactBPin_ = 26; ///< Input pin for the encoder contact B to control mode selection.
+  const uint8_t kControllerButtonPin_ = 28; ///< Input pin for the controller button to control motor speed.
   const uint8_t kControllerBuzzerPin_ = 49; ///< Input pin for the controller buzzer.
-  const uint8_t kControllerSdMosiPin_ = 22; ///< Input pin for the controller SD card MOSI (master out slave in) interface.
-  const uint8_t kControllerSdMisoPin_ = 25; ///< Input pin for the controller SD card MISO (master in slave out) interface.
-  const uint8_t kControllerSdCsPin_ = 28; ///< Input pin for the controller SD card CS (chip select) interface.
-  const uint8_t kControllerSdCkPin_ = 29; ///< Input pin for the controller SD card CK (clock) interface.
-  const uint8_t kLcdRsPin_ = 52; ///< Output pin for the LCD RS (register select) interface.
+  const uint8_t kControllerSdMisoPin_ = 50; ///< Input/output pin for the controller SD card MISO (master in slave out) interface. (Arduino MISO pin).blue
+  const uint8_t kControllerSdMosiPin_ = 51; ///< Input/output for the controller SD card MOSI (master out slave in) interface. (Arduino MOSI pin).orange
+  const uint8_t kControllerSdCkPin_ = 52; ///< Input/output pin for the controller SD card CK (clock) interface. purple
+  const uint8_t kControllerSdCsPin_ = 53; ///< Output pin for the controller SD card CS (chip select) interface. grey
+  const uint8_t kLcdRsPin_ = 32; ///< Output pin for the LCD RS (register select) interface.
   const uint8_t kLcdEnaPin_ = 48; ///< Output pin for the LCD ENA (enable) interface.
   const uint8_t kLcdD4Pin_ = 47; ///< Output pin for the LCD D4 interface.
-  const uint8_t kLcdD5Pin_ = 51; ///< Output pin for the LCD D5 interface.
+  const uint8_t kLcdD5Pin_ = 31; ///< Output pin for the LCD D5 interface.
   const uint8_t kLcdD6Pin_ = 46; ///< Output pin for the LCD D6 interface.
-  const uint8_t kLcdD7Pin_ = 50; ///< Output pin for the LCD D7 interface.
+  const uint8_t kLcdD7Pin_ = 30; ///< Output pin for the LCD D7 interface.
   const uint8_t kMotorDriverPulPin_ = 2; ///< Output pin for the stepper driver PUL/STP/CLK (pulse/step) interface.
   const uint8_t kMotorDriverDirPin_ = 3; ///< Output pin for the stepper driver DIR/CW (direction) interface.
   const uint8_t kMotorDriverEnaPin_ = 4; ///< Output pin for the stepper driver ENA/EN (enable) interface.
-  const uint8_t kLimitSwitchPin_ = 32; ///< Input pin for the the limit switch to simulate a soft home position.
+  const uint8_t kLimitSwitchPin_ = 34; ///< Input pin for the the limit switch to simulate a soft home position.
 
   // Control system properties.
   const common::ControlMode kDefaultControlMode_ = common::ControlMode::kSplashScreen; ///< The default/initial control mode. 
@@ -144,8 +144,8 @@ class Configuration {
   void ReadConfigFromFileOnSd();
 
   // Debug helpers and logger properties (for debugging and system reporting).
-  int log_level_ = LOG_LEVEL_SILENT; ///< The log level.
-  //int log_level_ = LOG_LEVEL_VERBOSE; ///< The log level.
+  //int log_level_ = LOG_LEVEL_SILENT; ///< The log level.
+  int log_level_ = LOG_LEVEL_VERBOSE; ///< The log level.
 };
 
 } // namespace mtmotor_jig
