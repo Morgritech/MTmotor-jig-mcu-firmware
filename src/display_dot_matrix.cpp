@@ -55,7 +55,7 @@ void DisplayDotMatrix::DrawScreenItems(const String (&screen_items)[Size]) {
   display_.clear(); //Clear the display and position the cursor in the upper-left corner (0, 0).
 
   uint8_t i = 0;
-  for (auto screen_item : screen_items) {
+  for (const auto& screen_item : screen_items) {
     display_.setCursor(0, i);
     display_.print(screen_item);
     i++;
