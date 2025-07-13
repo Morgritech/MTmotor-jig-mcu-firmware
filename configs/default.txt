@@ -13,7 +13,7 @@
     "dirDelay_us":5.0,
     "enaDelay_us":5.0,
     "sweepAngles_deg":[45.0, 90.0, 180.0, 360.0],
-    "speedsRPM":[7.0, 10.0, 13.0, 16.0],
+    "speeds_RPM":[7.0, 10.0, 13.0, 16.0],
     "acceleration_microsteps_per_s_per_s":6000.0,
     "accelerationAlgorithm":"morgridge24"
   },
