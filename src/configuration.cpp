@@ -25,7 +25,7 @@ Configuration& Configuration::GetInstance() {
 
 void mtmotor_jig::Configuration::BeginHardware() {
   // Initialise the serial port.
-  MTMOTOR_JIG_SERIAL.begin(kBaudRate_);
+  MTMOTOR_JIG_SERIAL.begin(baud_rate_);
 
   // Initialise logging.
   Log.begin(log_level_, &MTMOTOR_JIG_SERIAL);
@@ -49,7 +49,7 @@ void mtmotor_jig::Configuration::BeginHardware() {
   ReadConfigFromFileOnSd();
 
   // Delay for the startup time.
-  delay(kStartupDelay_ms_);
+  delay(startup_delay_ms_);
 }
 
 void Configuration::ToggleLogs() {
@@ -84,6 +84,11 @@ Configuration::Configuration() {}
 Configuration::~Configuration() {}
 
 void Configuration::ReadConfigFromFileOnSd() {
+
+  auto hardcoded_settings_message = F("Using hardcoded config settings.");
+
+  // Initialise SD card.
+
   if (!SD.begin(kSdCsPin_)) {
     Log.errorln(F("SD card initialisation failed!"));
     return;
@@ -91,10 +96,13 @@ void Configuration::ReadConfigFromFileOnSd() {
 
   Log.noticeln(F("SD card initialised."));
 
+  // Read config file from SD card.
+
   File config_file = SD.open(kDefaultConfigFileName_, FILE_READ);
 
   if (!config_file) {
     Log.errorln(F("Failed to open configuration file: %s"), kDefaultConfigFileName_);
+    Log.noticeln(hardcoded_settings_message);
     return;
     // TODO(JM):
     // Attempt to read the first available configuration file.
@@ -104,16 +112,21 @@ void Configuration::ReadConfigFromFileOnSd() {
 
   Log.noticeln(F("Configuration file opened: %s"), kDefaultConfigFileName_);
 
+  // Extract JSON from config file.
+
   JsonDocument config_json_doc;
   DeserializationError deserialisation_error = deserializeJson(config_json_doc, config_file);
   config_file.close();  
 
   if (deserialisation_error) {
     Log.errorln(F("JSON deserialisation/parse error: %s"), deserialisation_error.f_str());
+    Log.noticeln(hardcoded_settings_message);
     return;
   }
 
   Log.noticeln(F("JSON parsed."));
+
+  // Read JSON key-value pairs and check for errors. 
 
   // Flags and variables for error handling.
   const auto json_extraction_error_message = F("JSON extraction error: ");
@@ -124,7 +137,7 @@ void Configuration::ReadConfigFromFileOnSd() {
   // Lambda functions for error handling.
   auto JsonNumericExtractionError =
   [&json_extraction_error_message, &json_error]
-  (float check, float check_against, const __FlashStringHelper* message) -> bool {
+  (float check, float check_against, const char* message) -> bool {
     if (check == check_against) {
       json_error = true;
       Log.errorln(json_extraction_error_message, message);
@@ -135,7 +148,7 @@ void Configuration::ReadConfigFromFileOnSd() {
 
   auto JsonStringExtractionError =
   [&json_extraction_error_message, &json_error]
-  (const char* check, const __FlashStringHelper* message) -> bool {
+  (const char* check, const char* message) -> bool {
     if (check == nullptr) {
       json_error = true;
       Log.errorln(json_extraction_error_message, message);
@@ -146,7 +159,7 @@ void Configuration::ReadConfigFromFileOnSd() {
 
   auto JsonNumericValidityError =
   [&json_validity_error_message, &json_error]
-  (uint16_t check, const uint16_t check_against[], uint8_t size_of_check_against, const __FlashStringHelper* message) {
+  (uint16_t check, const uint16_t check_against[], uint8_t size_of_check_against, const char* message) {
     json_error = true; // Assume error until proven otherwise.
     for (auto i = 0; i < size_of_check_against; i++) {
       if (check == check_against[i]) {
@@ -160,7 +173,7 @@ void Configuration::ReadConfigFromFileOnSd() {
 
   auto JsonStringValidityError =
   [&json_validity_error_message, &json_error]
-  (const char* check, const char* check_against[], uint8_t size_of_check_against, const __FlashStringHelper* message) {
+  (const char* check, const char* check_against[], uint8_t size_of_check_against, const char* message) {
     json_error = true; // Assume error until proven otherwise.
     for (auto i = 0; i < size_of_check_against; i++) {
       if (strcmp(check, check_against[i]) == 0) {
@@ -173,87 +186,103 @@ void Configuration::ReadConfigFromFileOnSd() {
   };  
 
   // Serial node key-value pairs.
-  auto baud_rate_key = F("baudRate");
-  int baud_rate = config_json_doc[KSerialNode_][baud_rate_key];
-  JsonNumericExtractionError(baud_rate, numeric_error_value, baud_rate_key);
+  int baud_rate = config_json_doc[KSerialNode_][kBaudRateKey_];
+  JsonNumericExtractionError(baud_rate, numeric_error_value, kBaudRateKey_);
 
   // Input node key-value pair.
-  auto long_press_option_key = F("longPressOption");
-  const char* long_press_option = config_json_doc[kInputNode_][long_press_option_key]; // Further process required to change it to the correct type from the button library.
-  if (JsonStringExtractionError(long_press_option, long_press_option_key) == false)
-    JsonStringValidityError(long_press_option, kLongPressOptions_, kSizeOfLongPressOptions_, long_press_option_key);
+  const char* long_press_option = config_json_doc[kInputNode_][kLongPressOptionKey_];
+  if (JsonStringExtractionError(long_press_option, kLongPressOptionKey_) == false)
+    JsonStringValidityError(long_press_option, kLongPressOptions_, kSizeOfLongPressOptions_, kLongPressOptionKey_);
 
   // Stepper node key-value pairs.
   JsonObject stepper_node_obj = config_json_doc[kStepperNode_];
 
-  auto step_angle_key = F("stepAngle_deg");
-  float step_angle_deg = stepper_node_obj[step_angle_key];
-  JsonNumericExtractionError(step_angle_deg, numeric_error_value, step_angle_key);
+  float step_angle_deg = stepper_node_obj[kStepAngleKey_];
+  JsonNumericExtractionError(step_angle_deg, numeric_error_value, kStepAngleKey_);
 
-  auto gear_ratio_key = F("gearRatio");
-  float gear_ratio = stepper_node_obj[gear_ratio_key];
-  JsonNumericExtractionError(gear_ratio, numeric_error_value, gear_ratio_key);
+  float gear_ratio = stepper_node_obj[kGearRatioKey_];
+  JsonNumericExtractionError(gear_ratio, numeric_error_value, kGearRatioKey_);
 
-  auto microstep_mode_key = F("microstepMode");
-  uint16_t microstep_mode = stepper_node_obj[microstep_mode_key];
-  if (JsonNumericExtractionError(microstep_mode, numeric_error_value, microstep_mode_key) == false)
-    JsonNumericValidityError(microstep_mode, kMicrostepModes_, kSizeOfMicrostepModes_, microstep_mode_key);
+  uint16_t microstep_mode = stepper_node_obj[kMicrostepModeKey_];
+  if (JsonNumericExtractionError(microstep_mode, numeric_error_value, kMicrostepModeKey_) == false)
+    JsonNumericValidityError(microstep_mode, kMicrostepModes_, kSizeOfMicrostepModes_, kMicrostepModeKey_);
 
-  auto pul_delay_key = F("pulDelay_us");
-  float pul_delay_us = stepper_node_obj[pul_delay_key];
-  JsonNumericExtractionError(pul_delay_us, numeric_error_value, pul_delay_key);
+  float pul_delay_us = stepper_node_obj[kPulDelayKey_];
+  JsonNumericExtractionError(pul_delay_us, numeric_error_value, kPulDelayKey_);
 
-  auto dir_delay_key = F("dirDelay_us");
-  float dir_delay_us = stepper_node_obj[dir_delay_key];
-  JsonNumericExtractionError(dir_delay_us, numeric_error_value, dir_delay_key);
+  float dir_delay_us = stepper_node_obj[kDirDelayKey_];
+  JsonNumericExtractionError(dir_delay_us, numeric_error_value, kDirDelayKey_);
 
-  auto ena_delay_key = F("enaDelay_us");
-  float ena_delay_us = stepper_node_obj[ena_delay_key];
-  JsonNumericExtractionError(ena_delay_us, numeric_error_value, ena_delay_key);
+  float ena_delay_us = stepper_node_obj[kEnaDelayKey_];
+  JsonNumericExtractionError(ena_delay_us, numeric_error_value, kEnaDelayKey_);
 
-  auto sweep_angles_key = F("sweepAngles_deg");
-  JsonArray sweep_angles = stepper_node_obj[sweep_angles_key];
+  JsonArray sweep_angles = stepper_node_obj[kSweepAnglesKey_];
   for (const auto& angle : sweep_angles)
-    if (JsonNumericExtractionError(angle, numeric_error_value, sweep_angles_key)) break;
+    if (JsonNumericExtractionError(angle, numeric_error_value, kSweepAnglesKey_)) break;
 
-  auto speeds_key = F("speeds_RPM");
-  JsonArray speeds = stepper_node_obj[speeds_key];
+  JsonArray speeds = stepper_node_obj[kSpeedsKey_];
   for (const auto& speed : speeds)
-    if (JsonNumericExtractionError(speed, numeric_error_value, speeds_key)) break;
+    if (JsonNumericExtractionError(speed, numeric_error_value, kSpeedsKey_)) break;
   
   float acceleration_error_value = -1.0f;
-  auto acceleration_key = F("acceleration_microsteps_per_s_per_s");
-  float acceleration_microsteps_per_s_per_s = stepper_node_obj[acceleration_key] | acceleration_error_value;
-  JsonNumericExtractionError(acceleration_microsteps_per_s_per_s, acceleration_error_value, acceleration_key);
+  float acceleration_microsteps_per_s_per_s = stepper_node_obj[kAccelerationKey_] | acceleration_error_value;
+  JsonNumericExtractionError(acceleration_microsteps_per_s_per_s, acceleration_error_value, kAccelerationKey_);
   
-  auto acceleration_algorithm_key = F("accelerationAlgorithm");
-  const char* acceleration_algorithm = stepper_node_obj[acceleration_algorithm_key]; // Further process required to change it to the correct type from the stepper library.
-  if (JsonStringExtractionError(acceleration_algorithm, acceleration_algorithm_key) == false)
+  const char* acceleration_algorithm = stepper_node_obj[kAccelerationAlgorithmKey_]; // Further process required to change it to the correct type from the stepper library.
+  if (JsonStringExtractionError(acceleration_algorithm, kAccelerationAlgorithmKey_) == false)
     JsonStringValidityError(acceleration_algorithm, kAccelerationAlgorithms_, kSizeOfAccelerationAlgorithms_,
-                            acceleration_algorithm_key);
+                            kAccelerationAlgorithmKey_);
 
   // Display node key-value pairs.
-  auto splash_screen_delay_key = F("splashScreenDelay_ms");
-  uint16_t splash_screen_delay_ms = config_json_doc[kDisplayNode_][splash_screen_delay_key];
-  JsonNumericExtractionError(splash_screen_delay_ms, numeric_error_value, splash_screen_delay_key);
+  uint16_t splash_screen_delay_ms = config_json_doc[kDisplayNode_][kSplashScreenDelayKey_];
+  JsonNumericExtractionError(splash_screen_delay_ms, numeric_error_value, kSplashScreenDelayKey_);
 
   // Buzzer node key-value pairs.
   JsonObject buzzer_node_obj = config_json_doc[kBuzzerNode_];
   
-  bool buzzer_enabled = buzzer_node_obj[F("enabled")];
+  bool buzzer_enabled = buzzer_node_obj[kBuzzerEnabledKey_];
   
-  auto buzzer_startup_frequency_key = F("frequency_hz");
-  uint16_t buzzer_startup_frequency_hz = buzzer_node_obj[buzzer_startup_frequency_key];
-  JsonNumericExtractionError(buzzer_startup_frequency_hz, numeric_error_value, buzzer_startup_frequency_key);
+  uint16_t buzzer_startup_frequency_Hz = buzzer_node_obj[kBuzzerStartupFrequencyKey_];
+  JsonNumericExtractionError(buzzer_startup_frequency_Hz, numeric_error_value, kBuzzerStartupFrequencyKey_);
 
-  auto buzzer_startup_duration_key = F("duration_ms");
-  uint16_t buzzer_startup_duration_ms = buzzer_node_obj[buzzer_startup_duration_key];
-  JsonNumericExtractionError(buzzer_startup_duration_ms, numeric_error_value, buzzer_startup_duration_key);
+  uint16_t buzzer_startup_duration_ms = buzzer_node_obj[kBuzzerStartupDurationKey_];
+  JsonNumericExtractionError(buzzer_startup_duration_ms, numeric_error_value, kBuzzerStartupDurationKey_);
 
   // Other node key-value pairs.
-  auto startup_time_key = F("startupTime_ms");
-  uint16_t startup_time_ms = config_json_doc[kOtherNode_][startup_time_key];
-  JsonNumericExtractionError(startup_time_ms, numeric_error_value, startup_time_key);
+  uint16_t startup_delay_ms = config_json_doc[kOtherNode_][kStartupDelayKey_];
+  JsonNumericExtractionError(startup_delay_ms, numeric_error_value, kStartupDelayKey_);
+
+  if (json_error) {
+    Log.noticeln(hardcoded_settings_message);
+    return;
+  }
+
+  // Assign JSON values to configuration settings.
+
+  baud_rate_ = baud_rate;
+
+  //mt::MomentaryButton::LongPressOption kLongPressOption_ ... const char* long_press_option // Further process required to change it to the correct type from the button library.
+
+  full_step_angle_degrees_ = step_angle_deg; 
+  gear_ratio_ = gear_ratio;
+  microstep_mode_ = microstep_mode;
+  pul_delay_us_ = pul_delay_us;
+  dir_delay_us_ = dir_delay_us;
+  ena_delay_us_ = ena_delay_us;
+
+  //kSweepAngles_degrees_ ... JsonArray sweep_angles // Requires range based for loop.
+
+  //kSpeeds_RPM_ ... JsonArray speeds // Requires range based for loop.
+
+  acceleration_microsteps_per_s_per_s_ = acceleration_microsteps_per_s_per_s;
+
+  //mt::StepperDriver::AccelerationAlgorithm kAccelerationAlgorithm_ ... const char* acceleration_algorithm // Further process required to change it to the correct type from the button library.
+
+  splash_screen_delay_ms_ = splash_screen_delay_ms;
+  buzzer_enabled_ = buzzer_enabled;
+  buzzer_startup_frequency_Hz_ = buzzer_startup_frequency_Hz;
+  buzzer_startup_duration_ms_ = buzzer_startup_duration_ms;
+  startup_delay_ms_ = startup_delay_ms;
 }
 
 } // namespace mtmotor_jig
