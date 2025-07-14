@@ -71,7 +71,7 @@ class Configuration {
   const common::ControlMode kDefaultControlMode_ = common::ControlMode::kSplashScreen; ///< The default/initial control mode. 
 
   // Serial properties.
-  int kBaudRate_ = 9600; ///< The serial communication speed.
+  int baud_rate_ = 9600; ///< The serial communication speed.
 
   // Encoder dial and button properties.
   const uint8_t kEncoderDetents_ = 20; ///< Encoder detents.
@@ -83,14 +83,14 @@ class Configuration {
   const mt::MomentaryButton::LongPressOption kLongPressOption_ = mt::MomentaryButton::LongPressOption::kDetectWhileHolding; ///< Button long press options.
 
   // Stepper motor/drive system properties.
-  const float kFullStepAngle_degrees_ = 1.8F; ///< The stepper motor full step angle (degrees).
-  const float kGearRatio_ = 1.0F; ///< The system/stepper motor gear ratio.
+  float full_step_angle_degrees_ = 1.8F; ///< The stepper motor full step angle (degrees).
+  float gear_ratio_ = 1.0F; ///< The system/stepper motor gear ratio.
 
   // Stepper driver properties.
-  const uint16_t kMicrostepMode_ = 32; ///< Stepper driver microstep mode.
-  const float kPulDelay_us_ = 1.0F; ///< Minimum delay (us) for the stepper driver PUL pin.
-  const float kDirDelay_us_ = 5.0F; ///< Minimum delay (us) for the stepper driver Dir pin.
-  const float kEnaDelay_us_ = 5.0F; ///< Minimum delay (us) for the stepper driver Ena pin.
+  uint16_t microstep_mode_ = 32; ///< Stepper driver microstep mode.
+  float pul_delay_us_ = 1.0F; ///< Minimum delay (us) for the stepper driver PUL pin.
+  float dir_delay_us_ = 5.0F; ///< Minimum delay (us) for the stepper driver Dir pin.
+  float ena_delay_us_ = 5.0F; ///< Minimum delay (us) for the stepper driver Ena pin.
   const mt::StepperDriver::MotionDirection kDefaultMotionDirection_ = mt::StepperDriver::MotionDirection::kPositive; ///< Initial/default motion direction (Clockwise (CW)).
   inline static constexpr uint8_t kSizeOfSweepAngles_ = 4; ///< No. of sweep angles in the lookup table.
   const float kSweepAngles_degrees_[kSizeOfSweepAngles_] = {45.0F, 90.0F, 180.0F, 360.0F}; ///< Lookup table for sweep angles (degrees) during oscillation.
@@ -98,7 +98,7 @@ class Configuration {
   inline static constexpr uint8_t kSizeOfSpeeds_ = 4; ///< No. of speeds in the lookup table.
   const float kSpeeds_RPM_[kSizeOfSpeeds_] = {7.0F, 10.0F, 13.0F, 16.0F}; ///< Lookup table for rotation speeds (RPM).
   const uint8_t kDefaultSpeedIndex_ = 0; ///< Index of initial/default speed.
-  const float kAcceleration_microsteps_per_s_per_s_ = 6000.0; //8000.0; ///< Acceleration (microsteps per second-squared).
+  float acceleration_microsteps_per_s_per_s_ = 6000.0; //8000.0; ///< Acceleration (microsteps per second-squared).
   const mt::StepperDriver::AccelerationAlgorithm kAccelerationAlgorithm_ = mt::StepperDriver::AccelerationAlgorithm::kMorgridge24; ///< Acceleration algorithm.
 
   // Display properties.
@@ -110,7 +110,7 @@ class Configuration {
                                              "   motor control"    ,   // 2
                                              "      devices"        }; // 3
   //                                          0                  19
-  const uint16_t kSplashScreenDelay_ms_ = 1500; ///< Period of time in milliseconds (ms) to show the splash screen.
+  uint16_t splash_screen_delay_ms_ = 1500; ///< Period of time in milliseconds (ms) to show the splash screen.
   /// @brief The home screen menu items.
   const String kHomeScreenMenuItems_[3] = {"__Select_Mode_______",   // 0
                                            "o Continuous"        ,   // 1
@@ -122,27 +122,46 @@ class Configuration {
   const uint8_t kDefaultCursorPositionY_ = kContinuousMenuCursorPositionY_; ///< The default/initial cursor position (y-axis).
 
   // Buzzer properties.
-  bool kBuzzerEnabled_ = false; ///< Flag to control whether the buzzer is enabled at startup.
-  const uint16_t kBuzzerStartupFrequency_Hz_ = 4000; ///< The buzzer frequency (Hz) at startup.
-  const uint16_t kBuzzerStartupDuration_ms_ = 100; ///< The buzzer duration (ms) at startup.
+  bool buzzer_enabled_ = false; ///< Flag to control whether the buzzer is enabled at startup.
+  uint16_t buzzer_startup_frequency_Hz_ = 4000; ///< The buzzer frequency (Hz) at startup.
+  uint16_t buzzer_startup_duration_ms_ = 100; ///< The buzzer duration (ms) at startup.
 
   // Other properties.
-  const uint16_t kStartupDelay_ms_ = 1000; ///< Minimum startup/boot delay in milliseconds (ms); based on the motor driver.
+  uint16_t startup_delay_ms_ = 1000; ///< Minimum startup/boot delay in milliseconds (ms); based on the motor driver.
 
   // SD card and configuration file properties.
   // NOTE: SD card must be formated as FAT, FAT16 or FAT32.
   const char* kDefaultConfigFileName_ = "default.txt";  ///< The default configuration file name. SD library allows only short 8.3 names.
 
   // JSON configuration properties.
-  const char* KSerialNode_ = "serial"; ///< The serial node.
-  const char* kInputNode_ = "input"; ///< The "input" node.
-  const char* kStepperNode_ = "stepper"; ///< The "stepper" node.
-  const char* kDisplayNode_ = "display"; ///< The "display" node.
-  const char* kBuzzerNode_ = "buzzer"; ///< The "buzzer" node.
-  const char* kOtherNode_ = "other"; ///< The "other" node.
-
+  // Nodes.
+  const char* KSerialNode_ = "serial";
+  const char* kInputNode_ = "input";
+  const char* kStepperNode_ = "stepper";
+  const char* kDisplayNode_ = "display";
+  const char* kBuzzerNode_ = "buzzer";
+  const char* kOtherNode_ = "other";
+  // Keys.
+  const char* kBaudRateKey_ = "baudRate";
+  const char* kLongPressOptionKey_ = "longPressOption";
+  const char* kStepAngleKey_ = "stepAngle_deg";
+  const char* kGearRatioKey_ = "gearRatio";
+  const char* kMicrostepModeKey_ = "microstepMode";
+  const char* kPulDelayKey_ = "pulDelay_us";
+  const char* kDirDelayKey_ = "dirDelay_us";
+  const char* kEnaDelayKey_ = "enaDelay_us";
+  const char* kSweepAnglesKey_ = "sweepAngles_deg";
+  const char* kSpeedsKey_ = "speeds_RPM";
+  const char* kAccelerationKey_ = "acceleration_microsteps_per_s_per_s";
+  const char* kAccelerationAlgorithmKey_ = "accelerationAlgorithm";
+  const char* kSplashScreenDelayKey_ = "splashScreenDelay_ms";
+  const char* kBuzzerEnabledKey_ = "enabled";
+  const char* kBuzzerStartupFrequencyKey_ = "frequency_hz";
+  const char* kBuzzerStartupDurationKey_ = "duration_ms";
+  const char* kStartupDelayKey_ = "startupDelay_ms";
+  // Valid JSON values.
   inline static constexpr uint8_t kSizeOfLongPressOptions_ = 2; ///< No. of long press options.
-  const char* kLongPressOptions_[kSizeOfLongPressOptions_] = {"detect_while_holding", "detect_after_release"}; ///< Long press options.
+  const char* kLongPressOptions_[kSizeOfLongPressOptions_] = {"detect while holding", "detect after release"}; ///< Long press options.
   inline static constexpr uint8_t kSizeOfMicrostepModes_ = 6; ///< No. of microstep modes.
   const uint16_t kMicrostepModes_[kSizeOfMicrostepModes_] = {1, 2, 4, 8, 16, 32}; ///< Microstep modes.
   inline static constexpr uint8_t kSizeOfAccelerationAlgorithms_ = 3; ///< No. of acceleration algorithms
