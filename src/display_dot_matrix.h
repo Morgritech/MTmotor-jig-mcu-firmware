@@ -37,7 +37,7 @@ class DisplayDotMatrix {
   /// @tparam Size The size of the screen items.
   /// @param screen_items The screen items to draw.
   template <size_t Size>
-  void DrawScreenItems(const String (&screen_items)[Size]);
+  void DrawScreenItems(const String (&screen_items)[Size]) const;
 
   /// @brief The LCD display.
   LiquidCrystal& display_;

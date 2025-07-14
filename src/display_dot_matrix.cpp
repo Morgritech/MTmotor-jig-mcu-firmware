@@ -26,7 +26,7 @@ void DisplayDotMatrix::Draw(common::ControlMode control_mode, common::ControlAct
   switch (control_mode) {
     case common::ControlMode::kSplashScreen: {
       DrawScreenItems(configuration_.kSplashScreenMenuItems_);
-      delay(configuration_.kSplashScreenDelay_ms_);
+      delay(configuration_.splash_screen_delay_ms_);
       break;
     }
     case common::ControlMode::kHomeScreen: {
@@ -51,7 +51,7 @@ void DisplayDotMatrix::Draw(common::ControlMode control_mode, common::ControlAct
 }
 
 template <size_t Size>
-void DisplayDotMatrix::DrawScreenItems(const String (&screen_items)[Size]) {
+void DisplayDotMatrix::DrawScreenItems(const String (&screen_items)[Size]) const {
   display_.clear(); //Clear the display and position the cursor in the upper-left corner (0, 0).
 
   uint8_t i = 0;

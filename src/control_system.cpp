@@ -35,12 +35,12 @@ void ControlSystem::Begin() {
   controller_button_.set_long_press_option(configuration_.kLongPressOption_);
   limit_switch_.set_long_press_option(configuration_.kLongPressOption_);
   // Outputs - Stepper motor.
-  stepper_driver_.set_pul_delay_us(configuration_.kPulDelay_us_);
-  stepper_driver_.set_dir_delay_us(configuration_.kDirDelay_us_);
-  stepper_driver_.set_ena_delay_us(configuration_.kEnaDelay_us_);
+  stepper_driver_.set_pul_delay_us(configuration_.pul_delay_us_);
+  stepper_driver_.set_dir_delay_us(configuration_.dir_delay_us_);
+  stepper_driver_.set_ena_delay_us(configuration_.ena_delay_us_);
   stepper_driver_.SetSpeed(configuration_.kSpeeds_RPM_[configuration_.kDefaultSpeedIndex_],
                            mt::StepperDriver::SpeedUnits::kRevolutionsPerMinute);
-  stepper_driver_.SetAcceleration(configuration_.kAcceleration_microsteps_per_s_per_s_,
+  stepper_driver_.SetAcceleration(configuration_.acceleration_microsteps_per_s_per_s_,
                                   mt::StepperDriver::AccelerationUnits::kMicrostepsPerSecondPerSecond);
   stepper_driver_.set_acceleration_algorithm(configuration_.kAccelerationAlgorithm_);
   stepper_driver_.set_power_state(mt::StepperDriver::PowerState::kEnabled);
@@ -49,9 +49,9 @@ void ControlSystem::Begin() {
   dot_matrix_display_.blink(); // Blink the display cursor.
   //dot_matrix_display_.cursor(); // Show a static display cursor.  
   // Outputs - Buzzer.
-  if (configuration_.kBuzzerEnabled_) {
-    tone(configuration_.kControllerBuzzerPin_, configuration_.kBuzzerStartupFrequency_Hz_,
-        configuration_.kBuzzerStartupDuration_ms_); // Sound the buzzer at startup.
+  if (configuration_.buzzer_enabled_) {
+    tone(configuration_.kControllerBuzzerPin_, configuration_.buzzer_startup_frequency_Hz_,
+        configuration_.buzzer_startup_duration_ms_); // Sound the buzzer at startup.
   }
   // Status.
   LogGeneralStatus(); // Log initial status of control system.

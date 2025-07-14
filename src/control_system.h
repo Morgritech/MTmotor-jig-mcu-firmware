@@ -83,9 +83,9 @@ class ControlSystem {
   mt::StepperDriver stepper_driver_{configuration_.kMotorDriverPulPin_,
                                     configuration_.kMotorDriverDirPin_,
                                     configuration_.kMotorDriverEnaPin_,
-                                    configuration_.kMicrostepMode_,
-                                    configuration_.kFullStepAngle_degrees_,
-                                    configuration_.kGearRatio_};
+                                    configuration_.microstep_mode_,
+                                    configuration_.full_step_angle_degrees_,
+                                    configuration_.gear_ratio_};
 
   /// @brief The (dot-matrix) LCD display driver.
   LiquidCrystal dot_matrix_display_{configuration_.kLcdRsPin_,
