@@ -3,7 +3,7 @@
     "baudRate":9600
   },
   "inputs":{
-    "longPressOption":"detect_while_holding"
+    "longPressOption":"detect while holding"
   },
   "stepper":{
     "stepAngle_deg":1.8,
@@ -26,6 +26,6 @@
     "duration_ms":100
   },
   "other": {
-    "startupTime_ms":1000
+    "startupDelay_ms":1000
   }
 }
