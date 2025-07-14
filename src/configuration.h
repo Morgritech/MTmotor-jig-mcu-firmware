@@ -52,10 +52,10 @@ class Configuration {
   const uint8_t kEncoderContactBPin_ = 26; ///< Input pin for the encoder contact B to control mode selection.
   const uint8_t kControllerButtonPin_ = 28; ///< Input pin for the controller button to control motor speed.
   const uint8_t kControllerBuzzerPin_ = 49; ///< Input pin for the controller buzzer.
-  const uint8_t kSdMisoPin_ = 50; ///< Input/output pin for the SD card MOSI/COPI (controller out peripheral in) interface. (Arduino MISO/PICO pin).
-  const uint8_t kSdMosiPin_ = 51; ///< Input/output for the SD card MISO/PICO (controller in peripheral out) interface. (Arduino MOSI/COPI pin).
-  const uint8_t kSdClkPin_ = 52; ///< Input/output pin for the SD card CLK (clock) interface.
-  const uint8_t kSdCsPin_ = 53; ///< Output pin for the SD card CS (chip select) interface.
+  const uint8_t kSdMisoPin_ = 50; ///< Input/output pin for the SD card MOSI/COPI (controller out peripheral in) interface. (Arduino MEGA MISO/PICO pin). Pin 12 for Uno.
+  const uint8_t kSdMosiPin_ = 51; ///< Input/output for the SD card MISO/PICO (controller in peripheral out) interface. (Arduino MEGA MOSI/COPI pin). Pin 11 for Uno.
+  const uint8_t kSdClkPin_ = 52; ///< Input/output pin for the SD card CLK (clock) interface. Pin 13 for Uno.
+  const uint8_t kSdCsPin_ = 53; ///< Output pin for the SD card CS (chip select) interface. Pin 10 for Uno. This pin MUST be set as output.
   const uint8_t kLcdRsPin_ = 32; ///< Output pin for the LCD RS (register select) interface.
   const uint8_t kLcdEnaPin_ = 48; ///< Output pin for the LCD ENA (enable) interface.
   const uint8_t kLcdD4Pin_ = 47; ///< Output pin for the LCD D4 interface.
@@ -71,7 +71,7 @@ class Configuration {
   const common::ControlMode kDefaultControlMode_ = common::ControlMode::kSplashScreen; ///< The default/initial control mode. 
 
   // Serial properties.
-  const int kBaudRate_ = 9600; ///< The serial communication speed.
+  int kBaudRate_ = 9600; ///< The serial communication speed.
 
   // Encoder dial and button properties.
   const uint8_t kEncoderDetents_ = 20; ///< Encoder detents.
@@ -126,11 +126,27 @@ class Configuration {
   const uint16_t kBuzzerStartupFrequency_Hz_ = 4000; ///< The buzzer frequency (Hz) at startup.
   const uint16_t kBuzzerStartupDuration_ms_ = 100; ///< The buzzer duration (ms) at startup.
 
+  // Other properties.
+  const uint16_t kStartupDelay_ms_ = 1000; ///< Minimum startup/boot delay in milliseconds (ms); based on the motor driver.
+
   // SD card and configuration file properties.
+  // NOTE: SD card must be formated as FAT, FAT16 or FAT32.
   const char* kDefaultConfigFileName_ = "default.txt";  ///< The default configuration file name. SD library allows only short 8.3 names.
 
-  // Other properties.
-  const uint16_t kStartupTime_ms_ = 1000; ///< Minimum startup/boot time in milliseconds (ms); based on the motor driver.
+  // JSON configuration properties.
+  const char* KSerialNode_ = "serial"; ///< The serial node.
+  const char* kInputNode_ = "input"; ///< The "input" node.
+  const char* kStepperNode_ = "stepper"; ///< The "stepper" node.
+  const char* kDisplayNode_ = "display"; ///< The "display" node.
+  const char* kBuzzerNode_ = "buzzer"; ///< The "buzzer" node.
+  const char* kOtherNode_ = "other"; ///< The "other" node.
+
+  inline static constexpr uint8_t kSizeOfLongPressOptions_ = 2; ///< No. of long press options.
+  const char* kLongPressOptions_[kSizeOfLongPressOptions_] = {"detect_while_holding", "detect_after_release"}; ///< Long press options.
+  inline static constexpr uint8_t kSizeOfMicrostepModes_ = 6; ///< No. of microstep modes.
+  const uint16_t kMicrostepModes_[kSizeOfMicrostepModes_] = {1, 2, 4, 8, 16, 32}; ///< Microstep modes.
+  inline static constexpr uint8_t kSizeOfAccelerationAlgorithms_ = 3; ///< No. of acceleration algorithms
+  const char* kAccelerationAlgorithms_[kSizeOfAccelerationAlgorithms_] = {"morgridge24", "austin05", "eiderman04"}; ///< Acceleration algorithms.
 
  private:
 
