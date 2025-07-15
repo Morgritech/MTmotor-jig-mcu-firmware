@@ -16,14 +16,14 @@
 
 namespace mtmotor_jig {
 
-/// @brief The Motor Manager class.
+/// @brief The Motor Stepper class.
 class MotorStepper {
  public:
 
-  /// @brief Construct a Motor Manager object.
+  /// @brief Construct a Motor Stepper object.
   MotorStepper(mt::StepperDriver& stepper_driver, Configuration& configuration = Configuration::GetInstance());
 
-  /// @brief Destroy the Motor Manager object.
+  /// @brief Destroy the Motor Stepper object.
   ~MotorStepper();
 
   /// @brief Actuate the motor based on the current action and control mode.
@@ -44,7 +44,7 @@ class MotorStepper {
  private:
 
   /// @brief Configuration settings.
-  Configuration& configuration_ = Configuration::GetInstance();
+  Configuration& configuration_;
 
   // Stepper motor driver.
   mt::StepperDriver& stepper_driver_;
