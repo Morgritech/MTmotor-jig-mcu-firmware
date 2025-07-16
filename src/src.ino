@@ -8,7 +8,6 @@
 
 #include <ArduinoLog.h>
 
-#include "configuration.h"
 #include "control_system.h"
 
 /// @brief The Control System instance.
@@ -19,7 +18,7 @@ void setup() {
   // Setup the control system.
   control_system.Begin();
   
-  MTMOTOR_JIG_SERIAL.println("I: ...Setup complete...\n");
+  Log.noticeln(F("...Setup complete...\n"));
 }
 
 /// @brief The continuously running function for repetitive tasks.
