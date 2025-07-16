@@ -17,6 +17,7 @@ jobs:
       - name: Compile project
         uses: arduino/compile-sketches@v1
         with:
+          fqbn: arduino:avr:mega
           libraries: |
             - name: MT-arduino-rotary-encoder@1.1.1
             - name: MT-arduino-momentary-button@3.0.2
