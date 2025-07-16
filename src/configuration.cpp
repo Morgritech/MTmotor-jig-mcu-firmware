@@ -91,6 +91,7 @@ void Configuration::ReadConfigFromFileOnSd() {
 
   if (!SD.begin(kSdCsPin_)) {
     Log.errorln(F("SD card initialisation failed!"));
+    Log.noticeln(hardcoded_settings_message);
     return;
   }
 
@@ -129,8 +130,8 @@ void Configuration::ReadConfigFromFileOnSd() {
   // Read JSON key-value pairs and check for errors. 
 
   // Flags and variables for error handling.
-  const auto json_extraction_error_message = F("JSON extraction error: ");
-  const auto json_validity_error_message = F("JSON extraction error: ");
+  const auto json_extraction_error_message = F("JSON extraction error: %s");
+  const auto json_validity_error_message = F("JSON validity error: %s");
   bool json_error = false;
   const float numeric_error_value = 0.0;
 
@@ -173,26 +174,32 @@ void Configuration::ReadConfigFromFileOnSd() {
 
   auto JsonStringValidityError =
   [&json_validity_error_message, &json_error]
-  (const char* check, const char* check_against[], uint8_t size_of_check_against, const char* message) {
+  (const char* check, const char* check_against[], uint8_t size_of_check_against, const char* message) -> uint8_t {
     json_error = true; // Assume error until proven otherwise.
+    uint8_t valid_index;
     for (auto i = 0; i < size_of_check_against; i++) {
       if (strcmp(check, check_against[i]) == 0) {
         json_error = false; // Valid mode found.
+        valid_index = i;
         break;
       }
     }
 
     if (json_error == true) Log.errorln(json_validity_error_message, message);
-  };  
+
+    return valid_index;
+  };
 
   // Serial node key-value pairs.
   int baud_rate = config_json_doc[KSerialNode_][kBaudRateKey_];
   JsonNumericExtractionError(baud_rate, numeric_error_value, kBaudRateKey_);
 
   // Input node key-value pair.
-  const char* long_press_option = config_json_doc[kInputNode_][kLongPressOptionKey_];
+  uint8_t valid_long_press_option_index;
+  const char* long_press_option = config_json_doc[kInputsNode_][kLongPressOptionKey_];
   if (JsonStringExtractionError(long_press_option, kLongPressOptionKey_) == false)
-    JsonStringValidityError(long_press_option, kLongPressOptions_, kSizeOfLongPressOptions_, kLongPressOptionKey_);
+    valid_long_press_option_index = JsonStringValidityError(long_press_option, kLongPressOptionsStrings_,
+                                                            kSizeOfLongPressOptions_, kLongPressOptionKey_);
 
   // Stepper node key-value pairs.
   JsonObject stepper_node_obj = config_json_doc[kStepperNode_];
@@ -228,10 +235,13 @@ void Configuration::ReadConfigFromFileOnSd() {
   float acceleration_microsteps_per_s_per_s = stepper_node_obj[kAccelerationKey_] | acceleration_error_value;
   JsonNumericExtractionError(acceleration_microsteps_per_s_per_s, acceleration_error_value, kAccelerationKey_);
   
-  const char* acceleration_algorithm = stepper_node_obj[kAccelerationAlgorithmKey_]; // Further process required to change it to the correct type from the stepper library.
+  uint8_t valid_acceleration_algorithm_index;
+  const char* acceleration_algorithm = stepper_node_obj[kAccelerationAlgorithmKey_];
   if (JsonStringExtractionError(acceleration_algorithm, kAccelerationAlgorithmKey_) == false)
-    JsonStringValidityError(acceleration_algorithm, kAccelerationAlgorithms_, kSizeOfAccelerationAlgorithms_,
-                            kAccelerationAlgorithmKey_);
+    valid_acceleration_algorithm_index = JsonStringValidityError(acceleration_algorithm,
+                                                                 kAccelerationAlgorithmsStrings_,
+                                                                 kSizeOfAccelerationAlgorithms_,
+                                                                 kAccelerationAlgorithmKey_);
 
   // Display node key-value pairs.
   uint16_t splash_screen_delay_ms = config_json_doc[kDisplayNode_][kSplashScreenDelayKey_];
@@ -260,24 +270,18 @@ void Configuration::ReadConfigFromFileOnSd() {
   // Assign JSON values to configuration settings.
 
   baud_rate_ = baud_rate;
-
-  //mt::MomentaryButton::LongPressOption kLongPressOption_ ... const char* long_press_option // Further process required to change it to the correct type from the button library.
-
+  mt::MomentaryButton::LongPressOption kLongPressOption_ = kLongPressOptionsTypes_[valid_long_press_option_index];
   full_step_angle_degrees_ = step_angle_deg; 
   gear_ratio_ = gear_ratio;
   microstep_mode_ = microstep_mode;
   pul_delay_us_ = pul_delay_us;
   dir_delay_us_ = dir_delay_us;
   ena_delay_us_ = ena_delay_us;
-
-  //kSweepAngles_degrees_ ... JsonArray sweep_angles // Requires range based for loop.
-
-  //kSpeeds_RPM_ ... JsonArray speeds // Requires range based for loop.
-
+  for (auto i = 0; i < kSizeOfSweepAngles_; i++) kSweepAngles_degrees_[i] = sweep_angles[i];
+  for (auto i = 0; i < kSizeOfSpeeds_; i++) kSpeeds_RPM_[i] = speeds[i];
   acceleration_microsteps_per_s_per_s_ = acceleration_microsteps_per_s_per_s;
-
-  //mt::StepperDriver::AccelerationAlgorithm kAccelerationAlgorithm_ ... const char* acceleration_algorithm // Further process required to change it to the correct type from the button library.
-
+  mt::StepperDriver::AccelerationAlgorithm kAccelerationAlgorithm_ = 
+                                                kAccelerationAlgorithmsTypes_[valid_acceleration_algorithm_index];
   splash_screen_delay_ms_ = splash_screen_delay_ms;
   buzzer_enabled_ = buzzer_enabled;
   buzzer_startup_frequency_Hz_ = buzzer_startup_frequency_Hz;

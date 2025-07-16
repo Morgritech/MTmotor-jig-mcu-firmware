@@ -80,7 +80,8 @@ class Configuration {
   const uint16_t kDebouncePeriod_ms_ = 20; ///< Button debounce periods (ms).
   const uint16_t kShortPressPeriod_ms_ = 500; ///< Button short press periods (ms).
   const uint16_t kLongPressPeriod_ms_ = 1000; ///< Button long press periods (ms).
-  const mt::MomentaryButton::LongPressOption kLongPressOption_ = mt::MomentaryButton::LongPressOption::kDetectWhileHolding; ///< Button long press options.
+  const mt::MomentaryButton::LongPressOption kLongPressOption_ =
+                                       mt::MomentaryButton::LongPressOption::kDetectWhileHolding; ///< Button long press options.
 
   // Stepper motor/drive system properties.
   float full_step_angle_degrees_ = 1.8F; ///< The stepper motor full step angle (degrees).
@@ -91,15 +92,17 @@ class Configuration {
   float pul_delay_us_ = 1.0F; ///< Minimum delay (us) for the stepper driver PUL pin.
   float dir_delay_us_ = 5.0F; ///< Minimum delay (us) for the stepper driver Dir pin.
   float ena_delay_us_ = 5.0F; ///< Minimum delay (us) for the stepper driver Ena pin.
-  const mt::StepperDriver::MotionDirection kDefaultMotionDirection_ = mt::StepperDriver::MotionDirection::kPositive; ///< Initial/default motion direction (Clockwise (CW)).
+  const mt::StepperDriver::MotionDirection kDefaultMotionDirection_ =
+                                                   mt::StepperDriver::MotionDirection::kPositive; ///< Initial/default motion direction (Clockwise (CW)).
   inline static constexpr uint8_t kSizeOfSweepAngles_ = 4; ///< No. of sweep angles in the lookup table.
-  const float kSweepAngles_degrees_[kSizeOfSweepAngles_] = {45.0F, 90.0F, 180.0F, 360.0F}; ///< Lookup table for sweep angles (degrees) during oscillation.
+  float kSweepAngles_degrees_[kSizeOfSweepAngles_] = {45.0F, 90.0F, 180.0F, 360.0F}; ///< Lookup table for sweep angles (degrees) during oscillation.
   const uint8_t kDefaultSweepAngleIndex_ = 0; ///< Index of initial/default sweep angle.
   inline static constexpr uint8_t kSizeOfSpeeds_ = 4; ///< No. of speeds in the lookup table.
-  const float kSpeeds_RPM_[kSizeOfSpeeds_] = {7.0F, 10.0F, 13.0F, 16.0F}; ///< Lookup table for rotation speeds (RPM).
+  float kSpeeds_RPM_[kSizeOfSpeeds_] = {7.0F, 10.0F, 13.0F, 16.0F}; ///< Lookup table for rotation speeds (RPM).
   const uint8_t kDefaultSpeedIndex_ = 0; ///< Index of initial/default speed.
   float acceleration_microsteps_per_s_per_s_ = 6000.0; //8000.0; ///< Acceleration (microsteps per second-squared).
-  const mt::StepperDriver::AccelerationAlgorithm kAccelerationAlgorithm_ = mt::StepperDriver::AccelerationAlgorithm::kMorgridge24; ///< Acceleration algorithm.
+  const mt::StepperDriver::AccelerationAlgorithm kAccelerationAlgorithm_ =
+                                          mt::StepperDriver::AccelerationAlgorithm::kMorgridge24; ///< Acceleration algorithm.
 
   // Display properties.
   const uint8_t kDisplayHeight_ = 4; ///< The Display height (Rows).
@@ -130,13 +133,13 @@ class Configuration {
   uint16_t startup_delay_ms_ = 1000; ///< Minimum startup/boot delay in milliseconds (ms); based on the motor driver.
 
   // SD card and configuration file properties.
-  // NOTE: SD card must be formated as FAT, FAT16 or FAT32.
+  // NOTE: SD card must be formatted as FAT (FAT16 or FAT32).
   const char* kDefaultConfigFileName_ = "default.txt";  ///< The default configuration file name. SD library allows only short 8.3 names.
 
   // JSON configuration properties.
   // Nodes.
   const char* KSerialNode_ = "serial";
-  const char* kInputNode_ = "input";
+  const char* kInputsNode_ = "inputs";
   const char* kStepperNode_ = "stepper";
   const char* kDisplayNode_ = "display";
   const char* kBuzzerNode_ = "buzzer";
@@ -160,12 +163,20 @@ class Configuration {
   const char* kBuzzerStartupDurationKey_ = "duration_ms";
   const char* kStartupDelayKey_ = "startupDelay_ms";
   // Valid JSON values.
+  using LongPressOption = mt::MomentaryButton::LongPressOption;
+  using AccelerationAlgorithm = mt::StepperDriver::AccelerationAlgorithm;
   inline static constexpr uint8_t kSizeOfLongPressOptions_ = 2; ///< No. of long press options.
-  const char* kLongPressOptions_[kSizeOfLongPressOptions_] = {"detect while holding", "detect after release"}; ///< Long press options.
+  const char* kLongPressOptionsStrings_[kSizeOfLongPressOptions_] =
+                                                {"detect while holding", "detect after release"}; ///< Long press options.
+  LongPressOption kLongPressOptionsTypes_[kSizeOfLongPressOptions_] =
+                        {LongPressOption::kDetectWhileHolding, LongPressOption::kDetectAfterRelease};
   inline static constexpr uint8_t kSizeOfMicrostepModes_ = 6; ///< No. of microstep modes.
   const uint16_t kMicrostepModes_[kSizeOfMicrostepModes_] = {1, 2, 4, 8, 16, 32}; ///< Microstep modes.
   inline static constexpr uint8_t kSizeOfAccelerationAlgorithms_ = 3; ///< No. of acceleration algorithms
-  const char* kAccelerationAlgorithms_[kSizeOfAccelerationAlgorithms_] = {"morgridge24", "austin05", "eiderman04"}; ///< Acceleration algorithms.
+  const char* kAccelerationAlgorithmsStrings_[kSizeOfAccelerationAlgorithms_] =
+                                                       {"morgridge24", "austin05", "eiderman04"}; ///< Acceleration algorithms.
+  AccelerationAlgorithm kAccelerationAlgorithmsTypes_[kSizeOfAccelerationAlgorithms_] =
+           {AccelerationAlgorithm::kMorgridge24, AccelerationAlgorithm::kAustin05, AccelerationAlgorithm::kEiderman04};
 
  private:
 
