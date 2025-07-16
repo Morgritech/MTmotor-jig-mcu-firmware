@@ -4,16 +4,24 @@
 // See the LICENSE file in the project root for full license details.
 
 /// @file control_system.h
-/// @brief Class that links sensor inputs (buttons, serial, etc.) to actuator outputs (display, steppers, etc.).
+/// @brief Class that links sensor inputs (encoders, buttons, serial, etc.) to actuator outputs (display, motors, etc.).
 
 #pragma once
 
 #include <Arduino.h>
+#include <momentary_button.h>
+#include <rotary_encoder.h>
+#include <stepper_driver.h>
+#include <LiquidCrystal.h>
 
 #include "configuration.h"
+#include "common_types.h"
+#include "factories.h"
+#include "input_interface.h"
+//#include "input.h"
 #include "input_manager.h"
-#include "motor_manager.h"
-#include "display_manager.h"
+#include "motor_stepper.h"
+#include "display_dot_matrix.h"
 
 namespace mtmotor_jig {
 
@@ -41,15 +49,61 @@ class ControlSystem {
   /// @brief Configuration settings.
   Configuration& configuration_ = Configuration::GetInstance();
 
-  // Sensors and actuators / inputs and outputs.
-  InputManager inputs_{}; ///< The User inputs (encoder, buttons, serial, etc.).
-  MotorManager motor_{}; ///< The Motor drive system.
-  DisplayManager display_{}; ///< The display (LCD).
+  // Buttons to control the motor.
+  mt::RotaryEncoder encoder_dial_{configuration_.kEncoderContactAPin_,
+                                  configuration_.kEncoderContactBPin_,
+                                  configuration_.kEncoderDetents_,
+                                  configuration_.kEncoderMaxRotationAngle_degrees_}; ///< Encoder dial to control mode selection.
+  mt::MomentaryButton encoder_button_{configuration_.kEncoderButtonPin_,
+                                       configuration_.kUnpressedPinState_,
+                                       configuration_.kDebouncePeriod_ms_,
+                                       configuration_.kShortPressPeriod_ms_,
+                                       configuration_.kLongPressPeriod_ms_}; ///< Button to control motor direction or angle.
+  mt::MomentaryButton controller_button_{configuration_.kControllerButtonPin_,
+                                       configuration_.kUnpressedPinState_,
+                                       configuration_.kDebouncePeriod_ms_,
+                                       configuration_.kShortPressPeriod_ms_,
+                                       configuration_.kLongPressPeriod_ms_}; ///< Button to control motor speed.
+  mt::MomentaryButton limit_switch_{configuration_.kLimitSwitchPin_,
+                                    configuration_.kUnpressedPinState_,
+                                    configuration_.kDebouncePeriod_ms_,
+                                    configuration_.kShortPressPeriod_ms_,
+                                    configuration_.kLongPressPeriod_ms_}; ///< Limit switch to manipulate the motor with respect to a soft home position.  
+
+  /// @brief The inputs (encoders, buttons, etc.).
+  InputInterface* inputs_[4] = {factories::CreateInput(common::InputId::kEncoderDial, encoder_dial_),
+                                factories::CreateInput(common::InputId::kEncoderButton, encoder_button_),
+                                factories::CreateInput(common::InputId::kControllerButton, controller_button_),
+                                factories::CreateInput(common::InputId::kLimitSwitch, limit_switch_)};
+  //Input<mt::RotaryEncoder> input1_{common::InputId::kEncoderDial, encoder_dial_};
+  //InputInterface* input2_ = factories::CreateInput(common::InputId::kEncoderButton, encoder_button_);
+  //InputInterface* input3_ = new Input<mt::MomentaryButton>(common::InputId::kControllerButton, controller_button_);
+  
+  /// @brief The Stepper motor driver.
+  mt::StepperDriver stepper_driver_{configuration_.kMotorDriverPulPin_,
+                                    configuration_.kMotorDriverDirPin_,
+                                    configuration_.kMotorDriverEnaPin_,
+                                    configuration_.microstep_mode_,
+                                    configuration_.full_step_angle_degrees_,
+                                    configuration_.gear_ratio_};
+
+  /// @brief The (dot-matrix) LCD display driver.
+  LiquidCrystal dot_matrix_display_{configuration_.kLcdRsPin_,
+                                    configuration_.kLcdEnaPin_,
+                                    configuration_.kLcdD4Pin_,
+                                    configuration_.kLcdD5Pin_,
+                                    configuration_.kLcdD6Pin_,
+                                    configuration_.kLcdD7Pin_};
+
+  // Managers and controllers for inputs and outputs (sensors and actuators).
+  InputManager input_manager_{inputs_}; ///< The User Inputs manager (encoder, buttons, serial, etc.).
+  MotorStepper stepper_motor_{stepper_driver_}; ///< The Stepper motor drive system.
+  DisplayDotMatrix display_{dot_matrix_display_}; ///< The (dot-matrix) LCD controller.
 
   // Control flags and indicator variables.
-  Configuration::ControlMode control_mode_ = configuration_.kDefaultControlMode_; ///< Variable to keep track of the control system mode.
-  Configuration::ControlMode previous_control_mode_ = configuration_.kDefaultControlMode_; ///< Variable to keep track of the previously set control system mode.
-  Configuration::ControlAction control_action_ = Configuration::ControlAction::kIdle; ///< Variable to keep track of the control actions from user inputs.
+  common::ControlMode control_mode_ = configuration_.kDefaultControlMode_; ///< Variable to keep track of the control system mode.
+  common::ControlMode previous_control_mode_ = configuration_.kDefaultControlMode_; ///< Variable to keep track of the previously set control system mode.
+  common::ControlAction control_action_ = common::ControlAction::kIdle; ///< Variable to keep track of the control actions from user inputs.
   String status_ = ""; ///< Variable to keep track of the status message to display.
 };
 

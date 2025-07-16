@@ -1,0 +1,31 @@
+{
+  "serial":{
+    "baudRate":9600
+  },
+  "inputs":{
+    "longPressOption":"detect while holding"
+  },
+  "stepper":{
+    "stepAngle_deg":1.8,
+    "gearRatio":1.0,
+    "microstepMode":32,
+    "pulDelay_us":1.0,
+    "dirDelay_us":5.0,
+    "enaDelay_us":5.0,
+    "sweepAngles_deg":[45.0, 90.0, 180.0, 360.0],
+    "speeds_RPM":[7.0, 10.0, 13.0, 16.0],
+    "acceleration_microsteps_per_s_per_s":6000.0,
+    "accelerationAlgorithm":"morgridge24"
+  },
+  "display":{
+    "splashScreenDelay_ms":1500
+  },
+  "buzzer":{
+    "enabled":true,
+    "frequency_hz":4000,
+    "duration_ms":100
+  },
+  "other": {
+    "startupDelay_ms":1000
+  }
+}

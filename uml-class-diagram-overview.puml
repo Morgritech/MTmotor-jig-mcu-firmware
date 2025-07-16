@@ -1,8 +1,6 @@
 @startuml
 title UML Class Diagram - High Level System Overview
 
-left to right direction
-
 package MTmotor-jig-mcu-firmware {
   class ArduinoSketch {
     +setup()
@@ -22,30 +20,33 @@ package MTmotor-jig-mcu-firmware {
     -void LogGeneralStatus() const
   }
 
-  class DisplayManager {
-    +void Begin()
-    +void Draw(Configuration::ControlMode control_mode, Configuration::ControlAction control_action, const String& status)
-    -void DrawScreenItems(const String screen_items[], const uint8_t size_of_screen_items)
+  Interface InputInterface {
+    +virtual inputs::Event Check() = 0
+  }
+
+  class Input {
+    +inputs::Event Check() override
   }
 
   class InputManager {
-    +void Begin()
-    +Configuration::ControlAction Check(Configuration::ControlMode control_mode)
+    +common::ControlAction CheckAndProcess(common::ControlMode control_mode)
   }
 
-  class MotorManager {
-    +void Begin()
-    +void Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action, String& status_output)
+  class MotorStepper {
     +void Actuate(Configuration::ControlMode control_mode, Configuration::ControlAction control_action, String& status_output)
     +void LogGeneralStatus(Configuration::ControlMode control_mode) const
     +bool homing() const
   }
+
+  class DisplayDotMatrix {
+    +void Draw(Configuration::ControlMode control_mode, Configuration::ControlAction control_action, const String& status)
+    -template <size_t Size> void DrawScreenItems(const String (&screen_items)[Size])
+  }
 }
 
 together {
-
   package ArduinoLog {
-    class ArduinoLog {
+    class Logging {
     }
   }
 
@@ -68,30 +69,33 @@ together {
     class StepperDriver {
     }
   }
-
 }
 
-ArduinoSketch "1" *-- "0..*" ControlSystem : Has
-ArduinoSketch <.. ArduinoLog.ArduinoLog
+ArduinoSketch "1" *-- "1" ControlSystem : Has
 
-Configuration <.. ArduinoLog.ArduinoLog
+Configuration <.. Logging
 
 ControlSystem "1" o-- "1" Configuration : Has
-ControlSystem "1" *- "1" DisplayManager : Has
+ControlSystem "1" *-- "1" RotaryEncoder : Has
+ControlSystem "1" *-- "3" MomentaryButton : Has
+ControlSystem "1" o-- "4" InputInterface : Has
+ControlSystem "1" *-- "1" StepperDriver : Has
+ControlSystem "1" *-- "1*" LiquidCrystal.LiquidCrystal: Has
 ControlSystem "1" *- "1" InputManager : Has
-ControlSystem "1" *- "1" MotorManager : Has
-ControlSystem <.. ArduinoLog.ArduinoLog
+ControlSystem "1" *- "1" MotorStepper : Has
+ControlSystem "1" *- "1" DisplayDotMatrix : Has
+ControlSystem <.. Logging
 
-DisplayManager "1" o-- "1" Configuration : Has 
-DisplayManager "1" *-- "0..*" LiquidCrystal.LiquidCrystal: Has
+Input <|-- InputInterface : Implements
 
-InputManager "1" o-- "1" Configuration : Has
-InputManager "1" *-- "0..*" MomentaryButton : Has
-InputManager "1" *-- "0..*" RotaryEncoder : Has
-InputManager <.. ArduinoLog.ArduinoLog
+InputManager "1" o-- "1..*" InputInterface : Has
+InputManager <.. Logging
 
-MotorManager "1" o-- "1" Configuration : Has
-MotorManager "1" *-- "0..*" StepperDriver : Has
-MotorManager <.. ArduinoLog.ArduinoLog
+DisplayDotMatrix "1" o-- "1" Configuration : Has
+DisplayDotMatrix "1" o-- "1" LiquidCrystal.LiquidCrystal: Has
+
+MotorStepper "1" o-- "1" Configuration : Has
+MotorStepper "1" o-- "1" StepperDriver : Has
+MotorStepper <.. Logging
 
 @enduml
