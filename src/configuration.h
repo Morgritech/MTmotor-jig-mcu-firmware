@@ -186,7 +186,7 @@ class Configuration {
   /// @brief Private destructor so objects cannot be manually instantiated. 
   ~Configuration();
 
-  /// @brief Read the configuration from a file (JSON format) on the SD card.
+  /// @brief Read configuration (JSON format) from a file (first available, if default.txt is not found) on the SD card.
   void ReadConfigFromFileOnSd();
 
   // Debug helpers and logger properties (for debugging and system reporting).

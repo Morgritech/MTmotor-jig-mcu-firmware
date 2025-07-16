@@ -13,7 +13,7 @@
 #include <SPI.h>
 #include <SD.h>
 
-#define ARDUINOJSON_ENABLE_COMMENTS 1
+//#define ARDUINOJSON_ENABLE_COMMENTS 1
 #include <ArduinoJson.h>
 
 namespace mtmotor_jig {
@@ -103,15 +103,19 @@ void Configuration::ReadConfigFromFileOnSd() {
 
   if (!config_file) {
     Log.errorln(F("Failed to open configuration file: %s"), kDefaultConfigFileName_);
-    Log.noticeln(hardcoded_settings_message);
-    return;
-    // TODO(JM):
-    // Attempt to read the first available configuration file.
-    // If ok, Log notice of the file that was opened.
-    // Else log error and return.
+
+    // Read the next available file.
+    File root_directory = SD.open(F("/"));
+    config_file = root_directory.openNextFile(FILE_READ);
+
+    if (!config_file) {
+      Log.errorln(F("No other valid files found."));
+      Log.noticeln(hardcoded_settings_message);
+      return;
+    }
   }
 
-  Log.noticeln(F("Configuration file opened: %s"), kDefaultConfigFileName_);
+  Log.noticeln(F("Configuration file opened: %s"), config_file.name());
 
   // Extract JSON from config file.
 
