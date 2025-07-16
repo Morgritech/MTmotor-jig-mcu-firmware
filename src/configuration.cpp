@@ -27,8 +27,8 @@ void mtmotor_jig::Configuration::BeginHardware() {
   // Initialise the serial port.
   MTMOTOR_JIG_SERIAL.begin(baud_rate_);
 
-  // Initialise logging.
-  Log.begin(log_level_, &MTMOTOR_JIG_SERIAL);
+  // Enable (LOG_LEVEL_VERBOSE) logging for all initial setup messages.
+  ToggleLogs(); // Assumes default set in configuration.h is LOG_LEVEL_SILENT.
 
   // Initialise the input pins.
   pinMode(kEncoderButtonPin_, INPUT_PULLUP);
@@ -50,6 +50,11 @@ void mtmotor_jig::Configuration::BeginHardware() {
 
   // Delay for the startup time.
   delay(startup_delay_ms_);
+
+  Log.noticeln(F("...Setup complete...\n"));
+
+  // Disable logging.
+  ToggleLogs();  
 }
 
 void Configuration::ToggleLogs() {
