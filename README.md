@@ -171,6 +171,20 @@ For Linux:
 ~/bin/arduino-cli <commands>
 ```
 
+## System setup
+
+The project provides a means to initialise various configuration settings via a file (JSON format) on the SD card (must be FAT16 or FAT32 formatted). The program will first attempt to read a file called "default.txt", and if not found, will attempt to read the first available file (name must be 8.3 format) on the SD card.
+
+An example configuration file is provided (see [configs/default.txt](configs/default.txt)). All nodes and key-value pairs shown in this file must be present in any custom configuration file. Comments are disabled.
+
+The following keys must be provided with valid values from the options shown below:
+
+|Node|Key|Valid Values|
+|----|----|----|
+|inputs|longPressOption|"detect while holding" , "detect after release"|
+|stepper|accelerationAlgorithm|"morgridge24" , "austin05" , "eiderman04"|
+|buzzer|enabled|true , false|
+
 ## System control and logging/status reporting
 
 The project provides a means of controlling the system and interrogating the status of the system via serial messages, once the programme is uploaded to the Arduino board. The following messages are implemented:
