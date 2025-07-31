@@ -286,8 +286,8 @@ void Configuration::ReadConfigFromFileOnSd() {
   pul_delay_us_ = pul_delay_us;
   dir_delay_us_ = dir_delay_us;
   ena_delay_us_ = ena_delay_us;
-  for (auto i = 0; i < kSizeOfSweepAngles_; i++) kSweepAngles_degrees_[i] = sweep_angles[i];
-  for (auto i = 0; i < kSizeOfSpeeds_; i++) kSpeeds_RPM_[i] = speeds[i];
+  for (auto i = 0; i < kSizeOfSweepAngles_; i++) sweep_angles_degrees_[i] = sweep_angles[i];
+  for (auto i = 0; i < kSizeOfSpeeds_; i++) speeds_RPM_[i] = speeds[i];
   acceleration_microsteps_per_s_per_s_ = acceleration_microsteps_per_s_per_s;
   mt::StepperDriver::AccelerationAlgorithm kAccelerationAlgorithm_ = 
                                                 kAccelerationAlgorithmsTypes_[valid_acceleration_algorithm_index];

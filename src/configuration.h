@@ -52,8 +52,8 @@ class Configuration {
   const uint8_t kEncoderContactBPin_ = 26; ///< Input pin for the encoder contact B to control mode selection.
   const uint8_t kControllerButtonPin_ = 28; ///< Input pin for the controller button to control motor speed.
   const uint8_t kControllerBuzzerPin_ = 49; ///< Input pin for the controller buzzer.
-  const uint8_t kSdMosiPin_ = 50; ///< Input/output pin for the SD card MOSI/COPI (controller out peripheral in) interface. (Arduino MEGA MISO/PICO pin). Pin 12 for Uno.
-  const uint8_t kSdMisoPin_ = 51; ///< Input/output for the SD card MISO/PICO (controller in peripheral out) interface. (Arduino MEGA MOSI/COPI pin). Pin 11 for Uno.
+  const uint8_t kSdMisoPin_ = 50; ///< Input/output pin for the SD card MISO/PICO (controller in, peripheral out) interface..
+  const uint8_t kSdMosiPin_ = 51; ///< Input/output for the SD card MOSI/COPI (controller out, peripheral in) interface.
   const uint8_t kSdClkPin_ = 52; ///< Input/output pin for the SD card CLK (clock) interface. Pin 13 for Uno.
   const uint8_t kSdCsPin_ = 53; ///< Output pin for the SD card CS (chip select) interface. Pin 10 for Uno. This pin MUST be set as output.
   const uint8_t kLcdRsPin_ = 32; ///< Output pin for the LCD RS (register select) interface.
@@ -95,10 +95,10 @@ class Configuration {
   const mt::StepperDriver::MotionDirection kDefaultMotionDirection_ =
                                                    mt::StepperDriver::MotionDirection::kPositive; ///< Initial/default motion direction (Clockwise (CW)).
   inline static constexpr uint8_t kSizeOfSweepAngles_ = 4; ///< No. of sweep angles in the lookup table.
-  float kSweepAngles_degrees_[kSizeOfSweepAngles_] = {45.0F, 90.0F, 180.0F, 360.0F}; ///< Lookup table for sweep angles (degrees) during oscillation.
+  float sweep_angles_degrees_[kSizeOfSweepAngles_] = {45.0F, 90.0F, 180.0F, 360.0F}; ///< Lookup table for sweep angles (degrees) during oscillation.
   const uint8_t kDefaultSweepAngleIndex_ = 0; ///< Index of initial/default sweep angle.
   inline static constexpr uint8_t kSizeOfSpeeds_ = 4; ///< No. of speeds in the lookup table.
-  float kSpeeds_RPM_[kSizeOfSpeeds_] = {7.0F, 10.0F, 13.0F, 16.0F}; ///< Lookup table for rotation speeds (RPM).
+  float speeds_RPM_[kSizeOfSpeeds_] = {7.0F, 10.0F, 13.0F, 16.0F}; ///< Lookup table for rotation speeds (RPM).
   const uint8_t kDefaultSpeedIndex_ = 0; ///< Index of initial/default speed.
   float acceleration_microsteps_per_s_per_s_ = 6000.0; //8000.0; ///< Acceleration (microsteps per second-squared).
   const mt::StepperDriver::AccelerationAlgorithm kAccelerationAlgorithm_ =
@@ -168,14 +168,14 @@ class Configuration {
   inline static constexpr uint8_t kSizeOfLongPressOptions_ = 2; ///< No. of long press options.
   const char* kLongPressOptionsStrings_[kSizeOfLongPressOptions_] =
                                                 {"detect while holding", "detect after release"}; ///< Long press options.
-  LongPressOption kLongPressOptionsTypes_[kSizeOfLongPressOptions_] =
+  const LongPressOption kLongPressOptionsTypes_[kSizeOfLongPressOptions_] =
                         {LongPressOption::kDetectWhileHolding, LongPressOption::kDetectAfterRelease};
   inline static constexpr uint8_t kSizeOfMicrostepModes_ = 6; ///< No. of microstep modes.
   const uint16_t kMicrostepModes_[kSizeOfMicrostepModes_] = {1, 2, 4, 8, 16, 32}; ///< Microstep modes.
   inline static constexpr uint8_t kSizeOfAccelerationAlgorithms_ = 3; ///< No. of acceleration algorithms
   const char* kAccelerationAlgorithmsStrings_[kSizeOfAccelerationAlgorithms_] =
                                                        {"morgridge24", "austin05", "eiderman04"}; ///< Acceleration algorithms.
-  AccelerationAlgorithm kAccelerationAlgorithmsTypes_[kSizeOfAccelerationAlgorithms_] =
+  const AccelerationAlgorithm kAccelerationAlgorithmsTypes_[kSizeOfAccelerationAlgorithms_] =
            {AccelerationAlgorithm::kMorgridge24, AccelerationAlgorithm::kAustin05, AccelerationAlgorithm::kEiderman04};
 
  private:

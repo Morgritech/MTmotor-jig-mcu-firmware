@@ -37,6 +37,8 @@ The following libraries (available via the [Arduino library manager](https://www
 - [MT-arduino-stepper-driver](https://github.com/Morgritech/MT-arduino-stepper-driver)
 - [Arduino-Log](https://github.com/thijse/Arduino-Log)
 - [LiquidCrystal](https://github.com/arduino-libraries/LiquidCrystal)
+- [SD](https://github.com/arduino-libraries/SD)
+- [ArduinoJson](https://github.com/bblanchon/ArduinoJson)
 
 ### UML class diagram
 
