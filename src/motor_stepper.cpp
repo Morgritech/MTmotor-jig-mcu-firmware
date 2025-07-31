@@ -69,7 +69,7 @@ void MotorStepper::Actuate(common::ControlMode control_mode, common::ControlActi
           sweep_angle_index_++;
         }
 
-        Log.noticeln(F("Sweep angle (degrees): %F"), configuration_.kSweepAngles_degrees_[sweep_angle_index_]);
+        Log.noticeln(F("Sweep angle (degrees): %F"), configuration_.sweep_angles_degrees_[sweep_angle_index_]);
         motion_type_ = mt::StepperDriver::MotionType::kStopAndReset;
         break;
       }
@@ -175,7 +175,7 @@ void MotorStepper::Actuate(common::ControlMode control_mode, common::ControlActi
         break;
       }
       case common::ControlMode::kOscillateMenu: {
-        status_output += String(configuration_.kSweepAngles_degrees_[sweep_angle_index_], 0);
+        status_output += String(configuration_.sweep_angles_degrees_[sweep_angle_index_], 0);
         status_output += F("deg..");
         break;
       }
@@ -210,7 +210,7 @@ void MotorStepper::Actuate(common::ControlMode control_mode, common::ControlActi
     }
     case common::ControlMode::kOscillateMenu: {
       mt::StepperDriver::MotionStatus motion_status = stepper_driver_.MoveByAngle(sweep_direction_ 
-                                                      * configuration_.kSweepAngles_degrees_[sweep_angle_index_],
+                                                      * configuration_.sweep_angles_degrees_[sweep_angle_index_],
                                                       mt::StepperDriver::AngleUnits::kDegrees, motion_type_);
       if (motion_status == mt::StepperDriver::MotionStatus::kIdle) {
         // Motion completed OR stop and reset issued.
@@ -267,7 +267,7 @@ void MotorStepper::LogGeneralStatus(common::ControlMode control_mode) const {
     Log.noticeln(F("Motion direction: counter-clockwise (CCW)"));
   }
   
-  Log.noticeln(F("Sweep angle (degrees): %F"), configuration_.kSweepAngles_degrees_[sweep_angle_index_]);
+  Log.noticeln(F("Sweep angle (degrees): %F"), configuration_.sweep_angles_degrees_[sweep_angle_index_]);
   Log.noticeln(F("Speed (RPM): %F"), configuration_.kSpeeds_RPM_[speed_index_]);
 
   if (control_mode == common::ControlMode::kHoming) {
