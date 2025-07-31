@@ -89,9 +89,9 @@ void MotorStepper::Actuate(common::ControlMode control_mode, common::ControlActi
           speed_index_++;
         }
         
-        stepper_driver_.SetSpeed(configuration_.kSpeeds_RPM_[speed_index_],
+        stepper_driver_.SetSpeed(configuration_.speeds_RPM_[speed_index_],
                                  mt::StepperDriver::SpeedUnits::kRevolutionsPerMinute);
-        Log.noticeln(F("Speed (RPM): %F"), configuration_.kSpeeds_RPM_[speed_index_]);
+        Log.noticeln(F("Speed (RPM): %F"), configuration_.speeds_RPM_[speed_index_]);
         break;
       }
     }
@@ -107,7 +107,7 @@ void MotorStepper::Actuate(common::ControlMode control_mode, common::ControlActi
         allow_motion_ = false;
         motion_type_ = mt::StepperDriver::MotionType::kStopAndReset;
         speed_index_ = configuration_.kDefaultSpeedIndex_;
-        stepper_driver_.SetSpeed(configuration_.kSpeeds_RPM_[speed_index_],
+        stepper_driver_.SetSpeed(configuration_.speeds_RPM_[speed_index_],
                             mt::StepperDriver::SpeedUnits::kRevolutionsPerMinute);
         Log.noticeln(F("Motion status: stopped"));       
       }
@@ -156,7 +156,7 @@ void MotorStepper::Actuate(common::ControlMode control_mode, common::ControlActi
       status_output += F("OFF.");
     }
 
-    status_output += String(configuration_.kSpeeds_RPM_[speed_index_], 0);
+    status_output += String(configuration_.speeds_RPM_[speed_index_], 0);
     status_output += F("RPM.");
 
     switch (control_mode) {
@@ -268,7 +268,7 @@ void MotorStepper::LogGeneralStatus(common::ControlMode control_mode) const {
   }
   
   Log.noticeln(F("Sweep angle (degrees): %F"), configuration_.sweep_angles_degrees_[sweep_angle_index_]);
-  Log.noticeln(F("Speed (RPM): %F"), configuration_.kSpeeds_RPM_[speed_index_]);
+  Log.noticeln(F("Speed (RPM): %F"), configuration_.speeds_RPM_[speed_index_]);
 
   if (control_mode == common::ControlMode::kHoming) {
     Log.noticeln(F("Motion status: homing"));

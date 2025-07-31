@@ -98,7 +98,7 @@ class Configuration {
   float sweep_angles_degrees_[kSizeOfSweepAngles_] = {45.0F, 90.0F, 180.0F, 360.0F}; ///< Lookup table for sweep angles (degrees) during oscillation.
   const uint8_t kDefaultSweepAngleIndex_ = 0; ///< Index of initial/default sweep angle.
   inline static constexpr uint8_t kSizeOfSpeeds_ = 4; ///< No. of speeds in the lookup table.
-  float kSpeeds_RPM_[kSizeOfSpeeds_] = {7.0F, 10.0F, 13.0F, 16.0F}; ///< Lookup table for rotation speeds (RPM).
+  float speeds_RPM_[kSizeOfSpeeds_] = {7.0F, 10.0F, 13.0F, 16.0F}; ///< Lookup table for rotation speeds (RPM).
   const uint8_t kDefaultSpeedIndex_ = 0; ///< Index of initial/default speed.
   float acceleration_microsteps_per_s_per_s_ = 6000.0; //8000.0; ///< Acceleration (microsteps per second-squared).
   const mt::StepperDriver::AccelerationAlgorithm kAccelerationAlgorithm_ =
@@ -168,14 +168,14 @@ class Configuration {
   inline static constexpr uint8_t kSizeOfLongPressOptions_ = 2; ///< No. of long press options.
   const char* kLongPressOptionsStrings_[kSizeOfLongPressOptions_] =
                                                 {"detect while holding", "detect after release"}; ///< Long press options.
-  LongPressOption kLongPressOptionsTypes_[kSizeOfLongPressOptions_] =
+  const LongPressOption kLongPressOptionsTypes_[kSizeOfLongPressOptions_] =
                         {LongPressOption::kDetectWhileHolding, LongPressOption::kDetectAfterRelease};
   inline static constexpr uint8_t kSizeOfMicrostepModes_ = 6; ///< No. of microstep modes.
   const uint16_t kMicrostepModes_[kSizeOfMicrostepModes_] = {1, 2, 4, 8, 16, 32}; ///< Microstep modes.
   inline static constexpr uint8_t kSizeOfAccelerationAlgorithms_ = 3; ///< No. of acceleration algorithms
   const char* kAccelerationAlgorithmsStrings_[kSizeOfAccelerationAlgorithms_] =
                                                        {"morgridge24", "austin05", "eiderman04"}; ///< Acceleration algorithms.
-  AccelerationAlgorithm kAccelerationAlgorithmsTypes_[kSizeOfAccelerationAlgorithms_] =
+  const AccelerationAlgorithm kAccelerationAlgorithmsTypes_[kSizeOfAccelerationAlgorithms_] =
            {AccelerationAlgorithm::kMorgridge24, AccelerationAlgorithm::kAustin05, AccelerationAlgorithm::kEiderman04};
 
  private:

@@ -38,7 +38,7 @@ void ControlSystem::Begin() {
   stepper_driver_.set_pul_delay_us(configuration_.pul_delay_us_);
   stepper_driver_.set_dir_delay_us(configuration_.dir_delay_us_);
   stepper_driver_.set_ena_delay_us(configuration_.ena_delay_us_);
-  stepper_driver_.SetSpeed(configuration_.kSpeeds_RPM_[configuration_.kDefaultSpeedIndex_],
+  stepper_driver_.SetSpeed(configuration_.speeds_RPM_[configuration_.kDefaultSpeedIndex_],
                            mt::StepperDriver::SpeedUnits::kRevolutionsPerMinute);
   stepper_driver_.SetAcceleration(configuration_.acceleration_microsteps_per_s_per_s_,
                                   mt::StepperDriver::AccelerationUnits::kMicrostepsPerSecondPerSecond);
