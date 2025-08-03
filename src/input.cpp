@@ -27,7 +27,7 @@ template <typename InputType>
 Input<InputType>::~Input() {}
 
 template <>
-inputs::Event Input<mt::RotaryEncoder>::Check() {
+inputs::Event Input<mt::RotaryEncoder>::Check() const {
   using RotationDirection = mt::RotaryEncoder::RotationDirection;
 
   auto event = inputs::EventType::kIdle;
@@ -44,7 +44,7 @@ inputs::Event Input<mt::RotaryEncoder>::Check() {
 }
 
 template <>
-inputs::Event Input<mt::MomentaryButton>::Check() {
+inputs::Event Input<mt::MomentaryButton>::Check() const {
   using PressType = mt::MomentaryButton::PressType;
 
   auto event = inputs::EventType::kIdle;

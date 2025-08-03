@@ -29,7 +29,7 @@ class Input : public InputInterface {
 
   /// @brief Check for user input.
   /// @return The control action.
-  inputs::Event Check() override; ///< This must be called repeatedly.
+  inputs::Event Check() const override; ///< This must be called repeatedly.
 
  private:
 
