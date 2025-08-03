@@ -105,20 +105,24 @@ class Configuration {
                                           mt::StepperDriver::AccelerationAlgorithm::kMorgridge24; ///< Acceleration algorithm.
 
   // Display properties.
-  const uint8_t kDisplayHeight_ = 4; ///< The Display height (Rows).
-  const uint8_t kDisplayWidth_ = 20; ///< The Display width (Columns).
+  inline static constexpr uint8_t kDisplayHeight_ = 4; ///< The Display height (Rows).
+  inline static constexpr uint8_t kDisplayWidth_ = 20; ///< The Display width (Columns).
   /// @brief The splash screen menu items.
   const String kSplashScreenMenuItems_[4] = {"____MTmotor-jig_____",   // 0
                                              "   Test motors &"    ,   // 1
                                              "   motor control"    ,   // 2
                                              "      devices"        }; // 3
   //                                          0                  19
+  static_assert(sizeof(kSplashScreenMenuItems_) / sizeof(kSplashScreenMenuItems_[0]) <= kDisplayHeight_,
+                       "kSplashScreenMenuItems_ exceeds display height.");
   uint16_t splash_screen_delay_ms_ = 1500; ///< Period of time in milliseconds (ms) to show the splash screen.
   /// @brief The home screen menu items.
   const String kHomeScreenMenuItems_[3] = {"__Select_Mode_______",   // 0
                                            "o Continuous"        ,   // 1
                                            "o Oscillate"          }; // 2
   //                                        0                  19
+  static_assert(sizeof(kHomeScreenMenuItems_) / sizeof(kHomeScreenMenuItems_[0]) <= kDisplayHeight_ - 1,
+                       "kHomeScreenMenuItems_ exceeds display height.");
   const uint8_t kContinuousMenuCursorPositionY_ = 1; ///< The cursor position (y-axis) for the continuous menu.
   const uint8_t kOscillateMenuCursorPositionY_ = 2; ///< The cursor position (y-axis) for the oscillate menu.
   const uint8_t kStatusBarCursorPositionY_ = 3; ///< The cursor position (y-axis) for the status bar.
