@@ -39,7 +39,7 @@ class InputManager {
   /// @brief Check for user input.
   /// @param control_mode The control mode.
   /// @return The control action.
-  common::ControlAction CheckAndProcess(common::ControlMode control_mode); ///< This must be called repeatedly.
+  common::ControlAction CheckAndProcess(common::ControlMode control_mode) const; ///< This must be called repeatedly.
 
  private:
 

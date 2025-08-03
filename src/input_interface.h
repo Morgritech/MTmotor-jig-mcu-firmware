@@ -23,7 +23,7 @@ class InputInterface {
 
   /// @brief Check for user input.
   /// @return The input event.
-  virtual inputs::Event Check() = 0;
+  virtual inputs::Event Check() const = 0;
 };
 
 } // namespace mtmotor_jig

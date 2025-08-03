@@ -44,7 +44,7 @@ class Configuration {
   void ToggleLogs();
 
   /// @brief Report the firmware version.
-  void ReportFirmwareVersion();
+  void ReportFirmwareVersion() const;
 
   // GPIO pins.
   const uint8_t kEncoderButtonPin_ = 33; ///< Input pin for the encoder button to control motor direction or angle.

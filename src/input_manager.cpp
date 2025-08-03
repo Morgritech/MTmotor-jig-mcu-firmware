@@ -24,7 +24,7 @@ namespace mtmotor_jig {
 
 InputManager::~InputManager() {}
 
-common::ControlAction InputManager::CheckAndProcess(common::ControlMode control_mode) {
+common::ControlAction InputManager::CheckAndProcess(common::ControlMode control_mode) const {
   inputs::Event input_event{};
   
   // Check for input events from all hardware inputs (encoder dial, buttons).

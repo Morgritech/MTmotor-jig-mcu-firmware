@@ -71,7 +71,7 @@ void Configuration::ToggleLogs() {
   if (log_level_ == LOG_LEVEL_VERBOSE) Log.noticeln(F("Log messages enabled."));
 }
 
-void Configuration::ReportFirmwareVersion() {
+void Configuration::ReportFirmwareVersion() const {
   String version = kName;
   version += F("-");
   version += String(kMajor);
