@@ -52,10 +52,10 @@ class Configuration {
   const uint8_t kEncoderContactBPin_ = 26; ///< Input pin for the encoder contact B to control mode selection.
   const uint8_t kControllerButtonPin_ = 28; ///< Input pin for the controller button to control motor speed.
   const uint8_t kControllerBuzzerPin_ = 49; ///< Input pin for the controller buzzer.
-  const uint8_t kSdMisoPin_ = 50; ///< Input/output pin for the SD card MISO/PICO (controller in, peripheral out) interface..
-  const uint8_t kSdMosiPin_ = 51; ///< Input/output for the SD card MOSI/COPI (controller out, peripheral in) interface.
-  const uint8_t kSdClkPin_ = 52; ///< Input/output pin for the SD card CLK (clock) interface. Pin 13 for Uno.
-  const uint8_t kSdCsPin_ = 53; ///< Output pin for the SD card CS (chip select) interface. Pin 10 for Uno. This pin MUST be set as output.
+  [[maybe_unused]] const uint8_t kSdMisoPin_ = 50; ///< Input/output pin for the SD card MISO/PICO (controller in, peripheral out) interface.
+  [[maybe_unused]] const uint8_t kSdMosiPin_ = 51; ///< Input/output for the SD card MOSI/COPI (controller out, peripheral in) interface.
+  [[maybe_unused]] const uint8_t kSdClkPin_ = 52; ///< Input/output pin for the SD card CLK (clock) interface.
+  const uint8_t kSdCsPin_ = 53; ///< Output pin for the SD card CS (chip select) interface. This pin MUST be set as output.
   const uint8_t kLcdRsPin_ = 32; ///< Output pin for the LCD RS (register select) interface.
   const uint8_t kLcdEnaPin_ = 48; ///< Output pin for the LCD ENA (enable) interface.
   const uint8_t kLcdD4Pin_ = 47; ///< Output pin for the LCD D4 interface.
