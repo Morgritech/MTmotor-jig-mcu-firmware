@@ -9,15 +9,4 @@ on:
 jobs:
   static-check:
     name: Static check
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Arduino lint
-        uses: arduino/arduino-lint-action@v1
-        with:
-          compliance: specification
-          library-manager: false
-          project-type: sketch
-          recursive: true
+    uses: Morgritech/MT-github-workflows/.github/workflows/arduino-cpp-app-static-check.yaml@1.0.0
