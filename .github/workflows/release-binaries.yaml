@@ -4,38 +4,8 @@ on:
     types: [published]
 
 jobs:
-  generate-binaries:
-    name: Call workflow to generate binaries
-    uses: ./.github/workflows/generate-binaries.yaml
-
   release-binaries:
-    permissions: write-all
     name: Release binaries
-    runs-on: ubuntu-latest
-    env:
-      # Environment variables
-      ARTIFACT_NAME: binaries
-      ASSET_PREFIX: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}
-    needs: generate-binaries
-    steps:
-    - name: Download binaries
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ env.ARTIFACT_NAME }}
-#    - name: Verify artifact download (Debugging)
-#      run: ls -R
-    - name: Archive binaries
-      uses: thedoctor0/zip-release@master
-      with:
-        filename: ${{ env.ASSET_PREFIX }}-${{ env.ARTIFACT_NAME }}.zip
-#    - name: Verify artifact archive (Debugging)
-#      run: ls -R
-    - name: Upload binaries as release assets
-      uses: actions/upload-release-asset@v1.0.2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./${{ env.ASSET_PREFIX }}-${{ env.ARTIFACT_NAME }}.zip
-        asset_name: ${{ env.ASSET_PREFIX }}-${{ env.ARTIFACT_NAME }}.zip
-        asset_content_type: application/zip
+    uses: Morgritech/MT-github-workflows/.github/workflows/arduino-cpp-app-create-binaries.yaml@1.0.0
+    with:
+      action: 'release'
