@@ -15,13 +15,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
       - name: Install and setup dependencies
         run: |
           sudo apt-get update
-          sudo bash -x scripts/setup-build-linux.sh -cli --path
-          sudo bash -x scripts/setup-build-linux.sh -deps
+          sudo bash -x external/mt-arduino-cli-scripts/setup-build-linux.sh -cli --path
+          sudo bash -x external/mt-arduino-cli-scripts/setup-build-linux.sh -deps
       - name: Build/compile the project
-        run: sudo bash -x scripts/setup-build-linux.sh -build
+        run: sudo bash -x external/mt-arduino-cli-scripts/setup-build-linux.sh -build
       - name: Upload compiled binaries
         uses: actions/upload-artifact@v4
         with:

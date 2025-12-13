@@ -1,0 +1,3 @@
+[submodule "external/mt-arduino-cli-scripts"]
+	path = external/mt-arduino-cli-scripts
+	url = https://github.com/Morgritech/MT-arduino-cli-scripts
