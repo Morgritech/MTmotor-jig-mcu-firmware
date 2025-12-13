@@ -26,7 +26,7 @@ This project doesn't impose any specific build system, however the preferred met
 
 ### Continuous integration/delivery (CI/CD)
 
-[GitHub Actions](https://docs.github.com/en/actions) is used as the CI/CD platform, and the workflow also makes use of the [Linux setup script](scripts/setup-build-linux.sh).
+[GitHub Actions](https://docs.github.com/en/actions) is used as the CI/CD platform, and the workflow also makes use of the [Linux setup script](external/mt-arduino-cli-scripts/setup-build-linux.sh).
 
 ### External libraries
 
@@ -52,126 +52,17 @@ As with any other Arduino project, you can simply download the project and open 
 
 OR
 
-You can work without an IDE by making use of the provided [setup/build scripts](scripts) and/or Arduino CLI. You can run the setup/build scripts to automatically install the required libraries, and build/compile/upload the project as described in the following sections. This method will build the project for all boards defined in [arduino-boards.txt](arduino-boards.txt).
+You can work without an IDE by making use of the provided [setup/build scripts](external/mt-arduino-cli-scripts) and/or Arduino CLI. See the [README](external\mt-arduino-cli-scripts\README.md) for full details.
 
 > [!NOTE]
-> Running the setup/build scripts will install arduino-cli and other dependencies (Arduino cores and libraries) on your device. Cores are extracted from the required boards defined in [arduino-boards.txt](arduino-boards.txt) and required libraries are defined in [arduino-libs.txt](arduino-libs.txt).
-
-### Setup and build scripts for Windows
-
-Open a Command Prompt (CMD) terminal, navigate to the project directory, and run the commands in the following sections.
-
-**Setup a Windows device ready to build the project.**
-
-Install arduino-cli:
+> The scripts are included as a Git submodule. In order to bring them into the project after cloning, run the following command:
 
 ``` shell
-scripts\setup-build-windows.cmd -cli
+git submodule update --init --recursive
 ```
 
-Install arduino-cli and add it to the Windows environment path:
 > [!NOTE]
-> This only updates the path in the current user session and does not persist if the session is closed. You will need to re-run the command for a new session.
-
-``` shell
-scripts\setup-build-windows.cmd -cli --path
-```
-
-Install arduino cores and libraries:
-
-``` shell
-scripts\setup-build-windows.cmd -deps
-```
-
-**Build and optionally upload the project.**
-
-Build only:
-
-``` shell
-scripts\setup-build-windows.cmd -build
-```
-
-Build and upload:
-
-``` shell
-scripts\setup-build-windows.cmd -build --port COM3 --upload
-```
-
-Replace COM3 in the command with the desired serial port.
-
-### Setup and build scripts for Linux
-
-Open a terminal, navigate to the project directory, and run the commands in the following sections.
-
-**Setup a Linux device ready to build the project.**
-
-In order for Arduino tools to access the ports (e.g., to upload the programme to a board), your username/log-in name must be added to the dialout group:
-
-``` shell
-sudo usermod -a G dialout username
-```
-
-Replace "username" with your actual username/log-in name. You will need to log-out and back in again for changes to take effect.
-
-Install arduino-cli:
-
-``` shell
-scripts/setup-build-linux.sh -cli
-```
-
-Install arduino-cli and add it to the Windows environment path:
-> [!NOTE]
-> This only updates the path in the current user session and does not persist if the session is closed. You will need to re-run the command for a new session.
-
-``` shell
-source scripts/setup-build-linux.sh -cli --path
-```
-
-Install arduino cores and libraries:
-
-``` shell
-scripts/setup-build-linux.sh -deps
-```
-
-**Build and optionally upload the project.**
-
-Build only:
-
-``` shell
-scripts/setup-build-linux.sh -build
-```
-
-Build and upload:
-
-``` shell
-scripts/setup-build-linux.sh -build --port /dev/ttyACM0 --upload
-```
-
-Replace /dev/ttyACM0 in the command with the desired serial port.
-
-### Running arduino-cli directly (Windows or Linux)
-
-Once arduino-cli is installed as described above, the commands can be used directly in the terminal. This can be useful if more functionality is required, beyond what the setup and build scripts provide. See the official [Arduino CLI](https://arduino.github.io/arduino-cli) website for more information.
-
-If you added arduino-cli to your devices environment path:
-
-``` shell
-arduino-cli <commands>
-```
-
-If you did not add arduino-cli to your devices environment path, the full path must be given with the command.
-
-For windows:
-
-``` shell
-"%ProgramFiles%\Arduino CLI\arduino-cli" <commands>
-```
-
-For Linux:
-
-``` shell
-~/bin/arduino-cli <commands>
-```
+> Running the setup/build scripts will install arduino-cli and other dependencies (Arduino cores and libraries) on your device.
 
 ## System setup
 
