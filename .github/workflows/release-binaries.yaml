@@ -5,6 +5,7 @@ on:
 
 jobs:
   release-binaries:
+    permissions: write-all
     name: Release binaries
     uses: Morgritech/MT-github-workflows/.github/workflows/arduino-cpp-app-create-binaries.yaml@1.0.0
     with:
